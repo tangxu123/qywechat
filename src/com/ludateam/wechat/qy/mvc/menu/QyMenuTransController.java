@@ -5,12 +5,6 @@ import com.jfinal.log.Log;
 import com.platform.annotation.Controller;
 import com.platform.mvc.base.BaseController;
 import com.platform.mvc.base.BaseModel;
-import com.platform.tools.ToolDateTime;
-import com.test.mvc.blog.Blog;
-import com.test.mvc.blog.BlogService;
-import com.test.mvc.blog.BlogValidator;
-
-import java.util.List;
 
 
 /*
@@ -33,7 +27,7 @@ import java.util.List;
 public class QyMenuTransController extends BaseController {
     private static final Log log = Log.getLog(QyMenuTransController.class);
 
-    private MenuService menuService;
+    private CxMenuService menuService;
     /**
      * 列表
      */

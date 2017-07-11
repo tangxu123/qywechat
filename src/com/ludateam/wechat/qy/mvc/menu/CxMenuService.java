@@ -18,11 +18,11 @@ package com.ludateam.wechat.qy.mvc.menu;/*
 import com.jfinal.log.Log;
 import com.platform.annotation.Service;
 import com.platform.mvc.base.BaseService;
-import com.test.mvc.blog.BlogService;
 
-@Service(name = MenuService.serviceName)
-public class MenuService extends BaseService {
-    private static final Log log = Log.getLog(MenuService.class);
 
-    public static final String serviceName = "menuService";
+@Service(name = CxMenuService.serviceName)
+public class CxMenuService extends BaseService {
+    private static final Log log = Log.getLog(CxMenuService.class);
+
+    public static final String serviceName = "cxmenuService";
 }
