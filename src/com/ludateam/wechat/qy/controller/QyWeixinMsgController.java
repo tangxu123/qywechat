@@ -27,15 +27,17 @@ import com.jfinal.qyweixin.sdk.msg.in.event.*;
 import com.jfinal.qyweixin.sdk.msg.out.OutImageMsg;
 import com.jfinal.qyweixin.sdk.msg.out.OutTextMsg;
 import com.jfinal.qyweixin.sdk.msg.out.OutVoiceMsg;
-import com.jfinal.qyweixin.sdk.msg.send.QiYeTextMsg;
-import com.jfinal.qyweixin.sdk.msg.send.Text;
+import com.jfinal.qyweixin.sdk.msg.send.*;
+import com.ludateam.wechat.qy.utils.QyWeixinAPI;
 import com.platform.annotation.Controller;
 import com.platform.constant.ConstantInit;
 import com.platform.mvc.base.BaseController;
 
 import com.jfinal.log.Log;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 
 @Controller("/wechat/qymsg")
 public class QyWeixinMsgController extends MsgControllerAdapter {
@@ -142,7 +144,28 @@ public class QyWeixinMsgController extends MsgControllerAdapter {
         outMsg.setContent("菜单事件内容是：" + inMenuEvent.getEventKey());
         render(outMsg);
         if (InMenuEvent.EVENT_INMENU_CLICK.equals(inMenuEvent.getEvent())) {
+            String key = inMenuEvent.getEventKey();
+            if("ZQRL".equals(key)){
+                //菜单：征期日历
+                QiYeNewsMsg qiYeNewsMsg = new QiYeNewsMsg();
+                qiYeNewsMsg.setAgentid("4");
+                qiYeNewsMsg.setArticleCount(1);
+                qiYeNewsMsg.setSafe("0");
+                String toUserName = inMenuEvent.getFromUserName();
+                qiYeNewsMsg.setTouser(toUserName);
 
+                News news = new News();
+                List<Article> articles = new ArrayList<Article>();
+                Article article = new Article();
+                article.setTitle("征期日历");
+                article.setDescription("征期日历");
+                article.setPicurl("http://img01.taopic.com/161009/201959-16100Z3223922.jpg");
+                article.setUrl("http://mp.weixin.qq.com/s/jDDvVGbZqnk9kV8_AJtIiQ");
+                articles.add(article);
+                news.setArticles(articles);
+                qiYeNewsMsg.setNews(news);
+                QyWeixinAPI.sendNewsMessage(qiYeNewsMsg);
+            }
         }
     }
 
