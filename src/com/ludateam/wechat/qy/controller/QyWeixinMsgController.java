@@ -142,7 +142,7 @@ public class QyWeixinMsgController extends MsgControllerAdapter {
     protected void processInMenuEvent(InMenuEvent inMenuEvent) {
         OutTextMsg outMsg = new OutTextMsg(inMenuEvent);
         outMsg.setContent("菜单事件内容是：" + inMenuEvent.getEventKey());
-        render(outMsg);
+        //render(outMsg);
         if (InMenuEvent.EVENT_INMENU_CLICK.equals(inMenuEvent.getEvent())) {
             String key = inMenuEvent.getEventKey();
             if("ZQRL".equals(key)){

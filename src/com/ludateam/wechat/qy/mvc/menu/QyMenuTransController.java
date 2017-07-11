@@ -6,6 +6,8 @@ import com.platform.annotation.Controller;
 import com.platform.mvc.base.BaseController;
 import com.platform.mvc.base.BaseModel;
 
+import java.util.List;
+
 
 /*
  * Copyright 2017 Luda Team.
@@ -27,7 +29,7 @@ import com.platform.mvc.base.BaseModel;
 public class QyMenuTransController extends BaseController {
     private static final Log log = Log.getLog(QyMenuTransController.class);
 
-    private CxMenuService menuService;
+    private CxMenuService cxMenuService ;
     /**
      * 列表
      */
@@ -76,7 +78,19 @@ public class QyMenuTransController extends BaseController {
      * 删除
      */
     public void delete() {
-        menuService.baseDelete("wechat_menus", getPara() == null ? ids : getPara());
+//        cxMenuService.baseDelete("wechat_menus", getPara() == null ? "id" : getPara());
+
+        Menu menu = Menu.dao.findById(getPara());
+        menu.delete();
         forwardAction("/wechat/menu/backOff");
+    }
+
+    /**
+     * 微信UI列表
+     */
+    public void wxindex() {
+        List<Menu> menus = Menu.dao.find("SELECT ID,NAME,LINK FROM wechat_menus");
+        setAttr("menus", menus);
+        render("/menu/wxlist.html");
     }
 }

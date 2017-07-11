@@ -24,5 +24,5 @@ import com.platform.mvc.base.BaseService;
 public class CxMenuService extends BaseService {
     private static final Log log = Log.getLog(CxMenuService.class);
 
-    public static final String serviceName = "cxmenuService";
+    public static final String serviceName = "cxMenuService";
 }
