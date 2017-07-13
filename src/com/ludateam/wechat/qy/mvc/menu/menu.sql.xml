@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<sql-statement namespace="wechat.menu">
+
+    <!-- 分页查询：from -->
+    <sql id="splitPageFrom">
+        <![CDATA[
+        	from
+        		wechat_menus
+
+			where 1=1
+
+			<% if(!isEmpty(name)){ %>
+					and name like #'%$name$%'#
+			<% } %>
+
+			<% if(!isEmpty(link)){ %>
+					and link like #'%$link$%'#
+			<% } %>
+    	]]>
+    </sql>
+
+</sql-statement>
