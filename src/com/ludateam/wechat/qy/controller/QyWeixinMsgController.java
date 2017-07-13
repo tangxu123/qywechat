@@ -142,7 +142,7 @@ public class QyWeixinMsgController extends MsgControllerAdapter {
     protected void processInMenuEvent(InMenuEvent inMenuEvent) {
         OutTextMsg outMsg = new OutTextMsg(inMenuEvent);
         outMsg.setContent("菜单事件内容是：" + inMenuEvent.getEventKey());
-        render(outMsg);
+        //render(outMsg);
         if (InMenuEvent.EVENT_INMENU_CLICK.equals(inMenuEvent.getEvent())) {
             String key = inMenuEvent.getEventKey();
             if("ZQRL".equals(key)){
@@ -163,6 +163,38 @@ public class QyWeixinMsgController extends MsgControllerAdapter {
                 article.setUrl("http://mp.weixin.qq.com/s/jDDvVGbZqnk9kV8_AJtIiQ");
                 articles.add(article);
                 news.setArticles(articles);
+                qiYeNewsMsg.setNews(news);
+                QyWeixinAPI.sendNewsMessage(qiYeNewsMsg);
+            }else if("RDSM".equals(key)){
+                //热点扫描
+                // TODO: 2017/7/11 热点扫描返回的文章内容是否需要设置为动态
+                render(outMsg);
+            }else if("BSDT".equals(key)){
+                //办税地图
+                QiYeNewsMsg qiYeNewsMsg = new QiYeNewsMsg();
+                qiYeNewsMsg.setAgentid("4");
+                qiYeNewsMsg.setArticleCount(2);
+                qiYeNewsMsg.setSafe("0");
+                String toUserName = inMenuEvent.getFromUserName();
+                qiYeNewsMsg.setTouser(toUserName);
+
+                News news = new News();
+                List<Article> articles = new ArrayList<Article>();
+                Article article = new Article();
+                article.setTitle("徐汇区办税服务大厅地图");
+                article.setDescription("徐汇区办税服务大厅地图");
+                article.setPicurl("http://www.hb-l-tax.gov.cn/xts/dsdt/xwbd/200911/W020091102584357769195.jpg");
+                article.setUrl("http://mp.weixin.qq.com/s/krzLpUm-DfSXFurQNl-bvA");
+                Article article2 = new Article();
+                article2.setTitle("徐汇区私房出租代征点一览表");
+                article2.setDescription("徐汇区私房出租代征点一览表");
+                article2.setPicurl("http://hot.online.sh.cn/images/attachement/jpeg/site1/20160829/IMGf48e389446714224375673.jpeg");
+                article2.setUrl("http://mp.weixin.qq.com/s/c8GLbAeF_3YPoY8wH2kgmw");
+
+                articles.add(article);
+                articles.add(article2);
+                news.setArticles(articles);
+
                 qiYeNewsMsg.setNews(news);
                 QyWeixinAPI.sendNewsMessage(qiYeNewsMsg);
             }
