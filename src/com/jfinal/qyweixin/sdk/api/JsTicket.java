@@ -3,9 +3,11 @@ package com.jfinal.qyweixin.sdk.api;
 import java.io.Serializable;
 import java.util.Map;
 
+import com.alibaba.fastjson.JSON;
+import com.jfinal.json.FastJson;
+import com.jfinal.json.Json;
 import com.jfinal.qyweixin.sdk.utils.JsonUtils;
 import com.jfinal.qyweixin.sdk.utils.RetryUtils.ResultCheck;
-
 
 
 /**
@@ -27,7 +29,7 @@ public class JsTicket implements ResultCheck, Serializable {
         this.json = jsonStr;
 
         try {
-            Map<String, Object> temp = JsonUtils.parse(jsonStr, Map.class);
+            Map<String, Object> temp = FastJson.getJson().parse(jsonStr, Map.class);
             ticket = (String) temp.get("ticket");
             expires_in = (Integer) temp.get("expires_in");
             errcode = (Integer) temp.get("errcode");
@@ -37,7 +39,7 @@ public class JsTicket implements ResultCheck, Serializable {
                 expiredTime = System.currentTimeMillis() + ((expires_in - 5) * 1000);
             // 用户缓存时还原
             if (temp.containsKey("expiredTime")) {
-                 expiredTime = (Long) temp.get("expiredTime");
+                expiredTime = (Long) temp.get("expiredTime");
             }
 
         } catch (Exception e) {
@@ -50,10 +52,10 @@ public class JsTicket implements ResultCheck, Serializable {
     }
 
     public String getCacheJson() {
-        Map<String, Object> temp = JsonUtils.parse(json, Map.class);
+        Map<String, Object> temp = FastJson.getJson().parse(json, Map.class);
         temp.put("expiredTime", expiredTime);
         temp.remove("expires_in");
-        return JsonUtils.toJson(temp);
+        return FastJson.getJson().toJson(temp);
     }
 
     public boolean isAvailable() {
@@ -93,6 +95,7 @@ public class JsTicket implements ResultCheck, Serializable {
 
     /**
      * APi 请求是否成功返回
+     *
      * @return boolean
      */
     public boolean isSucceed() {
