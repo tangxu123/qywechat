@@ -93,7 +93,7 @@ public class QyOAuthController extends ApiController {
             if (state.equals("123")) {
                 redirect("/");
             }
-//			renderText(userInfoApiResult.getJson()+">>>userId:"+userId+" deviceId:"+deviceId+" openid:"+openid);
+ 			renderText(userInfoApiResult.getJson()+">>>userId:"+userId+" deviceId:"+deviceId+" openid:"+openid);
         }
     }
 }

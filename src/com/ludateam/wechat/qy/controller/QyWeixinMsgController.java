@@ -48,14 +48,14 @@ public class QyWeixinMsgController extends MsgControllerAdapter {
         String msgContent = inTextMsg.getContent().trim();
         System.out.println("收到的信息：" + msgContent);
         if ("OAuth".equalsIgnoreCase(msgContent)) {
-            String url = PropKit.get("domain") + "/qyoauth2";
+            String url = PropKit.get("domain") + "/wechat/qyoauth";
             String urlStr = "<a href=\"" + url + "\">点击我授权</a>";
 
             OutTextMsg outMsg = new OutTextMsg(inTextMsg);
             outMsg.setContent(urlStr);
             render(outMsg);
         } else if ("jssdk".equalsIgnoreCase(msgContent)) {
-            String url = PropKit.get("domain") + "/qyjssdk";
+            String url = PropKit.get("domain") + "/wechat/qyjssdk";
             String urlStr = "<a href=\"" + url + "\">JSSDK</a>";
             renderOutTextMsg("授权地址" + urlStr);
         }
