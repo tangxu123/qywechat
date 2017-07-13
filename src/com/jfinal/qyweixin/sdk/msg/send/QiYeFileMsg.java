@@ -24,4 +24,14 @@ public class QiYeFileMsg extends QiYeBaseMsg {
 	public QiYeFileMsg() {
 		this.msgtype=MessageType.file.name();
 	}
+
+	private  SendFile file ;
+
+	public SendFile getFile() {
+		return file;
+	}
+
+	public void setFile(SendFile file) {
+		this.file = file;
+	}
 }
