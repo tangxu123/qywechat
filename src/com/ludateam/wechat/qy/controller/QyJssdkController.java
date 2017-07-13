@@ -66,7 +66,8 @@ public class QyJssdkController extends ApiController {
         setAttr("signature", signature);
         setAttr("jsapi_ticket", jsapi_ticket);
 
-        render("share.jsp");
+//        render("share.jsp");
+        render("/jssdk/jssdk.html");
 
     }
 
