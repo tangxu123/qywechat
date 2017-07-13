@@ -21,7 +21,12 @@ import com.alibaba.fastjson.JSON;
 import com.jfinal.log.Log;
 import com.jfinal.qyweixin.sdk.api.ApiResult;
 import com.jfinal.qyweixin.sdk.api.ConBatchApi;
+import com.jfinal.qyweixin.sdk.api.ConDepartmentApi;
+import com.jfinal.qyweixin.sdk.api.SendMessageApi;
 import com.jfinal.qyweixin.sdk.api.media.MediaApi;
+import com.jfinal.qyweixin.sdk.api.media.MediaFile;
+import com.jfinal.qyweixin.sdk.msg.send.QiYeFileMsg;
+import com.jfinal.qyweixin.sdk.msg.send.SendFile;
 import com.platform.annotation.Controller;
 import com.platform.mvc.base.BaseController;
 
@@ -33,13 +38,28 @@ public class QySyncUserController extends BaseController {
     private static final Log log = Log.getLog(QySyncUserController.class);
 
     public void index() {
-        ApiResult apiResult = MediaApi.uploadMedia(MediaApi.MediaType.FILE, new File("/usr/local/tomcat-8.5.12/webapps/qywx/batch_user_sample.csv"));
+
+        ApiResult apiResult = MediaApi.uploadMedia(MediaApi.MediaType.FILE, new File("D://batch_user_sample.csv"));
         String json = apiResult.getJson();
         String mediaId = JSON.parseObject(json).getString("media_id");
         System.out.println(mediaId);
 
-        apiResult = ConBatchApi.updateSyncUser("{ \"media_id\":" + mediaId + "}");
+        QiYeFileMsg file=new QiYeFileMsg();
+        file.setAgentid("4");
 
-        System.out.println(json);
+        SendFile tempSendFile = new SendFile();
+        tempSendFile.setMedia_id(mediaId);
+        file.setFile(tempSendFile);
+
+        file.setSafe("1");
+        file.setTouser("Him");
+
+        //SendMessageApi.sendFileMsg(file);
+
+        MediaFile media =  MediaApi.getMedia(mediaId);
+
+        apiResult = ConBatchApi.updateSyncUser("{\"media_id\":\""+mediaId+"\"" +"}");
+
+        System.out.println(apiResult.getJson());
     }
 }
