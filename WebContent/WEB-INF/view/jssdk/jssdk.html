@@ -12,7 +12,6 @@
     <link rel="stylesheet" href="http://demo.open.weixin.qq.com/jssdk/css/style.css">
 </head>
 <body>
-${escapeHtml(appId!)}
 <div class="wxapi_container">
     <div class="wxapi_index_container">
         <ul class="label_box lbox_close wxapi_index_list">
@@ -108,28 +107,15 @@ ${escapeHtml(appId!)}
     </div>
 </div>
 </body>
-<%
-String appid = (String)request.getAttribute("appId");
-String nonceStr = (String)request.getAttribute("nonceStr");
-String timestamp = (String)request.getAttribute("timestamp");
-String url = (String)request.getAttribute("url");
-String signature = (String)request.getAttribute("signature");
-String rawString = (String)request.getAttribute("rawString");
-out.println(appid);
-out.println(nonceStr);
-out.println(timestamp);
-out.println(url);
-out.println(signature);
-out.println(rawString);
-%>
+
 <script type="text/javascript" src="http://res.wx.qq.com/open/js/jweixin-1.1.0.js"></script>
 <script type="text/javascript">
     wx.config({
         debug: true,
-        appId: '<%=appid %>',
-        timestamp: '<%=timestamp %>',
-        nonceStr: '<%=nonceStr %>',
-        signature: '<%=signature %>',
+        appId: '${escapeHtml(appId!)}',
+        timestamp: '${escapeHtml(timestamp!)}',
+        nonceStr: '${escapeHtml(nonceStr!)}',
+        signature: '${escapeHtml(signature!)}',
         jsApiList: [
             'checkJsApi',
             'onMenuShareTimeline',
