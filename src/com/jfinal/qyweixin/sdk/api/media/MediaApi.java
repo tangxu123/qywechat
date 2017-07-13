@@ -32,7 +32,7 @@ public class MediaApi {
 	
 	// 新增临时素材
 	private static String upload_url = "https://qyapi.weixin.qq.com/cgi-bin/media/upload?access_token=";
-	
+
 	/**
 	 * 上传临时素材
 	 * @param mediaType 上传的临时多媒体文件有格式
