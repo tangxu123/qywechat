@@ -15,7 +15,14 @@ package com.ludateam.wechat.qy.mvc.scheduler;/*
  * Created by Him on 2017/7/18.
  */
 
+
+import com.jfinal.log.Log;
 import com.platform.mvc.base.BaseController;
+import com.platform.mvc.base.BaseModel;
 
 public class QySchedulerController extends BaseController {
+    private static final Log log = Log.getLog(QySchedulerController.class);
+    public void index() {
+        render("/scheduler/index.html");
+    }
 }
