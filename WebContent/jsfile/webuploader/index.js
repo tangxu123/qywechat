@@ -68,7 +68,8 @@ jQuery(function() {
         $percent.css( 'width', percentage * 100 + '%' ).html("上传进度:" + parseInt(percentage * 100) + '%');
     });
 
-    uploader.on( 'uploadSuccess', function( file ) {
+    uploader.on( 'uploadSuccess', function( file,response ) {
+        alert(response[0].fileName);
         $( '#'+file.id ).find('p.state').text('已上传');
     });
 
