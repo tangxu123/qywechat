@@ -39,7 +39,10 @@
     </style>
     <script>
         $(function () {
-            alert('${escapeHtml(userId!)}');
+            $.notification({
+                title: "当前用户:" + "${escapeHtml(userId!)}"
+            });
+
             $(document.body).pullToRefresh();
             $("#inline-calendar").calendar({
                 container: "#inline-calendar",
@@ -63,10 +66,13 @@
         function init(y, m) {
             $("span." + y).remove();
             //TODO ajax
-            var d = [{'d':'2017-6-16','count':2},{'d':'2017-6-17','count':6},{'d':'2017-6-25','count':2},{'d':'2017-6-12','count':5}];
+            var d = [{'d': '2017-6-16', 'count': 2}, {'d': '2017-6-17', 'count': 6}, {
+                'd': '2017-6-25',
+                'count': 2
+            }, {'d': '2017-6-12', 'count': 5}];
 
-            $.each(d,function (index,v) {
-                $(".picker-calendar-day[data-date='"+v.d+"']").not(".picker-calendar-day-prev").not(".picker-calendar-day-next").append("<span class='" + y + "' style='width: 15px;height: 15px;line-height: 15px;position:relative;top: -8px;background: white;color:blue;'>" + v.count + "</span>");
+            $.each(d, function (index, v) {
+                $(".picker-calendar-day[data-date='" + v.d + "']").not(".picker-calendar-day-prev").not(".picker-calendar-day-next").append("<span class='" + y + "' style='width: 15px;height: 15px;line-height: 15px;position:relative;top: -8px;background: white;color:blue;'>" + v.count + "</span>");
             });
         }
 
