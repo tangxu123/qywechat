@@ -95,6 +95,7 @@ public class QySchedulerController extends BaseController {
             }
             //renderText(userInfoApiResult.getJson()+">>>userId:"+userId+" deviceId:"+deviceId+" openid:"+openid);
             setAttr("userId", userId);
+            setAttr("openid", openid);
             render("/scheduler/index.html");
         }
     }
