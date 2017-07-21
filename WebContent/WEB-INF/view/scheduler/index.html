@@ -39,6 +39,7 @@
     </style>
     <script>
         $(function () {
+            alert('${escapeHtml(userId!)}');
             $(document.body).pullToRefresh();
             $("#inline-calendar").calendar({
                 container: "#inline-calendar",
@@ -81,8 +82,6 @@
     <div class="up">释放刷新</div>
     <div class="refresh">正在刷新</div>
 </div>
-
-
 <div id="inline-calendar"></div>
 
 <div class="weui-cells">
