@@ -1,144 +1,146 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <meta charset='utf-8' />
+    <meta charset='utf-8'/>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
 
-    <link href='${cxt!}/ui/fullcalendar.min.css' rel='stylesheet' />
-    <link href='${cxt!}/ui/fullcalendar.print.min.css' rel='stylesheet' media='print' />
-    <script src='${cxt!}/ui/lib/moment.min.js'></script>
+    <link rel="stylesheet" href="//cdn.bootcss.com/weui/1.1.1/style/weui.min.css">
+    <link rel="stylesheet" href="//cdn.bootcss.com/jquery-weui/1.0.1/css/jquery-weui.min.css">
     <script type="text/javascript" src="${cxt!}/jsfile/jquery/jquery-1.12.4.min.js"></script>
-    <script src='${cxt!}/ui/fullcalendar.min.js'></script>
-    <script src='${cxt!}/ui/locale-all.js'></script>
-    <script>
+    <script src="//cdn.bootcss.com/jquery-weui/1.0.1/js/jquery-weui.min.js"></script>
 
-        $(document).ready(function() {
-            var initialLocaleCode = 'zh-cn';
-
-            $('#calendar').fullCalendar({
-                header: {
-                    left: 'prev,next today',
-                    center: 'title',
-                    right: 'month,agendaWeek,agendaDay,listMonth'
-                },
-                defaultDate: '2017-05-12',
-                locale: initialLocaleCode,
-                buttonIcons: false, // show the prev/next text
-                weekNumbers: true,
-                navLinks: true, // can click day/week names to navigate views
-                editable: true,
-                eventLimit: false, // allow "more" link when too many events
-                events: [
-                    {
-                        title: 'All Day Event',
-                        start: '2017-05-01'
-                    },
-                    {
-                        title: 'Long Event',
-                        start: '2017-05-07',
-                        end: '2017-05-10'
-                    },
-                    {
-                        id: 999,
-                        title: 'Repeating Event',
-                        start: '2017-05-09T16:00:00'
-                    },
-                    {
-                        id: 999,
-                        title: 'Repeating Event',
-                        start: '2017-05-16T16:00:00'
-                    },
-                    {
-                        title: 'Conference',
-                        start: '2017-05-11',
-                        end: '2017-05-13'
-                    },
-                    {
-                        title: 'Meeting',
-                        start: '2017-05-12T10:30:00',
-                        end: '2017-05-12T12:30:00'
-                    },
-                    {
-                        title: 'Lunch',
-                        start: '2017-05-12T12:00:00'
-                    },
-                    {
-                        title: 'Meeting',
-                        start: '2017-05-12T14:30:00'
-                    },
-                    {
-                        title: 'Happy Hour',
-                        start: '2017-05-12T17:30:00'
-                    },
-                    {
-                        title: 'Dinner',
-                        start: '2017-05-12T20:00:00'
-                    },
-                    {
-                        title: 'Birthday Party',
-                        start: '2017-05-13T07:00:00'
-                    },
-                    {
-                        title: 'Click for Google',
-                        url: 'http://google.com/',
-                        start: '2017-05-28'
-                    }
-                ]
-            });
-
-            // build the locale selector's options
-            $.each($.fullCalendar.locales, function(localeCode) {
-                $('#locale-selector').append(
-                    $('<option/>')
-                        .attr('value', localeCode)
-                        .prop('selected', localeCode == initialLocaleCode)
-                        .text(localeCode)
-                );
-            });
-
-            // when the selected option changes, dynamically change the calendar option
-            $('#locale-selector').on('change', function() {
-                if (this.value) {
-                    $('#calendar').fullCalendar('option', 'locale', this.value);
-                }
-            });
-        });
-
-    </script>
+    <!-- 如果使用了某些拓展插件还需要额外的JS -->
+    <script src="//cdn.bootcss.com/jquery-weui/1.0.1/js/swiper.min.js"></script>
+    <script src="//cdn.bootcss.com/jquery-weui/1.0.1/js/city-picker.min.js"></script>
     <style>
+        body, html {
+            height: 100%;
+            -webkit-tap-highlight-color: transparent;
+        }
 
-        body {
-            margin: 0;
-            padding: 0;
-            font-family: "Lucida Grande",Helvetica,Arial,Verdana,sans-serif;
+        .demos-title {
+            text-align: center;
+            font-size: 34px;
+            color: #3cc51f;
+            font-weight: 400;
+            margin: 0 15%;
+        }
+
+        .demos-sub-title {
+            text-align: center;
+            color: #888;
             font-size: 14px;
         }
 
-        #top {
-            background: #eee;
-            border-bottom: 1px solid #ddd;
-            padding: 0 10px;
-            line-height: 40px;
-            font-size: 12px;
+        .demos-header {
+            padding: 2px 0;
         }
-
-        #calendar {
-            max-width: 900px;
-            margin: 40px auto;
-            padding: 0 10px;
-        }
-
     </style>
+    <script>
+        $(function () {
+            $(document.body).pullToRefresh();
+            $("#inline-calendar").calendar({
+                container: "#inline-calendar",
+                input: "#date3",
+                onDayClick: function (p, dayContainer, year, month, day) {
+                    alert(day);
+                },
+                onMonthYearChangeEnd: function (o, y, m) {
+                    init(y, m + 1);
+                }
+            });
+            $(document.body).on("pull-to-refresh", function () {
+                setTimeout(function () {
+                    $(document.body).pullToRefreshDone();
+                }, 1000);
+            });
+
+            init(new Date().getFullYear(), new Date().getMonth() + 1);
+        });
+
+        function init(y, m) {
+            $("span." + y).remove();
+            //TODO ajax 
+            var d = ['2017-6-16','2017-6-17','2017-6-25','2017-6-10','2017-6-2'];
+
+            $.each(d,function (index,v) {
+                $(".picker-calendar-day[data-date='"+v+"']").not(".picker-calendar-day-prev").not(".picker-calendar-day-next").append("<span class='" + y + "' style='width: 15px;height: 15px;line-height: 15px;position:relative;top: -12px;background: white;color:blue;'>" + m + "</span>");
+            });
+
+
+        }
+
+    </script>
+
 </head>
-<body>
 
-<div id='top'>
-
-    Locales:
-    <select id='locale-selector'></select>
-
+<body ontouchstart>
+<div class="weui-pull-to-refresh__layer">
+    <div class='weui-pull-to-refresh__arrow'></div>
+    <div class='weui-pull-to-refresh__preloader'></div>
+    <div class="down">下拉刷新</div>
+    <div class="up">释放刷新</div>
+    <div class="refresh">正在刷新</div>
 </div>
 
-<div id='calendar'></div>
 
+<div id="inline-calendar"></div>
+
+<div class="weui-cells">
+    <div class="weui-cell">
+        <div class="weui-cell__bd">
+            <p>07月16日 周日</p>
+        </div>
+        <div class="weui-cell__ft"><a href="javascript:alert('add');">
+            <img src="${cxt!}/ui/add.png" style="width: 25px;height: 25px;padding-top: 5px">
+        </a>
+        </div>
+    </div>
+    <div class="weui-cell  ">
+        <div class="weui-cell__bd weui-cells__title">待办事项名称</div>
+    </div>
+    <div class="weui-cell  ">
+        <div class="weui-cell__bd weui-cells__title">待办事项名称</div>
+    </div>
+</div>
+
+
+<div class="weui-cells">
+    <div class="weui-cell">
+        <div class="weui-cell__bd">
+            <p>07月17日 周一</p>
+        </div>
+        <div class="weui-cell__ft"><img src="${cxt!}/ui/add.png" style="width: 25px;height: 25px;padding-top: 5px">
+        </div>
+    </div>
+    <div class="weui-cell  ">
+        <div class="weui-cell__bd weui-cells__title">待办事项名称</div>
+    </div>
+    <div class="weui-cell  ">
+        <div class="weui-cell__bd weui-cells__title">待办事项名称</div>
+    </div>
+    <div class="weui-cell  ">
+        <div class="weui-cell__bd weui-cells__title">待办事项名称</div>
+    </div>
+    <div class="weui-cell  ">
+        <div class="weui-cell__bd weui-cells__title">待办事项名称</div>
+    </div>
+    <div class="weui-cell  ">
+        <div class="weui-cell__bd weui-cells__title">待办事项名称</div>
+    </div>
+    <div class="weui-cell  ">
+        <div class="weui-cell__bd weui-cells__title">待办事项名称</div>
+    </div>
+</div>
+
+
+<div class="weui-footer">
+    <p class="weui-footer__links">
+        <a href="javascript:void(0);" class="weui-footer__link">底部链接</a>
+        <a href="javascript:void(0);" class="weui-footer__link">底部链接</a>
+    </p>
+    <p class="weui-footer__text">Copyright © 2008-2016 luda.team</p>
+</div>
 </body>
 </html>
