@@ -40,7 +40,7 @@
     <script>
         $(function () {
             $.notification({
-                title: "当前用户:" + "${escapeHtml(userId!)}"
+                title: "当前用户:" + "${escapeHtml(userId!)}" + " " +"${escapeHtml(openid!)}"
             });
 
             $(document.body).pullToRefresh();
