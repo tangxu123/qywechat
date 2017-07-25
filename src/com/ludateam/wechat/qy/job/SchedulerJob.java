@@ -55,6 +55,8 @@ public class SchedulerJob implements Job {
         qiYeNewsMsg.setArticleCount(1);
         News qyNew = new News();
 
+
+
         Article article = new Article();
 
         article.setTitle("您有一个新的待办任务，请关注\r\n会议名称：月度办公会议\r\n开始时间：2017-07-24");
