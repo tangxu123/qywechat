@@ -9,7 +9,8 @@
     <link rel="stylesheet" href="//cdn.bootcss.com/jquery-weui/1.0.1/css/jquery-weui.min.css">
     <script type="text/javascript" src="${cxt!}/jsfile/jquery/jquery-1.12.4.min.js"></script>
     <script src="//cdn.bootcss.com/jquery-weui/1.0.1/js/jquery-weui.min.js"></script>
-
+    <link rel="stylesheet" href="${cxt!}/ui/iconfont.css">
+    <link rel="stylesheet" href="${cxt!}/ui/styles.css">
     <!-- 如果使用了某些拓展插件还需要额外的JS -->
     <script src="//cdn.bootcss.com/jquery-weui/1.0.1/js/swiper.min.js"></script>
     <script src="//cdn.bootcss.com/jquery-weui/1.0.1/js/city-picker.min.js"></script>
@@ -19,29 +20,12 @@
             -webkit-tap-highlight-color: transparent;
         }
 
-        .demos-title {
-            text-align: center;
-            font-size: 34px;
-            color: #3cc51f;
-            font-weight: 400;
-            margin: 0 15%;
-        }
-
-        .demos-sub-title {
-            text-align: center;
-            color: #888;
-            font-size: 14px;
-        }
-
-        .demos-header {
-            padding: 2px 0;
-        }
     </style>
     <script>
         $(function () {
-            $.notification({
-                title: "当前用户:" + "${escapeHtml(userId!)}" + " " +"${escapeHtml(openid!)}"
-            });
+          /*  $.notification({
+                title: "当前用户:" + "${escapeHtml(userId!)}" + " " + "${escapeHtml(openid!)}"
+            });*/
 
             $(document.body).pullToRefresh();
             $("#inline-calendar").calendar({
@@ -75,7 +59,30 @@
                 $(".picker-calendar-day[data-date='" + v.d + "']").not(".picker-calendar-day-prev").not(".picker-calendar-day-next").append("<span class='" + y + "' style='width: 15px;height: 15px;line-height: 15px;position:relative;top: -8px;background: white;color:blue;'>" + v.count + "</span>");
             });
         }
-
+        $(document).on("click", "#xsdb", function() {
+            $.actions({
+                title: "选择操作",
+                onClose: function() {
+                    console.log("close");
+                },
+                actions: [
+                    {
+                        text: "我的待办",
+                        className: "color-primary",
+                        onClick: function() {
+                            $.alert("我的待办");
+                        }
+                    },
+                    {
+                        text: "下属待办",
+                        className: "color-warning",
+                        onClick: function() {
+                            $("#about").popup();
+                        }
+                    }
+                ]
+            });
+        });
     </script>
 
 </head>
@@ -88,62 +95,58 @@
     <div class="up">释放刷新</div>
     <div class="refresh">正在刷新</div>
 </div>
-<div id="inline-calendar"></div>
 
-<div class="weui-cells">
-    <div class="weui-cell">
-        <div class="weui-cell__bd">
-            <p>07月16日 周日</p>
+<!--头部导航 开始-->
+<header class="bar bar-nav" style="  position: static;" >
+    <a href="javascript:;" onclick="javascript:history.back(-1);" class="icon pull-left"><i
+            class="sstfont sst-xiangzuo"></i></a>
+    <h1 class="title">我的待办</h1>
+    <a href="#"  id="xsdb" class="icon pull-right"><i class="sstfont sst-fenxiang"></i></a>
+</header>
+
+<!--头部导航 结束-->
+<div id="inline-calendar"   ></div>
+<div >
+    <div class="weui-cells__title">07月16日 周日
+        <a href="${cxt!}/wechat/myscheduler/add">
+            <img src="${cxt!}/ui/add.png" style="width: 25px;height: 25px;float: right">
+        </a></div>
+    <div class="weui-cells">
+        <div class="weui-cell  ">
+            <div class="weui-cell__bd  ">待办事项名称</div>
         </div>
-        <div class="weui-cell__ft"><a href="javascript:alert('add');">
-            <img src="${cxt!}/ui/add.png" style="width: 25px;height: 25px;padding-top: 5px">
-        </a>
+        <div class="weui-cell  ">
+            <div class="weui-cell__bd  ">待办事项名称</div>
         </div>
     </div>
-    <div class="weui-cell  ">
-        <div class="weui-cell__bd weui-cells__title">待办事项名称</div>
-    </div>
-    <div class="weui-cell  ">
-        <div class="weui-cell__bd weui-cells__title">待办事项名称</div>
+    <div class="weui-cells__title">07月17日 周一
+        <a href="${cxt!}/wechat/myscheduler/add">
+            <img src="${cxt!}/ui/add.png" style="width: 25px;height: 25px;float: right">
+        </a></div>
+    <div class="weui-cells">
+        <div class="weui-cell  ">
+            <div class="weui-cell__bd  ">待办事项名称</div>
+        </div>
+        <div class="weui-cell  ">
+            <div class="weui-cell__bd  ">待办事项名称</div>
+        </div>
     </div>
 </div>
-
-
-<div class="weui-cells">
-    <div class="weui-cell">
-        <div class="weui-cell__bd">
-            <p>07月17日 周一</p>
-        </div>
-        <div class="weui-cell__ft"><img src="${cxt!}/ui/add.png" style="width: 25px;height: 25px;padding-top: 5px">
-        </div>
-    </div>
-    <div class="weui-cell  ">
-        <div class="weui-cell__bd weui-cells__title">待办事项名称</div>
-    </div>
-    <div class="weui-cell  ">
-        <div class="weui-cell__bd weui-cells__title">待办事项名称</div>
-    </div>
-    <div class="weui-cell  ">
-        <div class="weui-cell__bd weui-cells__title">待办事项名称</div>
-    </div>
-    <div class="weui-cell  ">
-        <div class="weui-cell__bd weui-cells__title">待办事项名称</div>
-    </div>
-    <div class="weui-cell  ">
-        <div class="weui-cell__bd weui-cells__title">待办事项名称</div>
-    </div>
-    <div class="weui-cell  ">
-        <div class="weui-cell__bd weui-cells__title">待办事项名称</div>
-    </div>
-</div>
-
-
 <div class="weui-footer">
     <p class="weui-footer__links">
         <a href="javascript:void(0);" class="weui-footer__link">底部链接</a>
         <a href="javascript:void(0);" class="weui-footer__link">底部链接</a>
     </p>
     <p class="weui-footer__text">Copyright © 2008-2016 luda.team</p>
+</div>
+
+<div id="about" class="weui-popup__container" style="z-index: 1000">
+    <div class="weui-popup__overlay"></div>
+    <div class="weui-popup__modal">
+
+        <a href="javascript:;" class="weui-btn weui-btn_primary close-popup">关闭</a>
+    </div>
+
 </div>
 </body>
 </html>
