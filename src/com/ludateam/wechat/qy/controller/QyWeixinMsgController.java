@@ -55,7 +55,7 @@ public class QyWeixinMsgController extends MsgControllerAdapter {
             outMsg.setContent(urlStr);
             render(outMsg);
         } else if ("jssdk".equalsIgnoreCase(msgContent)) {
-            String url = PropKit.get("domain") + "/wechat/qyjssdk";
+            String url = PropKit.get("domain") + "/wechat/jssdk";
             String urlStr = "<a href=\"" + url + "\">JSSDK</a>";
             renderOutTextMsg("授权地址" + urlStr);
         }

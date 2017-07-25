@@ -34,14 +34,17 @@ import java.net.URLEncoder;
 public class QySchedulerController extends BaseController {
     private static final Log log = Log.getLog(QySchedulerController.class);
     public void index() {
-        try {
+       /* try {
             String redirect_uri = URLEncoder.encode(PropKit.get("domain") + "/wechat/myscheduler/main", "utf-8");
             String codeUrl = OAuthApi.getCodeUrl(redirect_uri, "123", true);
             System.out.println("codeUrl>>>" + codeUrl);
             redirect(codeUrl);
         } catch (UnsupportedEncodingException e) {
             e.printStackTrace();
-        }
+        }*/
+        setAttr("userId", "");
+        setAttr("openid", "");
+        render("/scheduler/index.html");
 
     }
     public void main() {
@@ -98,5 +101,8 @@ public class QySchedulerController extends BaseController {
             setAttr("openid", openid);
             render("/scheduler/index.html");
         }
+    }
+    public void add() {
+        render("/scheduler/add.html");
     }
 }

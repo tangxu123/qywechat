@@ -1,0 +1,66 @@
+.bar-nav {
+    top: 0;
+}
+
+.bar {
+    position: fixed;
+    right: 0;
+    left: 0;
+    z-index: 9;
+    height: 2.2rem;
+    padding-right: .5rem;
+    padding-left: .5rem;
+    background-color: #04BE02;
+    -webkit-backface-visibility: hidden;
+    backface-visibility: hidden;
+    color: #FFF;
+}
+
+.title {
+    position: absolute;
+    display: block;
+    width: 100%;
+    padding: 0;
+    margin: 0 -.5rem;
+    font-size: .85rem;
+    font-weight: 500;
+    line-height: 2.2rem;
+    color: #FFF;
+    text-align: center;
+    white-space: nowrap;
+}
+
+.bar .icon {
+    position: relative;
+    z-index: 20;
+    padding: .6rem .1rem;
+    font-size: 1.2rem;
+    line-height: 1.2rem;
+    color: #FFF;
+}
+
+.pull-right {
+    float: right;
+}
+
+.pull-left {
+    float: left;
+}
+
+.pull-right i, .pull-left i {
+    font-size: 1.2rem;
+}
+
+.sstfont {
+    font-family: "sstfont" !important;
+    font-size: 16px;
+    font-style: normal;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+}
+.content {
+    -webkit-overflow-scrolling: touch;
+    padding-bottom: 55px;
+    padding-top: 2.2rem;
+
+}

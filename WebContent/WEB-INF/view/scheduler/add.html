@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset='utf-8'/>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
+
+    <link rel="stylesheet" href="//cdn.bootcss.com/weui/1.1.1/style/weui.min.css">
+    <link rel="stylesheet" href="//cdn.bootcss.com/jquery-weui/1.0.1/css/jquery-weui.min.css">
+    <link rel="stylesheet" href="${cxt!}/ui/iconfont.css">
+    <link rel="stylesheet" href="${cxt!}/ui/styles.css">
+    <script type="text/javascript" src="${cxt!}/jsfile/jquery/jquery-1.12.4.min.js"></script>
+    <script src="//cdn.bootcss.com/jquery-weui/1.0.1/js/jquery-weui.min.js"></script>
+
+    <!-- 如果使用了某些拓展插件还需要额外的JS -->
+    <script src="//cdn.bootcss.com/jquery-weui/1.0.1/js/swiper.min.js"></script>
+    <script src="//cdn.bootcss.com/jquery-weui/1.0.1/js/city-picker.min.js"></script>
+    <style>
+
+    </style>
+</head>
+<body ontouchstart="" style="-webkit-overflow-scrolling: touch;">
+<!--头部导航 开始-->
+<header class="bar bar-nav" >
+    <a href="javascript:;" onclick="javascript:history.back(-1);" class="icon pull-left"><i
+            class="sstfont sst-xiangzuo"></i></a>
+    <h1 class="title">新建日程</h1>
+    <a href="#" class="icon pull-right"><i class="sstfont sst-bianji"></i></a>
+</header>
+<!--头部导航 结束-->
+<div class="content">
+    <div class="weui-cells__title">录入表单,点击右上角保存日程</div>
+    <div class="weui-cells weui-cells_form">
+        <div class="weui-cell">
+            <div class="weui-cell__hd"><label for="rclx" class="weui-label">日程类型</label></div>
+            <div class="weui-cell__bd">
+                <input class="weui-input" id="rclx" type="text" value="">
+            </div>
+        </div>
+        <div class="weui-cell">
+            <div class="weui-cell__hd"><label for="rcbt" class="weui-label">日程标题</label></div>
+            <div class="weui-cell__bd">
+                <input class="weui-input" id="rcbt" type="text" value="">
+            </div>
+        </div>
+        <div class="weui-cell">
+            <div class="weui-cell__hd"><label for="jjcd" class="weui-label">紧急程度</label></div>
+            <div class="weui-cell__bd">
+                <input class="weui-input" id="jjcd" type="text" value="">
+            </div>
+        </div>
+        <div class="weui-cell">
+            <div class="weui-cell__hd"><label for="rcnr" class="weui-label">日程内容</label></div>
+            <div class="weui-cell__bd">
+                <input class="weui-input" id="rcnr" type="text" value="">
+            </div>
+        </div>
+        <div class="weui-cell">
+            <div class="weui-cell__hd"><label for="jsr" class="weui-label">接收人</label></div>
+            <div class="weui-cell__bd">
+                <input class="weui-input" id="jsr" type="text" value="">
+            </div>
+        </div>
+        <div class="weui-cell">
+            <div class="weui-cell__hd"><label for="kssj" class="weui-label">开始时间</label></div>
+            <div class="weui-cell__bd">
+                <input class="weui-input" id="kssj" type="text">
+            </div>
+        </div>
+        <div class="weui-cell">
+            <div class="weui-cell__hd"><label for="jssj" class="weui-label">结束时间</label></div>
+            <div class="weui-cell__bd">
+                <input class="weui-input" id="jssj" type="text">
+            </div>
+        </div>
+    </div>
+</div>
+<script>
+    $("#rclx").select({
+        title: "选择日程类型",
+        items: ["工作安排", "日常提醒", "其他"],
+        onChange: function (d) {
+            console.log(this, d);
+        },
+        onClose: function () {
+            console.log("close");
+        },
+        onOpen: function () {
+            console.log("open");
+        },
+    });
+    $("#jjcd").select({
+        title: "紧急程度",
+        items: ["一般", "重要", "紧急"],
+        onChange: function (d) {
+            console.log(this, d);
+        },
+        onClose: function () {
+            console.log("close");
+        },
+        onOpen: function () {
+            console.log("open");
+        }
+    });
+
+    $("#kssj").datetimePicker({
+        title: '开始时间',
+        min: "1990-12-12",
+        max: "2022-12-12 12:12",
+        onChange: function (picker, values, displayValues) {
+            console.log(values);
+        }
+    });
+    $("#jssj").datetimePicker({
+        title: '结束时间',
+        min: "1990-12-12",
+        max: "2022-12-12 12:12",
+        onChange: function (picker, values, displayValues) {
+            console.log(values);
+        }
+    });
+
+</script>
+</body>
+</html>
