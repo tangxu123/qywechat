@@ -1,125 +1,164 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <meta charset='utf-8'/>
+    <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
 
-    <link rel="stylesheet" href="//cdn.bootcss.com/weui/1.1.1/style/weui.min.css">
-    <link rel="stylesheet" href="//cdn.bootcss.com/jquery-weui/1.0.1/css/jquery-weui.min.css">
-    <link rel="stylesheet" href="${cxt!}/ui/iconfont.css">
-    <link rel="stylesheet" href="${cxt!}/ui/styles.css">
-    <script type="text/javascript" src="${cxt!}/jsfile/jquery/jquery-1.12.4.min.js"></script>
-    <script src="//cdn.bootcss.com/jquery-weui/1.0.1/js/jquery-weui.min.js"></script>
+    <meta name="viewport" content="initial-scale=1, maximum-scale=1">
+    <link rel="shortcut icon" href="/favicon.ico">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
 
-    <!-- 如果使用了某些拓展插件还需要额外的JS -->
-    <script src="//cdn.bootcss.com/jquery-weui/1.0.1/js/swiper.min.js"></script>
-    <script src="//cdn.bootcss.com/jquery-weui/1.0.1/js/city-picker.min.js"></script>
-    <style>
+    <link rel="stylesheet" href="//g.alicdn.com/msui/sm/0.6.2/css/sm.min.css">
+    <link rel="stylesheet" href="//g.alicdn.com/msui/sm/0.6.2/css/sm-extend.min.css">
 
-    </style>
 </head>
-<body ontouchstart="" style="-webkit-overflow-scrolling: touch;">
-<!--头部导航 开始-->
-<header class="bar bar-nav" >
-    <a href="javascript:;" onclick="javascript:history.back(-1);" class="icon pull-left"><i
-            class="sstfont sst-xiangzuo"></i></a>
-    <h1 class="title">新建日程</h1>
-    <a href="#" class="icon pull-right"><i class="sstfont sst-bianji"></i></a>
-</header>
-<!--头部导航 结束-->
-<div class="content">
-    <div class="weui-cells__title">录入表单,点击右上角保存日程</div>
-    <div class="weui-cells weui-cells_form">
-        <div class="weui-cell">
-            <div class="weui-cell__hd"><label for="rclx" class="weui-label">日程类型</label></div>
-            <div class="weui-cell__bd">
-                <input class="weui-input" id="rclx" type="text" value="">
+<body>
+
+<div class="page-group">
+    <div class="page page-current">
+        <header class="bar bar-nav">
+            <a class="icon icon-left pull-left" href="javascript:;" onclick="javascript:history.back(-1);"></a>
+            <a class="icon icon-check pull-right "></a>
+            <h1 class="title">新建日程</h1>
+        </header>
+
+        <div class="content">
+            <div class="list-block">
+                <ul>
+                    <!-- Text inputs -->
+                    <li>
+                        <div class="item-content">
+                            <!--  <div class="item-media"><i class="icon icon-form-name"></i></div>-->
+                            <div class="item-inner">
+                                <div class="item-title label">日程类型</div>
+                                <div class="item-input">
+                                    <input type="text" id="rclx" placeholder="日程类型">
+                                </div>
+                            </div>
+                        </div>
+                    </li>
+                    <li>
+                        <div class="item-content">
+                            <!--<div class="item-media"><i class="icon icon-form-email"></i></div>-->
+                            <div class="item-inner">
+                                <div class="item-title label">日程标题</div>
+                                <div class="item-input">
+                                    <input type="text" id="rcbt" placeholder="日程标题">
+                                </div>
+                            </div>
+                        </div>
+                    </li>
+                    <li>
+                        <div class="item-content">
+                            <!--<div class="item-media"><i class="icon icon-form-password"></i></div>-->
+                            <div class="item-inner">
+                                <div class="item-title label">紧急程度</div>
+                                <div class="item-input">
+                                    <input type="text" id="jjcd" placeholder="紧急程度">
+                                </div>
+                            </div>
+                        </div>
+                    </li>
+                    <li>
+                        <div class="item-content">
+                            <!--    <div class="item-media"><i class="icon icon-form-gender"></i></div>-->
+                            <div class="item-inner">
+                                <div class="item-title label">接收人</div>
+                                <div class="item-input">
+                                    <input type="text" id="jsr" placeholder="接收人">
+                                </div>
+                            </div>
+                        </div>
+                    </li>
+                    <!-- Date -->
+                    <li>
+                        <div class="item-content">
+                            <!--   <div class="item-media"><i class="icon icon-form-calendar"></i></div>-->
+                            <div class="item-inner">
+                                <div class="item-title label">开始时间</div>
+                                <div class="item-input">
+                                    <input id="kssj" type="text" placeholder="开始时间">
+                                </div>
+                            </div>
+                        </div>
+                    </li>
+
+                    <li>
+                        <div class="item-content">
+                            <!--  <div class="item-media"><i class="icon icon-form-toggle"></i></div>-->
+                            <div class="item-inner">
+                                <div class="item-title label">结束时间</div>
+                                <div class="item-input">
+                                    <input id="jssj" type="text" placeholder="结束时间">
+                                </div>
+                            </div>
+                        </div>
+                    </li>
+                    <li class="align-top">
+                        <div class="item-content">
+                            <!--   <div class="item-media"><i class="icon icon-form-comment"></i></div>-->
+                            <div class="item-inner">
+                                <div class="item-title label">日程内容</div>
+                                <div class="item-input">
+                                    <textarea></textarea>
+                                </div>
+                            </div>
+                        </div>
+                    </li>
+                </ul>
             </div>
-        </div>
-        <div class="weui-cell">
-            <div class="weui-cell__hd"><label for="rcbt" class="weui-label">日程标题</label></div>
-            <div class="weui-cell__bd">
-                <input class="weui-input" id="rcbt" type="text" value="">
-            </div>
-        </div>
-        <div class="weui-cell">
-            <div class="weui-cell__hd"><label for="jjcd" class="weui-label">紧急程度</label></div>
-            <div class="weui-cell__bd">
-                <input class="weui-input" id="jjcd" type="text" value="">
-            </div>
-        </div>
-        <div class="weui-cell">
-            <div class="weui-cell__hd"><label for="rcnr" class="weui-label">日程内容</label></div>
-            <div class="weui-cell__bd">
-                <input class="weui-input" id="rcnr" type="text" value="">
-            </div>
-        </div>
-        <div class="weui-cell">
-            <div class="weui-cell__hd"><label for="jsr" class="weui-label">接收人</label></div>
-            <div class="weui-cell__bd">
-                <input class="weui-input" id="jsr" type="text" value="">
-            </div>
-        </div>
-        <div class="weui-cell">
-            <div class="weui-cell__hd"><label for="kssj" class="weui-label">开始时间</label></div>
-            <div class="weui-cell__bd">
-                <input class="weui-input" id="kssj" type="text">
-            </div>
-        </div>
-        <div class="weui-cell">
-            <div class="weui-cell__hd"><label for="jssj" class="weui-label">结束时间</label></div>
-            <div class="weui-cell__bd">
-                <input class="weui-input" id="jssj" type="text">
-            </div>
+            <!-- <div class="content-block">
+                 <div class="row">
+                     <div class="col-50"><a href="#" class="button button-big button-fill button-danger">取消</a></div>
+                     <div class="col-50"><a href="#" class="button button-big button-fill button-success">提交</a></div>
+                 </div>
+             </div>-->
         </div>
     </div>
 </div>
+<script type='text/javascript' src='//g.alicdn.com/sj/lib/zepto/zepto.min.js' charset='utf-8'></script>
+<script type='text/javascript' src='//g.alicdn.com/msui/sm/0.6.2/js/sm.min.js' charset='utf-8'></script>
+<script type='text/javascript' src='//g.alicdn.com/msui/sm/0.6.2/js/sm-extend.min.js' charset='utf-8'></script>
 <script>
-    $("#rclx").select({
-        title: "选择日程类型",
-        items: ["工作安排", "日常提醒", "其他"],
-        onChange: function (d) {
-            console.log(this, d);
-        },
-        onClose: function () {
-            console.log("close");
-        },
-        onOpen: function () {
-            console.log("open");
-        },
+    $("#rclx").picker({
+        toolbarTemplate: '<header class="bar bar-nav">\
+  <button class="button button-link pull-right close-picker">确定</button>\
+  <h1 class="title">请选择</h1>\
+  </header>',
+        cols: [
+            {
+                textAlign: 'center',
+                values: ['工作安排', '日常提醒', '其他']
+            }
+        ]
     });
-    $("#jjcd").select({
-        title: "紧急程度",
-        items: ["一般", "重要", "紧急"],
-        onChange: function (d) {
-            console.log(this, d);
-        },
-        onClose: function () {
-            console.log("close");
-        },
-        onOpen: function () {
-            console.log("open");
-        }
+    $("#jjcd").picker({
+        toolbarTemplate: '<header class="bar bar-nav">\
+  <button class="button button-link pull-right close-picker">确定</button>\
+  <h1 class="title">请选择</h1>\
+  </header>',
+        cols: [
+            {
+                textAlign: 'center',
+                values: ['一般', '重要', '紧急']
+            }
+        ]
     });
-
     $("#kssj").datetimePicker({
-        title: '开始时间',
-        min: "1990-12-12",
-        max: "2022-12-12 12:12",
-        onChange: function (picker, values, displayValues) {
-            console.log(values);
-        }
+        value: [new Date().getFullYear(), Appendzero(new Date().getMonth()+1), Appendzero(new Date().getDate()), '0', '00']
     });
     $("#jssj").datetimePicker({
-        title: '结束时间',
-        min: "1990-12-12",
-        max: "2022-12-12 12:12",
-        onChange: function (picker, values, displayValues) {
-            console.log(values);
-        }
+        value: [new Date().getFullYear(), Appendzero(new Date().getMonth()+1), Appendzero(new Date().getDate()), '0', '00']
     });
+    function Appendzero(obj)
+    {
+        if(obj<10) return "0" +""+ obj;
+        else return obj;
+    }
+
 
 </script>
+
 </body>
 </html>

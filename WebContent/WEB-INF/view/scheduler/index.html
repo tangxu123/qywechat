@@ -1,152 +1,186 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <meta charset='utf-8'/>
+    <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
+  <!--  <title>我的待办</title>-->
+    <meta name="viewport" content="initial-scale=1, maximum-scale=1">
+    <link rel="shortcut icon" href="/favicon.ico">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
 
-    <link rel="stylesheet" href="//cdn.bootcss.com/weui/1.1.1/style/weui.min.css">
-    <link rel="stylesheet" href="//cdn.bootcss.com/jquery-weui/1.0.1/css/jquery-weui.min.css">
-    <script type="text/javascript" src="${cxt!}/jsfile/jquery/jquery-1.12.4.min.js"></script>
-    <script src="//cdn.bootcss.com/jquery-weui/1.0.1/js/jquery-weui.min.js"></script>
-    <link rel="stylesheet" href="${cxt!}/ui/iconfont.css">
-    <link rel="stylesheet" href="${cxt!}/ui/styles.css">
-    <!-- 如果使用了某些拓展插件还需要额外的JS -->
-    <script src="//cdn.bootcss.com/jquery-weui/1.0.1/js/swiper.min.js"></script>
-    <script src="//cdn.bootcss.com/jquery-weui/1.0.1/js/city-picker.min.js"></script>
-    <style>
-        body, html {
-            height: 100%;
-            -webkit-tap-highlight-color: transparent;
-        }
-
-    </style>
-    <script>
-        $(function () {
-          /*  $.notification({
-                title: "当前用户:" + "${escapeHtml(userId!)}" + " " + "${escapeHtml(openid!)}"
-            });*/
-
-            $(document.body).pullToRefresh();
-            $("#inline-calendar").calendar({
-                container: "#inline-calendar",
-                input: "#date3",
-                onDayClick: function (p, dayContainer, year, month, day) {
-                    alert(day);
-                },
-                onMonthYearChangeEnd: function (o, y, m) {
-                    init(y, m + 1);
-                }
-            });
-            $(document.body).on("pull-to-refresh", function () {
-                setTimeout(function () {
-                    $(document.body).pullToRefreshDone();
-                }, 1000);
-            });
-
-            init(new Date().getFullYear(), new Date().getMonth() + 1);
-        });
-
-        function init(y, m) {
-            $("span." + y).remove();
-            //TODO ajax
-            var d = [{'d': '2017-6-16', 'count': 2}, {'d': '2017-6-17', 'count': 6}, {
-                'd': '2017-6-25',
-                'count': 2
-            }, {'d': '2017-6-12', 'count': 5}];
-
-            $.each(d, function (index, v) {
-                $(".picker-calendar-day[data-date='" + v.d + "']").not(".picker-calendar-day-prev").not(".picker-calendar-day-next").append("<span class='" + y + "' style='width: 15px;height: 15px;line-height: 15px;position:relative;top: -8px;background: white;color:blue;'>" + v.count + "</span>");
-            });
-        }
-        $(document).on("click", "#xsdb", function() {
-            $.actions({
-                title: "选择操作",
-                onClose: function() {
-                    console.log("close");
-                },
-                actions: [
-                    {
-                        text: "我的待办",
-                        className: "color-primary",
-                        onClick: function() {
-                            $.alert("我的待办");
-                        }
-                    },
-                    {
-                        text: "下属待办",
-                        className: "color-warning",
-                        onClick: function() {
-                            $("#about").popup();
-                        }
-                    }
-                ]
-            });
-        });
-    </script>
+    <link rel="stylesheet" href="//g.alicdn.com/msui/sm/0.6.2/css/sm.min.css">
+    <link rel="stylesheet" href="//g.alicdn.com/msui/sm/0.6.2/css/sm-extend.min.css">
 
 </head>
+<body>
 
-<body ontouchstart>
-<div class="weui-pull-to-refresh__layer">
-    <div class='weui-pull-to-refresh__arrow'></div>
-    <div class='weui-pull-to-refresh__preloader'></div>
-    <div class="down">下拉刷新</div>
-    <div class="up">释放刷新</div>
-    <div class="refresh">正在刷新</div>
-</div>
+<div class="page-group">
+    <div class="page page-current">
+        <header class="bar bar-nav">
+            <a class="icon icon-left pull-left"></a>
+            <a class="icon icon-friends pull-right create-actions"></a>
+            <h1 class="title">我的待办</h1>
+        </header>
 
-<!--头部导航 开始-->
-<header class="bar bar-nav" style="  position: static;" >
-    <a href="javascript:;" onclick="javascript:history.back(-1);" class="icon pull-left"><i
-            class="sstfont sst-xiangzuo"></i></a>
-    <h1 class="title">我的待办</h1>
-    <a href="#"  id="xsdb" class="icon pull-right"><i class="sstfont sst-fenxiang"></i></a>
-</header>
+        <div class="content pull-to-refresh-content">
+            <div class="pull-to-refresh-layer">
+                <div class="preloader"></div>
+                <div class="pull-to-refresh-arrow"></div>
+            </div>
+            <div id="my-input"></div>
+            <div class="content-block-title">07月16日 周日 <a href="${cxt!}/wechat/myscheduler/add" external>
+                <img src="${cxt!}/ui/add.png" style="width: 22px;height: 22px;float: right">
+            </a></div>
+            <div class="list-block">
+                <ul>
+                    <li class="item-content">
+                        <div class="item-media"><i class="icon icon-f7"></i></div>
+                        <div class="item-inner">
+                            <div class="item-title">待办事项名称</div>
 
-<!--头部导航 结束-->
-<div id="inline-calendar"   ></div>
-<div >
-    <div class="weui-cells__title">07月16日 周日
-        <a href="${cxt!}/wechat/myscheduler/add">
-            <img src="${cxt!}/ui/add.png" style="width: 25px;height: 25px;float: right">
-        </a></div>
-    <div class="weui-cells">
-        <div class="weui-cell  ">
-            <div class="weui-cell__bd  ">待办事项名称</div>
+                        </div>
+                    </li>
+                    <li class="item-content">
+                        <div class="item-media"><i class="icon icon-f7"></i></div>
+                        <div class="item-inner">
+                            <div class="item-title">待办事项名称</div>
+
+                        </div>
+                    </li>
+                </ul>
+            </div>
+            <div class="content-block-title">07月17日 周一 <a href="${cxt!}/wechat/myscheduler/add" external>
+                <img src="${cxt!}/ui/add.png" style="width: 22px;height: 22px;float: right">
+            </a></div>
+            <div class="list-block">
+                <ul>
+                    <li class="item-content">
+                        <div class="item-media"><i class="icon icon-f7"></i></div>
+                        <div class="item-inner">
+                            <div class="item-title">待办事项名称</div>
+
+                        </div>
+                    </li>
+                    <li class="item-content">
+                        <div class="item-media"><i class="icon icon-f7"></i></div>
+                        <div class="item-inner">
+                            <div class="item-title">待办事项名称</div>
+
+                        </div>
+                    </li>
+                    <li class="item-content">
+                        <div class="item-media"><i class="icon icon-f7"></i></div>
+                        <div class="item-inner">
+                            <div class="item-title">待办事项名称</div>
+
+                        </div>
+                    </li>
+                    <li class="item-content">
+                        <div class="item-media"><i class="icon icon-f7"></i></div>
+                        <div class="item-inner">
+                            <div class="item-title">待办事项名称</div>
+
+                        </div>
+                    </li>
+                    <li class="item-content">
+                        <div class="item-media"><i class="icon icon-f7"></i></div>
+                        <div class="item-inner">
+                            <div class="item-title">待办事项名称</div>
+
+                        </div>
+                    </li>
+                    <li class="item-content">
+                        <div class="item-media"><i class="icon icon-f7"></i></div>
+                        <div class="item-inner">
+                            <div class="item-title">待办事项名称</div>
+
+                        </div>
+                    </li>
+                </ul>
+            </div>
         </div>
-        <div class="weui-cell  ">
-            <div class="weui-cell__bd  ">待办事项名称</div>
-        </div>
+
+
     </div>
-    <div class="weui-cells__title">07月17日 周一
-        <a href="${cxt!}/wechat/myscheduler/add">
-            <img src="${cxt!}/ui/add.png" style="width: 25px;height: 25px;float: right">
-        </a></div>
-    <div class="weui-cells">
-        <div class="weui-cell  ">
-            <div class="weui-cell__bd  ">待办事项名称</div>
-        </div>
-        <div class="weui-cell  ">
-            <div class="weui-cell__bd  ">待办事项名称</div>
-        </div>
-    </div>
-</div>
-<div class="weui-footer">
-    <p class="weui-footer__links">
-        <a href="javascript:void(0);" class="weui-footer__link">底部链接</a>
-        <a href="javascript:void(0);" class="weui-footer__link">底部链接</a>
-    </p>
-    <p class="weui-footer__text">Copyright © 2008-2016 luda.team</p>
 </div>
 
-<div id="about" class="weui-popup__container" style="z-index: 1000">
-    <div class="weui-popup__overlay"></div>
-    <div class="weui-popup__modal">
+<script type='text/javascript' src='//g.alicdn.com/sj/lib/zepto/zepto.min.js' charset='utf-8'></script>
+<script type='text/javascript' src='//g.alicdn.com/msui/sm/0.6.2/js/sm.min.js' charset='utf-8'></script>
+<script type='text/javascript' src='//g.alicdn.com/msui/sm/0.6.2/js/sm-extend.min.js' charset='utf-8'></script>
+<script>
+    //打开自动初始化页面的功能
+    //建议不要打开自动初始化，而是自己调用 $.init 方法完成初始化
+    $.init();
+    $(function () {
+        $("#my-input").calendar({
+//            value: ['2017-7-25'],
+            onDayClick: function (p, dayContainer, year, month, day) {
+                $("."+year).css('background','');
+                $.alert(day);
+            },
+            onMonthYearChangeEnd: function (o, y, m) {
+                init(y, m + 1);
+            }
+        });
+       /* $(".picker-calendar-day").live("click", function () {
+            var day = $(this).attr('data-day');
+            var month = $(this).attr('data-month');
+            var year = $(this).attr('data-year');
+            var date = $(this).attr('data-date');
+            $.alert(date);
+        });*/
 
-        <a href="javascript:;" class="weui-btn weui-btn_primary close-popup">关闭</a>
-    </div>
+        init(new Date().getFullYear(), new Date().getMonth() + 1);
+    });
+    function init(y, m) {
+         $("." + y).remove();
+        //TODO ajax
+        var d = [{'d': '2017-6-16', 'count': 2}, {'d': '2017-6-17', 'count': 6}, {
+            'd': '2017-6-25',
+            'count': 2
+        }, {'d': '2017-6-12', 'count': 5}];
 
-</div>
+        $.each(d, function (index, v) {
+            $(".picker-calendar-day[data-date='" + v.d + "']").not(".picker-calendar-day-prev").not(".picker-calendar-day-next").append("<div class='" + y + "' style='width: 15px;height: 15px;line-height: 15px;position:relative;top: -8px; color:blue;'>" + v.count + "</div>");
+        });
+    }
+    $(document).on('refresh', '.pull-to-refresh-content',function(e) {
+        // 模拟2s的加载过程
+        setTimeout(function() {
+            // 加载完毕需要重置
+            $.pullToRefreshDone('.pull-to-refresh-content');
+        }, 2000);
+    });
+    $(document).on('click','.create-actions',function () {
+        var buttons1 = [
+            {
+                text: '请选择',
+                label: true
+            },
+            {
+                text: '我的待办',
+               /* bold: true,*/
+                onClick: function() {
+                    $.alert("你选择了“我的待办“");
+                }
+            },
+            {
+                text: '下属待办',
+                onClick: function() {
+                    $.alert("你选择了“下属待办“");
+                }
+            }
+        ];
+        var buttons2 = [
+            {
+                text: '取消',
+                bg: 'danger'
+            }
+        ];
+        var groups = [buttons1, buttons2];
+        $.actions(groups);
+    });
+</script>
 </body>
 </html>
