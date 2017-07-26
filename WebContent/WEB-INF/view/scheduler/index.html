@@ -11,7 +11,11 @@
 
     <link rel="stylesheet" href="//g.alicdn.com/msui/sm/0.6.2/css/sm.min.css">
     <link rel="stylesheet" href="//g.alicdn.com/msui/sm/0.6.2/css/sm-extend.min.css">
+    <link rel="stylesheet" href="${cxt!}/ui/icon/iconfont.css" >
+    <style>
 
+
+    </style>
 </head>
 <body>
 
@@ -20,7 +24,7 @@
         <header class="bar bar-nav">
             <a class="icon icon-left pull-left"></a>
             <a class="icon icon-friends pull-right create-actions"></a>
-            <h1 class="title">我的待办</h1>
+            <h1 class="title">我的待办 </h1>
         </header>
 
         <div class="content pull-to-refresh-content">
@@ -35,14 +39,14 @@
             <div class="list-block">
                 <ul>
                     <li class="item-content">
-                        <div class="item-media"><i class="icon icon-f7"></i></div>
+                        <div class="item-media"><i class="icon iconfont icon-huodongxiangqu" style="color: green"></i></div>
                         <div class="item-inner">
                             <div class="item-title">待办事项名称</div>
 
                         </div>
                     </li>
                     <li class="item-content">
-                        <div class="item-media"><i class="icon icon-f7"></i></div>
+                        <div class="item-media"><i class="icon iconfont icon-huodongxiangqu" style="color: red"></i></div>
                         <div class="item-inner">
                             <div class="item-title">待办事项名称</div>
 
@@ -56,42 +60,42 @@
             <div class="list-block">
                 <ul>
                     <li class="item-content">
-                        <div class="item-media"><i class="icon icon-f7"></i></div>
+                        <div class="item-media"><i class="icon iconfont icon-huodongxiangqu" style="color: red"></i></div>
                         <div class="item-inner">
                             <div class="item-title">待办事项名称</div>
 
                         </div>
                     </li>
                     <li class="item-content">
-                        <div class="item-media"><i class="icon icon-f7"></i></div>
+                        <div class="item-media"><i class="icon iconfont icon-huodongxiangqu" style="color: red"></i></div>
                         <div class="item-inner">
                             <div class="item-title">待办事项名称</div>
 
                         </div>
                     </li>
                     <li class="item-content">
-                        <div class="item-media"><i class="icon icon-f7"></i></div>
+                        <div class="item-media"><i class="icon iconfont icon-huodongxiangqu" style="color: green"></i></div>
                         <div class="item-inner">
                             <div class="item-title">待办事项名称</div>
 
                         </div>
                     </li>
                     <li class="item-content">
-                        <div class="item-media"><i class="icon icon-f7"></i></div>
+                        <div class="item-media"><i class="icon iconfont icon-huodongxiangqu" style="color: green"></i></div>
                         <div class="item-inner">
                             <div class="item-title">待办事项名称</div>
 
                         </div>
                     </li>
                     <li class="item-content">
-                        <div class="item-media"><i class="icon icon-f7"></i></div>
+                        <div class="item-media"><i class="icon iconfont icon-huodongxiangqu" style="color: green"></i></div>
                         <div class="item-inner">
                             <div class="item-title">待办事项名称</div>
 
                         </div>
                     </li>
                     <li class="item-content">
-                        <div class="item-media"><i class="icon icon-f7"></i></div>
+                        <div class="item-media"><i class="icon iconfont icon-huodongxiangqu" style="color: green"></i></div>
                         <div class="item-inner">
                             <div class="item-title">待办事项名称</div>
 
@@ -116,7 +120,7 @@
         $("#my-input").calendar({
 //            value: ['2017-7-25'],
             onDayClick: function (p, dayContainer, year, month, day) {
-                $("."+year).css('background','');
+
                 $.alert(day);
             },
             onMonthYearChangeEnd: function (o, y, m) {
@@ -142,7 +146,7 @@
         }, {'d': '2017-6-12', 'count': 5}];
 
         $.each(d, function (index, v) {
-            $(".picker-calendar-day[data-date='" + v.d + "']").not(".picker-calendar-day-prev").not(".picker-calendar-day-next").append("<div class='" + y + "' style='width: 15px;height: 15px;line-height: 15px;position:relative;top: -8px; color:blue;'>" + v.count + "</div>");
+            $(".picker-calendar-day[data-date='" + v.d + "']").not(".picker-calendar-day-prev").not(".picker-calendar-day-next").append("<div class='" + y + "' style='width: 15px;height: 15px;line-height: 15px;position:relative; border-radius:100%;top: -8px; color:white;background: red'>" + v.count + "</div>");
         });
     }
     $(document).on('refresh', '.pull-to-refresh-content',function(e) {
