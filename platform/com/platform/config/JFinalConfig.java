@@ -11,6 +11,7 @@ import com.jfinal.config.Interceptors;
 import com.jfinal.config.Plugins;
 import com.jfinal.config.Routes;
 import com.jfinal.ext.handler.UrlSkipHandler;
+import com.jfinal.ext.interceptor.Restful;
 import com.jfinal.i18n.I18nInterceptor;
 import com.jfinal.kit.PathKit;
 import com.jfinal.kit.PropKit;
@@ -31,9 +32,12 @@ import com.jfinal.plugin.druid.DruidPlugin;
 import com.jfinal.plugin.druid.DruidStatViewHandler;
 import com.jfinal.plugin.ehcache.EhCachePlugin;
 import com.jfinal.plugin.redis.RedisPlugin;
+import com.jfinal.plugin.spring.IocInterceptor;
+import com.jfinal.plugin.spring.SpringPlugin;
 import com.jfinal.qyweixin.sdk.api.ApiConfig;
 import com.jfinal.qyweixin.sdk.api.ApiConfigKit;
 import com.jfinal.template.Engine;
+import com.ludateam.wechat.qy.job.SchedulerJob;
 import com.platform.constant.ConstantCache;
 import com.platform.constant.ConstantInit;
 import com.platform.dto.DataBase;
@@ -115,6 +119,7 @@ public class JFinalConfig extends com.jfinal.config.JFinalConfig {
         if (constants.getDevMode()) {
             SqlReporter.setLog(true);
         }
+
     }
 
 
@@ -242,6 +247,12 @@ public class JFinalConfig extends com.jfinal.config.JFinalConfig {
 
         if (log.isInfoEnabled()) log.info("configPlugin QuartzPlugin 配置Quartz插件");
         plugins.add(new QuartzPlugin());
+
+        // 配置Spring插件
+
+
+        if (log.isInfoEnabled()) log.info("配置Spring插件");
+        plugins.add(new SpringPlugin("classpath*:applicationContext.xml"));
     }
 
     /**
@@ -268,6 +279,9 @@ public class JFinalConfig extends com.jfinal.config.JFinalConfig {
 
         if (log.isInfoEnabled()) log.info("configInterceptor i18n拦截器");
         interceptors.add(new I18nInterceptor());
+
+        interceptors.add(new IocInterceptor());
+        //interceptors.add(new Restful());
     }
 
     /**
@@ -308,6 +322,8 @@ public class JFinalConfig extends com.jfinal.config.JFinalConfig {
 
         if (log.isInfoEnabled()) log.info("afterJFinalStart 定时任务，数据库备份");
         QuartzPlugin.addJob("DbBackupJob", "0 0 2 * * ?", DbBackupJob.class);*/
+
+        QuartzPlugin.addJob("SchedulerJob", "0 0/2 * * * ?", SchedulerJob.class);
 
         //单个应用可以直接在启动之后添加
         ApiConfigKit.putApiConfig(getApiConfig());

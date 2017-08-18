@@ -71,6 +71,11 @@ public class SchedulerJob implements Job {
         qyNew.setArticles( articles);
 
 
+
+        List<Article> articless = new ArrayList<Article>(){};
+
+
+
         qiYeNewsMsg.setNews(qyNew);
         QyWeixinAPI.sendNewsMessage(qiYeNewsMsg);
     }

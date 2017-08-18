@@ -16,15 +16,28 @@ package com.ludateam.wechat.qy.controller;
  * Created by Him on 2017/7/4.
  */
 
+import com.alibaba.fastjson.JSONObject;
+import com.jfinal.kit.HttpKit;
 import com.jfinal.kit.PropKit;
 import com.jfinal.log.Log;
+import com.jfinal.plugin.spring.Inject;
 import com.jfinal.qyweixin.sdk.api.ApiConfig;
 import com.jfinal.qyweixin.sdk.api.ApiResult;
 import com.jfinal.qyweixin.sdk.api.SendMessageApi;
 import com.jfinal.qyweixin.sdk.jfinal.ApiController;
 import com.jfinal.qyweixin.sdk.msg.send.*;
+
+import com.ludateam.wechat.api.UserService;
+import com.ludateam.wechat.entity.User;
 import com.platform.annotation.Controller;
 
+
+import org.apache.commons.io.IOUtils;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
+import java.io.BufferedReader;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -33,10 +46,15 @@ public class QyWeixinApiController extends ApiController {
     private static final Log log = Log.getLog(QyWeixinApiController.class);
 
 
+    @Inject.BY_NAME
+    private UserService userService;
     /**
      * 发送文本消息
      */
-    public void sendTextMessage() {
+    public void sendTextMessage() throws IOException {
+
+        String jsonStr = HttpKit.readData(getRequest());
+
         if (log.isDebugEnabled()) log.debug("发送文本消息");
         QiYeTextMsg text = new QiYeTextMsg();
         text.setAgentid("4");

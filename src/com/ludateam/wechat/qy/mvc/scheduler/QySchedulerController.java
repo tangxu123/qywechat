@@ -1,4 +1,5 @@
-package com.ludateam.wechat.qy.mvc.scheduler;/*
+package com.ludateam.wechat.qy.mvc.scheduler;
+/*
  * Copyright 2017 Luda Team.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -26,13 +27,18 @@ import com.jfinal.qyweixin.sdk.api.OAuthApi;
 import com.platform.annotation.Controller;
 import com.platform.mvc.base.BaseController;
 import com.platform.mvc.base.BaseModel;
+import org.apache.xmlbeans.impl.jam.internal.elements.SourcePositionImpl;
 
 import java.io.UnsupportedEncodingException;
+import java.net.SocketPermission;
 import java.net.URLEncoder;
 
 @Controller("/wechat/myscheduler")
 public class QySchedulerController extends BaseController {
     private static final Log log = Log.getLog(QySchedulerController.class);
+
+
+
     public void index() {
        /* try {
             String redirect_uri = URLEncoder.encode(PropKit.get("domain") + "/wechat/myscheduler/main", "utf-8");
@@ -42,6 +48,9 @@ public class QySchedulerController extends BaseController {
         } catch (UnsupportedEncodingException e) {
             e.printStackTrace();
         }*/
+
+
+
         setAttr("userId", "");
         setAttr("openid", "");
         render("/scheduler/index.html");

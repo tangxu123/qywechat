@@ -14,6 +14,8 @@ import com.platform.mvc.base.BaseModel;
 @Table(tableName = "test_blog")
 public class Blog extends BaseModel<Blog> {
 
+
+
 	private static final long serialVersionUID = 6761767368352810428L;
 
 	private static final Log log = Log.getLog(Blog.class);
