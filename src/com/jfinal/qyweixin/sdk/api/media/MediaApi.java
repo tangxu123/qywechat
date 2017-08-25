@@ -44,7 +44,17 @@ public class MediaApi {
 		String jsonStr = HttpUtils.upload(url, file, null);
 		return new ApiResult(jsonStr);
 	}
-	
+	/**
+	 * 上传临时素材
+	 * @param mediaType 上传的临时多媒体文件有格式
+	 * @param content 需要上传的文件内容
+	 * @return ApiResult
+	 */
+	public static ApiResult uploadMedia(MediaType mediaType, String content) {
+		String url = upload_url + AccessTokenApi.getAccessTokenStr() + "&type=" + mediaType.get();
+		String jsonStr = HttpUtils.upload(url, null, content);
+		return new ApiResult(jsonStr);
+	}
 	
 	private static String get_url = "https://qyapi.weixin.qq.com/cgi-bin/media/get?access_token=";
 	

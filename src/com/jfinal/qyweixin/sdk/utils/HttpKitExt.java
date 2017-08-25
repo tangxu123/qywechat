@@ -1,15 +1,6 @@
 package com.jfinal.qyweixin.sdk.utils;
 
-import java.io.BufferedInputStream;
-import java.io.BufferedReader;
-import java.io.DataInputStream;
-import java.io.DataOutputStream;
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.io.OutputStream;
+import java.io.*;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.security.KeyStore;
@@ -30,6 +21,72 @@ import com.jfinal.qyweixin.sdk.api.media.MediaFile;
  */
 class HttpKitExt {
     private static final String DEFAULT_USER_AGENT = "Mozilla/5.0 (Windows NT 6.3; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/33.0.1750.146 Safari/537.36";
+    protected static String uploadMedia(String url,  String content) throws IOException {
+        String result = null;
+        URL urlGet = new URL(url);
+        HttpURLConnection con = (HttpURLConnection) urlGet.openConnection();
+        con.setRequestMethod("POST"); // 以Post方式提交表单，默认get方式
+        con.setDoInput(true);
+        con.setDoOutput(true);
+        con.setUseCaches(false); // post方式不能使用缓存
+        // 设置请求头信息
+        con.setRequestProperty("Connection", "Keep-Alive");
+        con.setRequestProperty("Charset", "UTF-8");
+        // 设置边界
+        String BOUNDARY = "----------" + System.currentTimeMillis();
+        con.setRequestProperty("Content-Type", "multipart/form-data; boundary="+ BOUNDARY);
+        // 请求正文信息
+        // 第一部分：
+        StringBuilder sb = new StringBuilder();
+        sb.append("--"); // 必须多两道线
+        sb.append(BOUNDARY);
+        sb.append("\r\n");
+        sb.append("Content-Disposition: form-data;name=\"media\";filename=\""+ "info.csv" + "\"\r\n");
+        sb.append("Content-Type:application/octet-stream\r\n\r\n");
+        byte[] head = sb.toString().getBytes("utf-8");
+        // 获得输出流
+        OutputStream out = new DataOutputStream(con.getOutputStream());
+        // 输出表头
+        out.write(head);
+        // 文件正文部分
+        // 把文件已流文件的方式 推入到url中
+        DataInputStream in = new DataInputStream(new ByteArrayInputStream(content.getBytes()));
+        int bytes = 0;
+        byte[] bufferOut = new byte[1024];
+        while ((bytes = in.read(bufferOut)) != -1) {
+            out.write(bufferOut, 0, bytes);
+        }
+        in.close();
+        // 结尾部分
+        byte[] foot = ("\r\n--" + BOUNDARY + "--\r\n").getBytes("utf-8");// 定义最后数据分隔线
+        out.write(foot);
+        out.flush();
+        out.close();
+        StringBuffer buffer = new StringBuffer();
+        BufferedReader reader = null;
+        try {
+            // 定义BufferedReader输入流来读取URL的响应
+            reader = new BufferedReader(new InputStreamReader(con.getInputStream()));
+            String line = null;
+            while ((line = reader.readLine()) != null) {
+                //System.out.println(line);
+                buffer.append(line);
+            }
+            if(result==null){
+                result = buffer.toString();
+            }
+        } catch (IOException e) {
+            System.out.println("发送POST请求出现异常！" + e);
+            e.printStackTrace();
+            throw new IOException("数据读取异常");
+        } finally {
+            if(reader!=null){
+                reader.close();
+            }
+        }
+
+        return result;
+    }
 
     /**
      * 上传临时素材，本段代码来自老版本（____′↘夏悸 / wechat），致敬！

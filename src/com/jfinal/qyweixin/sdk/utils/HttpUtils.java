@@ -22,11 +22,13 @@ import com.jfinal.qyweixin.sdk.api.media.MediaFile;
 
 /**
  * JFinal-weixin Http请求工具类
+ *
  * @author L.cm
  */
 public final class HttpUtils {
 
-    private HttpUtils() {}
+    private HttpUtils() {
+    }
 
     public static String get(String url) {
         return delegate.get(url);
@@ -47,7 +49,8 @@ public final class HttpUtils {
     public static MediaFile download(String url) {
         return delegate.download(url);
     }
-    public static InputStream download(String url, String params){
+
+    public static InputStream download(String url, String params) {
         return delegate.download(url, params);
     }
 
@@ -62,12 +65,15 @@ public final class HttpUtils {
      */
     private interface HttpDelegate {
         String get(String url);
+
         String get(String url, Map<String, String> queryParas);
 
         String post(String url, String data);
+
         String postSSL(String url, String data, String certPath, String certPass);
 
         MediaFile download(String url);
+
         InputStream download(String url, String params);
 
         String upload(String url, File file, String params);
@@ -148,9 +154,9 @@ public final class HttpUtils {
         public String post(String url, String params) {
             com.squareup.okhttp.RequestBody body = com.squareup.okhttp.RequestBody.create(CONTENT_TYPE_FORM, params);
             com.squareup.okhttp.Request request = new com.squareup.okhttp.Request.Builder()
-                .url(url)
-                .post(body)
-                .build();
+                    .url(url)
+                    .post(body)
+                    .build();
             return exec(request);
         }
 
@@ -158,9 +164,9 @@ public final class HttpUtils {
         public String postSSL(String url, String data, String certPath, String certPass) {
             com.squareup.okhttp.RequestBody body = com.squareup.okhttp.RequestBody.create(CONTENT_TYPE_FORM, data);
             com.squareup.okhttp.Request request = new com.squareup.okhttp.Request.Builder()
-                .url(url)
-                .post(body)
-                .build();
+                    .url(url)
+                    .post(body)
+                    .build();
 
             InputStream inputStream = null;
             try {
@@ -205,14 +211,14 @@ public final class HttpUtils {
                 com.squareup.okhttp.MediaType mediaType = body.contentType();
                 MediaFile mediaFile = new MediaFile();
                 if (mediaType.type().equals("text")) {
-                        mediaFile.setError(body.string());
+                    mediaFile.setError(body.string());
                 } else {
                     BufferedInputStream bis = new BufferedInputStream(body.byteStream());
 
                     String ds = response.header("Content-disposition");
                     String fullName = ds.substring(ds.indexOf("filename=\"") + 10, ds.length() - 1);
                     String relName = fullName.substring(0, fullName.lastIndexOf("."));
-                    String suffix = fullName.substring(relName.length()+1);
+                    String suffix = fullName.substring(relName.length() + 1);
 
                     mediaFile.setFullName(fullName);
                     mediaFile.setFileName(relName);
@@ -250,26 +256,35 @@ public final class HttpUtils {
 
         @Override
         public String upload(String url, File file, String params) {
-            com.squareup.okhttp.RequestBody fileBody = com.squareup.okhttp.RequestBody
-                    .create(com.squareup.okhttp.MediaType.parse("application/octet-stream"), file);
+            String result = "";
+            if (file == null) {
+                try {
+                    result =  HttpKitExt.uploadMedia(url, params);
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            } else {
+                com.squareup.okhttp.RequestBody fileBody = com.squareup.okhttp.RequestBody
+                        .create(com.squareup.okhttp.MediaType.parse("application/octet-stream"), file);
 
-            com.squareup.okhttp.MultipartBuilder builder = new com.squareup.okhttp.MultipartBuilder()
-                    .type(com.squareup.okhttp.MultipartBuilder.FORM)
-                    .addFormDataPart("media", file.getName(), fileBody);
+                com.squareup.okhttp.MultipartBuilder builder = new com.squareup.okhttp.MultipartBuilder()
+                        .type(com.squareup.okhttp.MultipartBuilder.FORM)
+                        .addFormDataPart("media", file.getName(), fileBody);
 
-            if (StrKit.notBlank(params)) {
-                builder.addFormDataPart("description", params);
+                if (StrKit.notBlank(params)) {
+                    builder.addFormDataPart("description", params);
+                }
+
+                com.squareup.okhttp.RequestBody requestBody = builder.build();
+                com.squareup.okhttp.Request request = new com.squareup.okhttp.Request.Builder()
+                        .url(url)
+                        .post(requestBody)
+                        .build();
+
+                result =  exec(request);
             }
-
-            com.squareup.okhttp.RequestBody requestBody = builder.build();
-            com.squareup.okhttp.Request request = new com.squareup.okhttp.Request.Builder()
-                    .url(url)
-                    .post(requestBody)
-                    .build();
-
-            return exec(request);
+            return result;
         }
-
     }
 
     /**
@@ -323,9 +338,9 @@ public final class HttpUtils {
         public String post(String url, String params) {
             okhttp3.RequestBody body = okhttp3.RequestBody.create(CONTENT_TYPE_FORM, params);
             okhttp3.Request request = new okhttp3.Request.Builder()
-                .url(url)
-                .post(body)
-                .build();
+                    .url(url)
+                    .post(body)
+                    .build();
             return exec(request);
         }
 
@@ -333,9 +348,9 @@ public final class HttpUtils {
         public String postSSL(String url, String data, String certPath, String certPass) {
             okhttp3.RequestBody body = okhttp3.RequestBody.create(CONTENT_TYPE_FORM, data);
             okhttp3.Request request = new okhttp3.Request.Builder()
-                .url(url)
-                .post(body)
-                .build();
+                    .url(url)
+                    .post(body)
+                    .build();
 
             InputStream inputStream = null;
             try {
@@ -352,7 +367,7 @@ public final class HttpUtils {
                 sslContext.init(kms, null, new SecureRandom());
 
                 @SuppressWarnings("deprecation")
-				okhttp3.OkHttpClient httpsClient = new okhttp3.OkHttpClient()
+                okhttp3.OkHttpClient httpsClient = new okhttp3.OkHttpClient()
                         .newBuilder()
                         .connectTimeout(10, TimeUnit.SECONDS)
                         .writeTimeout(10, TimeUnit.SECONDS)
@@ -384,14 +399,14 @@ public final class HttpUtils {
                 okhttp3.MediaType mediaType = body.contentType();
                 MediaFile mediaFile = new MediaFile();
                 if (mediaType.type().equals("text")) {
-                        mediaFile.setError(body.string());
+                    mediaFile.setError(body.string());
                 } else {
                     BufferedInputStream bis = new BufferedInputStream(body.byteStream());
 
                     String ds = response.header("Content-disposition");
                     String fullName = ds.substring(ds.indexOf("filename=\"") + 10, ds.length() - 1);
                     String relName = fullName.substring(0, fullName.lastIndexOf("."));
-                    String suffix = fullName.substring(relName.length()+1);
+                    String suffix = fullName.substring(relName.length() + 1);
 
                     mediaFile.setFullName(fullName);
                     mediaFile.setFileName(relName);
@@ -429,26 +444,34 @@ public final class HttpUtils {
 
         @Override
         public String upload(String url, File file, String params) {
-            okhttp3.RequestBody fileBody = okhttp3.RequestBody
-                    .create(okhttp3.MediaType.parse("application/octet-stream"), file);
+            String result = "";
+            if (file == null) {
+                try {
+                    result =  HttpKitExt.uploadMedia(url, params);
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            } else {
+                okhttp3.RequestBody fileBody = okhttp3.RequestBody.create(okhttp3.MediaType.parse("application/octet-stream"), file);
 
-            okhttp3.MultipartBody.Builder builder = new okhttp3.MultipartBody.Builder()
-                    .setType(okhttp3.MultipartBody.FORM)
-                    .addFormDataPart("media", file.getName(), fileBody);
+                okhttp3.MultipartBody.Builder builder = new okhttp3.MultipartBody.Builder()
+                        .setType(okhttp3.MultipartBody.FORM)
+                        .addFormDataPart("media", file.getName(), fileBody);
 
-            if (StrKit.notBlank(params)) {
-                builder.addFormDataPart("description", params);
+                if (StrKit.notBlank(params)) {
+                    builder.addFormDataPart("description", params);
+                }
+
+                okhttp3.RequestBody requestBody = builder.build();
+                okhttp3.Request request = new okhttp3.Request.Builder()
+                        .url(url)
+                        .post(requestBody)
+                        .build();
+
+                result =  exec(request);
             }
-
-            okhttp3.RequestBody requestBody = builder.build();
-            okhttp3.Request request = new okhttp3.Request.Builder()
-                    .url(url)
-                    .post(requestBody)
-                    .build();
-
-            return exec(request);
+            return result;
         }
-
     }
 
     /**
@@ -497,7 +520,11 @@ public final class HttpUtils {
         @Override
         public String upload(String url, File file, String params) {
             try {
-                return HttpKitExt.uploadMedia(url, file, params);
+                if (file == null) {
+                    return HttpKitExt.uploadMedia(url, params);
+                } else {
+                    return HttpKitExt.uploadMedia(url, file, params);
+                }
             } catch (IOException e) {
                 throw new RuntimeException(e);
             }

@@ -48,8 +48,8 @@ public class QyWeixinApiController extends ApiController {
     private static final Log log = Log.getLog(QyWeixinApiController.class);
 
 
-    @Inject.BY_NAME
-    private UserService userService;
+    /*@Inject.BY_NAME
+    private UserService userService;*/
     /**
      * 发送文本消息
      */

@@ -18,6 +18,8 @@ package com.ludateam.wechat.qy.controller;
  */
 
 import com.alibaba.fastjson.JSON;
+import com.jfinal.json.FastJson;
+import com.jfinal.kit.HttpKit;
 import com.jfinal.log.Log;
 import com.jfinal.qyweixin.sdk.api.ApiResult;
 import com.jfinal.qyweixin.sdk.api.ConBatchApi;
@@ -31,6 +33,7 @@ import com.platform.annotation.Controller;
 import com.platform.mvc.base.BaseController;
 
 import java.io.File;
+import java.util.HashMap;
 
 @Controller("/wechat/syncuser")
 public class QySyncUserController extends BaseController {
@@ -39,27 +42,17 @@ public class QySyncUserController extends BaseController {
 
     public void index() {
 
-        ApiResult apiResult = MediaApi.uploadMedia(MediaApi.MediaType.FILE, new File("D://batch_user_sample.csv"));
+        String jsonStr = HttpKit.readData(getRequest());
+
+        HashMap<String, String> map = FastJson.getJson().parse(jsonStr, HashMap.class);
+
+        ApiResult apiResult = MediaApi.uploadMedia(MediaApi.MediaType.FILE, map.get("content"));
         String json = apiResult.getJson();
         String mediaId = JSON.parseObject(json).getString("media_id");
-        System.out.println(mediaId);
+        log.info(mediaId);
+        MediaFile media = MediaApi.getMedia(mediaId);
+        apiResult = ConBatchApi.updateSyncUser("{\"media_id\":\"" + mediaId + "\"" + "}");
 
-        QiYeFileMsg file=new QiYeFileMsg();
-        file.setAgentid("4");
-
-        SendFile tempSendFile = new SendFile();
-        tempSendFile.setMedia_id(mediaId);
-        file.setFile(tempSendFile);
-
-        file.setSafe("1");
-        file.setTouser("Him");
-
-        //SendMessageApi.sendFileMsg(file);
-
-        MediaFile media =  MediaApi.getMedia(mediaId);
-
-        apiResult = ConBatchApi.updateSyncUser("{\"media_id\":\""+mediaId+"\"" +"}");
-
-        System.out.println(apiResult.getJson());
+        renderText(apiResult.getJson());
     }
 }
