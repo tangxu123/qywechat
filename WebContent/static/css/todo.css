@@ -1,0 +1,43 @@
+/***
+TODO Page
+***/
+/*--------------------------------------------------
+    [TRANSITION]
+----------------------------------------------------*/
+/* Cubic Bezier Transition */
+.todo-ui {
+  margin-top: 20px;
+}
+
+.todo-sidebar {
+  float: left;
+  width: 230px;
+  margin-right: 20px;
+}
+
+.todo-content {
+  overflow: hidden;
+}
+
+.todo-project-list ul li a {
+  font-size: 14px !important;
+  padding: 8px 10px;
+}
+
+.todo-project-list .nav li a .badge {
+  float: right;
+  margin-top: 1px !important;
+}
+
+.todo-project-list .nav li a .badge-active {
+  background-color: #ffffff !important;
+  color: #637b89 !important;
+}
+
+.todo-project-list .nav .active {
+  background-color: #ffffff !important;
+}
+
+.todo-project-list .nav-pills > li.active > a {
+  background-color: #87a9c7 !important;
+}
