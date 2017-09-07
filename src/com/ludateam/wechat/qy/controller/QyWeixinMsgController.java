@@ -17,35 +17,66 @@ package com.ludateam.wechat.qy.controller;
  */
 
 
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
+import java.util.Map;
+
+import com.alibaba.fastjson.JSON;
 import com.jfinal.kit.PropKit;
+import com.jfinal.log.Log;
+import com.jfinal.plugin.spring.Inject;
 import com.jfinal.qyweixin.sdk.api.ApiResult;
 import com.jfinal.qyweixin.sdk.api.ConBatchApi;
 import com.jfinal.qyweixin.sdk.api.SendMessageApi;
 import com.jfinal.qyweixin.sdk.jfinal.MsgControllerAdapter;
-import com.jfinal.qyweixin.sdk.msg.in.*;
-import com.jfinal.qyweixin.sdk.msg.in.event.*;
+import com.jfinal.qyweixin.sdk.msg.in.InImageMsg;
+import com.jfinal.qyweixin.sdk.msg.in.InLocationMsg;
+import com.jfinal.qyweixin.sdk.msg.in.InShortVideoMsg;
+import com.jfinal.qyweixin.sdk.msg.in.InTextMsg;
+import com.jfinal.qyweixin.sdk.msg.in.InVideoMsg;
+import com.jfinal.qyweixin.sdk.msg.in.InVoiceMsg;
+import com.jfinal.qyweixin.sdk.msg.in.event.BatchJob;
+import com.jfinal.qyweixin.sdk.msg.in.event.InEnterAgentEvent;
+import com.jfinal.qyweixin.sdk.msg.in.event.InFollowEvent;
+import com.jfinal.qyweixin.sdk.msg.in.event.InJobEvent;
+import com.jfinal.qyweixin.sdk.msg.in.event.InMenuEvent;
+import com.jfinal.qyweixin.sdk.msg.in.event.InQrCodeEvent;
+import com.jfinal.qyweixin.sdk.msg.in.event.ScanCodeInfo;
 import com.jfinal.qyweixin.sdk.msg.out.OutImageMsg;
 import com.jfinal.qyweixin.sdk.msg.out.OutTextMsg;
 import com.jfinal.qyweixin.sdk.msg.out.OutVoiceMsg;
-import com.jfinal.qyweixin.sdk.msg.send.*;
+import com.jfinal.qyweixin.sdk.msg.send.Article;
+import com.jfinal.qyweixin.sdk.msg.send.News;
+import com.jfinal.qyweixin.sdk.msg.send.QiYeNewsMsg;
+import com.jfinal.qyweixin.sdk.msg.send.QiYeTextMsg;
+import com.jfinal.qyweixin.sdk.msg.send.Text;
+import com.ludateam.wechat.api.MessageService;
 import com.ludateam.wechat.qy.utils.QyWeixinAPI;
 import com.platform.annotation.Controller;
-import com.platform.constant.ConstantInit;
-import com.platform.mvc.base.BaseController;
-
-import com.jfinal.log.Log;
-
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
 
 @Controller("/wechat/qymsg")
 public class QyWeixinMsgController extends MsgControllerAdapter {
     private static final Log log = Log.getLog(QyWeixinMsgController.class);
 
+    @Inject.BY_NAME
+    private MessageService messageService;
+    
     @Override
     protected void processInTextMsg(InTextMsg inTextMsg) {
+    	
+    	log.info("start processInTextMsg");
+    	log.info("messageService init "+messageService);
         String msgContent = inTextMsg.getContent().trim();
+		Map msgMap = (Map) JSON.toJSON(inTextMsg);
+		log.info("inTextMsg content" + inTextMsg);
+		long createTimeLong = Long.parseLong(String.valueOf(inTextMsg.getCreateTime()));
+		SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+		msgMap.put("createTime", format.format(new Date(createTimeLong * 1000)));
+		log.info("msgjson" + msgMap);
+		messageService.receiveMessage(JSON.toJSONString(msgMap));
+        
         System.out.println("收到的信息：" + msgContent);
         if ("OAuth".equalsIgnoreCase(msgContent)) {
             String url = PropKit.get("domain") + "/wechat/qyoauth";
@@ -58,9 +89,8 @@ public class QyWeixinMsgController extends MsgControllerAdapter {
             String url = PropKit.get("domain") + "/wechat/jssdk";
             String urlStr = "<a href=\"" + url + "\">JSSDK</a>";
             renderOutTextMsg("授权地址" + urlStr);
-        }
-        // 其它文本消息直接返回原值 + 帮助提示
-        else {
+        } else {
+        	// 其它文本消息直接返回原值 + 帮助提示
             renderOutTextMsg("\t文本消息已成功接收，内容为： " + inTextMsg.getContent() + "\n\n");
         }
     }
@@ -70,6 +100,12 @@ public class QyWeixinMsgController extends MsgControllerAdapter {
      */
     @Override
     protected void processInImageMsg(InImageMsg inImageMsg) {
+		Map msgMap = (Map) JSON.toJSON(inImageMsg);
+		long createTimeLong = Long.parseLong(String.valueOf(inImageMsg.getCreateTime()));
+		SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+		msgMap.put("createTime", format.format(new Date(createTimeLong * 1000)));
+		messageService.receiveMessage(JSON.toJSONString(msgMap));
+    	
         OutImageMsg outMsg = new OutImageMsg(inImageMsg);
         // 将刚发过来的图片再发回去
         outMsg.setMediaId(inImageMsg.getMediaId());
@@ -244,4 +280,12 @@ public class QyWeixinMsgController extends MsgControllerAdapter {
         SendMessageApi.sendTextMsg(text);
         renderNull();
     }
+
+	public MessageService getMessageService() {
+		return messageService;
+	}
+
+	public void setMessageService(MessageService messageService) {
+		this.messageService = messageService;
+	}
 }

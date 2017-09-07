@@ -1,0 +1,708 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+    <meta charset="utf-8">
+    <title></title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1, user-scalable=no">
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <link rel="stylesheet" type="text/css" href="${cxt!}/static/css/cloud-admin.css">
+    <!-- STYLESHEETS -->
+    <!--[if lt IE 9]>
+    <script src="js/flot/excanvas.min.js"></script>
+    <script src="http://html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <script src="http://css3-mediaqueries-js.googlecode.com/svn/trunk/css3-mediaqueries.js"></script>
+    <![endif]-->
+    <link href="${cxt!}/static/public/components/font-awesome/css/font-awesome.min.css" rel="stylesheet">
+    <script src="${cxt!}/static/js/amcharts/amcharts_3.20/amcharts.js"></script>
+    <script src="${cxt!}/static/js/amcharts/amcharts_3.20/pie.js"></script>
+    <script src="${cxt!}/static/js/amcharts/amcharts_3.20/radar.js"></script>
+    <script src="${cxt!}/static/js/amcharts/amcharts_3.20/serial.js"></script>
+
+
+    <script src="${cxt!}/static/js/amcharts/amcharts_3.20/themes/light.js"></script>
+
+
+    <style>
+        #chartdiv {
+            display: block;
+            width: 100%;
+            height: 285px;
+            font-size: 11px;
+        }
+
+        #szchartdiv {
+            display: block;
+            width: 100%;
+            height: 285px;
+            font-size: 11px;
+        }
+
+        a.ha_title {
+            color: #ffffff;
+        }
+
+        a.black_title {
+            color: #555555;
+        }
+
+        a.black_title:hover {
+            color: #555555;
+            text-decoration: none;
+        }
+
+        a.ha_title:hover {
+            color: #ffffff;
+            text-decoration: none;
+        }
+    </style>
+    <!-- FONTS -->
+    <script >
+      //  "${escapeHtml(userId!)}" + " " + "${escapeHtml(openid!)}"
+    </script>
+</head>
+
+<body>
+
+<!-- PAGE -->
+<section id="page">
+    <div class="container" style="margin-top:5px">
+        <div class="row">
+            <div id="content" class="col-lg-12">
+                <!-- DASHBOARD CONTENT -->
+                <div class="row">
+                    <!-- COLUMN 1 -->
+                    <div class="col-md-12">
+                        <div class="row">
+                            <div class="col-lg-3">
+                                <div class="input-group col-md-12" style="padding: 25px 0;">
+                                    <input type="text" id="searchkey" class="form-control" placeholder="请输入关键字"/>
+											<span class="input-group-btn">
+               								<button class="btn btn-danger btn-search" onclick="zhcx();">查找</button>
+            								</span>
+                                </div>
+                            </div>
+                            <div class="col-lg-3">
+                                <div class="dashbox panel panel-default">
+                                    <div class="panel-body">
+                                        <div class="panel-left red">
+                                            <i class="fa fa-instagram fa-3x"></i>
+                                        </div>
+                                        <div class="panel-right">
+                                            <div class="number">6718户</div>
+                                            <div class="title">户管数</div>
+												<span class="label label-success">
+													26% <i class="fa fa-arrow-up"></i>
+												</span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-lg-3">
+                                <div class="dashbox panel panel-default">
+                                    <div class="panel-body">
+                                        <div class="panel-left blue">
+                                            <i class="fa fa-twitter fa-3x"></i>
+                                        </div>
+                                        <div class="panel-right">
+                                            <div class="number">10户</div>
+                                            <div class="title"><a class="black_title" href="javascript:;"
+                                                                  onclick="parent.addTab('/yss_xkjqrqy','', '新办及迁入');">新办及迁入</a>
+                                            </div>
+												<span class="label label-warning">
+													5% <i class="fa fa-arrow-down"></i>
+												</span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-lg-3">
+                                <div class="dashbox panel panel-default">
+                                    <div class="panel-body">
+                                        <div class="panel-left blue">
+                                            <i class="fa fa-twitter fa-3x"></i>
+                                        </div>
+                                        <div class="panel-right">
+                                            <div class="number">50户</div>
+                                            <div class="title"><a class="black_title" href="javascript:;"
+                                                                  onclick="parent.addTab('/yss_bdlyc','', '变动率异常企业户数');">变动率异常企业户数</a>
+                                            </div>
+												<span class="label label-warning">
+													5% <i class="fa fa-arrow-down"></i>
+												</span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                        </div>
+
+                        <div class="row">
+                            <div class="col-md-5">
+                                <div class="row">
+                                    <div class="col-lg-6">
+                                        <div class="box border inverse"
+                                             style="border:1px solid #ed7a53;margin-bottom:5px">
+                                            <div class="box-title"
+                                                 style="background-color:#ed7a53;border-bottom:1px solid #ed7a53">
+                                                <h4><i class="fa fa-money"></i>
+                                                    <a class="ha_title" href="javascript:;"
+                                                       onclick="parent.addTab('/yss_sssr','', '税收收入');">税收收入</a>
+                                                </h4>
+
+                                                <div class="tools">
+                                                    <a href="javascript:;" class="reload">
+                                                        <i class="fa fa-refresh"></i>
+                                                    </a>
+                                                </div>
+                                            </div>
+                                            <div class="box-body">
+                                                <div class="sparkline-row" style="margin-bottom:15px;">
+                                                    <span class="title"
+                                                          style="display:inline-block;padding-bottom:5px;">当月税收:</span>
+                                                    <span class="value">¥78,273万</span><br/> &nbsp;&nbsp;&nbsp;&nbsp;
+                                                    <span class="title" style="display:inline-block;">环比:</span>
+                                                    <span class="value"><i class="fa fa-caret-up" style="color:red">
+                                                        5% </i></span>
+                                                    <span class="title" style="display:inline-block;">同比:</span>
+                                                    <span class="value"><i class="fa fa-caret-down" style="color:green">
+                                                        -3% </i> </span>
+                                                </div>
+                                                <div class="sparkline-row" style="margin-bottom:5px;">
+                                                    <span class="title"
+                                                          style="display:inline-block;padding-bottom:5px;">当年累计税收:</span>
+                                                    <span class="value">¥78,273万</span><br/> &nbsp;&nbsp;&nbsp;&nbsp;
+                                                    <span class="title" style="display:inline-block;">环比:</span>
+                                                    <span class="value">5%</span>
+                                                    <span class="title" style="display:inline-block">同比:</span>
+                                                    <span class="value">3%</span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-lg-6">
+                                        <div class="box border inverse"
+                                             style="border:1px solid #00c0ef;margin-bottom:5px">
+                                            <div class="box-title"
+                                                 style="background-color:#00c0ef;border-bottom:1px solid #00c0ef">
+                                                <h4><i class="fa fa-money"></i><a class="ha_title" href="javascript:;"
+                                                                                  onclick="parent.addTab('/yss_qjsr','', '区级税收');">区级税收</a>
+                                                </h4>
+
+                                                <div class="tools">
+                                                    <a href="javascript:;" class="reload">
+                                                        <i class="fa fa-refresh"></i>
+                                                    </a>
+                                                </div>
+                                            </div>
+                                            <div class="box-body">
+                                                <div class="sparkline-row" style="margin-bottom:15px;">
+                                                    <span class="title"
+                                                          style="display:inline-block;padding-bottom:5px;">当月税收:</span>
+                                                    <span class="value">¥78,273万</span><br/> &nbsp;&nbsp;&nbsp;&nbsp;
+                                                    <span class="title" style="display:inline-block;">环比:</span>
+                                                    <span class="value">5%</span>
+                                                    <span class="title"
+                                                          style="display:inline-block;font-size:16px;">同比:</span>
+                                                    <span class="value">3%</span>
+                                                </div>
+                                                <div class="sparkline-row" style="margin-bottom:5px;">
+                                                    <span class="title"
+                                                          style="display:inline-block;padding-bottom:5px;">当年累计税收:</span>
+                                                    <span class="value">¥78,273万</span><br/> &nbsp;&nbsp;&nbsp;&nbsp;
+                                                    <span class="title" style="display:inline-block;">环比:</span>
+                                                    <span class="value">5%</span>
+                                                    <span class="title" style="display:inline-block">同比:</span>
+                                                    <span class="value">3%</span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row">
+
+                                    <div class="col-lg-12">
+
+                                        <div class="box border">
+                                            <div class="box-title">
+                                                <h4><i class="fa fa-columns"></i> <span class="hidden-inline-mobile">限时办结任务进度</span>
+                                                </h4>
+                                            </div>
+                                            <div class="box-body">
+                                                <div class="tab-pane" id="feed">
+                                                    <div class="scroller" data-height="450px" data-always-visible="1"
+                                                         data-rail-visible="1">
+                                                        <div class="row">
+                                                            <div class="col-lg-6">
+                                                                <div class="feed-activity clearfix">
+                                                                    <div>
+                                                                        <i class="pull-left roundicon fa fa-check btn btn-info"></i>
+                                                                        当前待办:
+                                                                        <a class="user" href="#"> 5个 </a>
+                                                                        <br>
+                                                                        <a href="#">查看明细</a>
+
+                                                                    </div>
+
+                                                                </div>
+                                                            </div>
+                                                            <div class="col-lg-6">
+                                                                <div class="feed-activity clearfix">
+                                                                    <div>
+                                                                        <i class="pull-left roundicon fa fa-picture-o btn btn-danger"></i>
+                                                                        已办任务:
+                                                                        <a class="user" href="#"> 15个 </a>
+                                                                        <br>
+                                                                        <a href="#">查看明细</a>
+
+                                                                    </div>
+
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                        <div class="row">
+                                                            <div class="col-lg-6">
+                                                                <div class="feed-activity clearfix">
+                                                                    <div>
+                                                                        <i class="pull-left roundicon fa fa-edit btn btn-pink"></i>
+                                                                        即将逾期:
+                                                                        <a class="user" href="#"> 2个 </a>
+                                                                        <br>
+                                                                        <a href="#">查看明细</a>
+
+                                                                    </div>
+
+                                                                </div>
+                                                            </div>
+                                                            <div class="col-lg-6">
+                                                                <div class="feed-activity clearfix">
+                                                                    <div>
+                                                                        <i class="pull-left roundicon fa fa-bitcoin btn btn-yellow"></i>
+                                                                        逾期任务:
+                                                                        <a class="user" href="#"> 0个 </a>
+                                                                        <br>
+                                                                        <a href="#">查看明细</a>
+
+                                                                    </div>
+
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-7">
+                                <div class="row">
+                                    <div class="col-lg-6">
+                                        <div class="box border purple"
+                                             style="border:1px solid #85aa59;margin-bottom:5px">
+                                            <div class="box-title"
+                                                 style="background-color:#85aa59;border-bottom:1px solid #85aa59">
+                                                <h4><i class="fa fa-pie-chart" aria-hidden="true"></i><a
+                                                        class="ha_title" href="javascript:;"
+                                                        onclick="parent.addTab('/yss_hy','', '行业税收占比');">行业税收占比</a></h4>
+
+                                                <div class="tools">
+                                                    <a href="javascript:;" class="reload">
+                                                        <i class="fa fa-refresh"></i>
+                                                    </a>
+
+                                                </div>
+                                            </div>
+                                            <div class="box-body">
+                                                <div id="chartdiv"></div>
+                                                <!--
+                                            <div class="sparkline-row">
+
+                                            </div>
+                                            -->
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-lg-6">
+                                        <div class="box border purple">
+                                            <div class="box-title">
+                                                <h4><i class="fa fa-object-ungroup"></i><a class="ha_title"
+                                                                                           onclick="parent.addTab('/yss_sz','', '税种分布');">税种分布</a>
+                                                </h4>
+
+                                                <div class="tools">
+                                                    <a href="javascript:;" class="reload">
+                                                        <i class="fa fa-refresh"></i>
+                                                    </a>
+
+                                                </div>
+                                            </div>
+                                            <div class="box-body">
+                                                <div id="szchartdiv"></div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                        </div>
+
+                        <div class="row">
+                            <div class="col-md-5">
+                                <div class="quick-pie panel panel-default">
+                                    <div class="panel-body">
+                                        <div class="col-md-3 text-center">
+                                            <div id="dash_pie_1" class="piechart" data-percent="59">
+                                                <span class="percent"></span>
+                                            </div>
+                                            <a href="#" class="title">网上办税 <i class="fa fa-angle-right"></i></a>
+                                        </div>
+                                        <div class="col-md-3 text-center">
+                                            <div id="dash_pie_2" class="piechart" data-percent="73">
+                                                <span class="percent"></span>
+                                            </div>
+                                            <a href="#" class="title">网上申报 <i class="fa fa-angle-right"></i></a>
+                                        </div>
+                                        <div class="col-md-3 text-center">
+                                            <div id="dash_pie_3" class="piechart" data-percent="73">
+                                                <span class="percent"></span>
+                                            </div>
+                                            <a href="#" class="title">欠税变动率 <i class="fa fa-angle-right"></i></a>
+                                        </div>
+                                        <div class="col-md-3 text-center">
+                                            <div id="dash_pie_4" class="piechart" data-percent="73">
+                                                <span class="percent"></span>
+                                            </div>
+                                            <a href="#" class="title">征管努力程度 <i class="fa fa-angle-right"></i></a>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-2">
+
+
+                                <ul class="list-unstyled">
+                                    <li class="clearfix">
+                                        <div class="pull-left">
+                                            <p>
+                                            </p>
+                                            <h5><strong>后续核查任务</strong></h5>
+
+                                            <p></p>
+
+                                            <p><i class="fa fa-clock-o"></i> <abbr class="timeago" title="2017年9月1日">2017年9月1日</abbr>
+                                            </p>
+
+                                        </div>
+                                        <div class="text-right pull-right">
+                                            <h4 class="cost">100</h4>
+
+                                            <p>
+                                                <span class="label label-success arrow-in-right"><i
+                                                        class="fa fa-check"></i> 完成</span>
+                                            </p>
+                                        </div>
+                                        <div class="clearfix"></div>
+                                        <div class="progress progress-sm">
+                                            <div class="progress-bar progress-bar-success" role="progressbar"
+                                                 aria-valuenow="100" aria-valuemin="0" aria-valuemax="100"
+                                                 style="width: 100%;">
+                                                <span class="sr-only">100% Complete</span>
+                                            </div>
+                                        </div>
+                                    </li>
+                                    <li class="clearfix">
+                                        <div class="pull-left">
+                                            <p>
+                                            </p>
+                                            <h5><strong>支付备案</strong></h5>
+
+                                            <p></p>
+
+                                            <p><i class="fa fa-clock-o"></i> <abbr class="timeago" title="2017年9月1日">2017年9月1日</abbr>
+                                            </p>
+
+                                        </div>
+                                        <div class="text-right pull-right">
+                                            <h4 class="cost">60</h4>
+
+                                            <p>
+                                                <span class="label label-warning arrow-in-right"><i
+                                                        class="fa fa-cog"></i> 进行中</span>
+                                            </p>
+                                        </div>
+                                        <div class="clearfix"></div>
+                                        <div class="progress progress-sm">
+                                            <div class="progress-bar progress-bar-warning" role="progressbar"
+                                                 aria-valuenow="30" aria-valuemin="0" aria-valuemax="100"
+                                                 style="width: 30%;">
+                                                <span class="sr-only">完成 30%</span>
+                                            </div>
+                                        </div>
+                                    </li>
+                                </ul>
+
+
+                            </div>
+                            <div class="col-md-2">
+
+
+                                <ul class="list-unstyled">
+                                    <li class="clearfix">
+                                        <div class="pull-left">
+                                            <p>
+                                            </p>
+                                            <h5><strong>后续核查任务</strong></h5>
+
+                                            <p></p>
+
+                                            <p><i class="fa fa-clock-o"></i> <abbr class="timeago" title="2017年9月1日">2017年9月1日</abbr>
+                                            </p>
+
+                                        </div>
+                                        <div class="text-right pull-right">
+                                            <h4 class="cost">100</h4>
+
+                                            <p>
+                                                <span class="label label-success arrow-in-right"><i
+                                                        class="fa fa-check"></i> 完成</span>
+                                            </p>
+                                        </div>
+                                        <div class="clearfix"></div>
+                                        <div class="progress progress-sm">
+                                            <div class="progress-bar progress-bar-success" role="progressbar"
+                                                 aria-valuenow="100" aria-valuemin="0" aria-valuemax="100"
+                                                 style="width: 100%;">
+                                                <span class="sr-only">100% Complete</span>
+                                            </div>
+                                        </div>
+                                    </li>
+                                    <li class="clearfix">
+                                        <div class="pull-left">
+                                            <p>
+                                            </p>
+                                            <h5><strong>支付备案</strong></h5>
+
+                                            <p></p>
+
+                                            <p><i class="fa fa-clock-o"></i> <abbr class="timeago" title="2017年9月1日">2017年9月1日</abbr>
+                                            </p>
+
+                                        </div>
+                                        <div class="text-right pull-right">
+                                            <h4 class="cost">60</h4>
+
+                                            <p>
+                                                <span class="label label-warning arrow-in-right"><i
+                                                        class="fa fa-cog"></i> 进行中</span>
+                                            </p>
+                                        </div>
+                                        <div class="clearfix"></div>
+                                        <div class="progress progress-sm">
+                                            <div class="progress-bar progress-bar-warning" role="progressbar"
+                                                 aria-valuenow="30" aria-valuemin="0" aria-valuemax="100"
+                                                 style="width: 30%;">
+                                                <span class="sr-only">完成 30%</span>
+                                            </div>
+                                        </div>
+                                    </li>
+                                </ul>
+
+
+                            </div>
+                            <div class="col-md-3">
+                                <div class="row">
+                                    <div class="dashbox panel panel-default">
+                                        <div class="panel-body">
+                                            <div class="panel-left red">
+                                                <i class="fa fa-instagram fa-3x"></i>
+                                            </div>
+                                            <div class="panel-right">
+                                                <div class="number">111条</div>
+                                                <div class="title">预警数</div>
+													<span class="label label-success">
+														26% <i class="fa fa-arrow-up"></i>
+													</span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="dashbox panel panel-default">
+                                        <div class="panel-body">
+                                            <div class="panel-left red">
+                                                <i class="fa fa-instagram fa-3x"></i>
+                                            </div>
+                                            <div class="panel-right">
+                                                <div class="number">88条</div>
+                                                <div class="title">微信记录</div>
+
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- /COLUMN 1 -->
+
+
+                </div>
+
+
+                <!-- /CONTENT-->
+            </div>
+        </div>
+
+</section>
+<!--/PAGE -->
+<!-- JAVASCRIPTS -->
+<!-- Placed at the end of the document so the pages load faster -->
+<!-- JQUERY -->
+<script src="static/js/jquery.min.js"></script>
+<!-- BOOTSTRAP -->
+<script src="static/js/bootstrap.min.js"></script>
+<!-- EASY PIE CHART -->
+<script src="static/js/jquery.easing.min.js"></script>
+<script type="text/javascript" src="static/js/jquery.easypiechart.min.js"></script>
+<!-- /JAVASCRIPTS -->
+<script>
+    jQuery(document).ready(function () {
+        //App.setPage("index");  //Set current page
+        //App.init(); //Initialise plugins and elements
+        Theme = {};
+        Theme.colors = {
+            white: "#FFFFFF",
+            primary: "#5E87B0",
+            red: "#D9534F",
+            green: "#A8BC7B",
+            blue: "#70AFC4",
+            orange: "#F0AD4E",
+            yellow: "#FCD76A",
+            gray: "#6B787F",
+            lightBlue: "#D4E5DE",
+            purple: "#A696CE",
+            pink: "#DB5E8C",
+            dark_orange: "#F38630"
+        };
+
+        $('#dash_pie_1').easyPieChart({
+            easing: 'easeOutBounce',
+            onStep: function (from, to, percent) {
+                $(this.el).find('.percent').text(Math.round(percent) + "%");
+            },
+            lineWidth: 6,
+            barColor: Theme.colors.purple
+        });
+        $('#dash_pie_2').easyPieChart({
+            easing: 'easeOutBounce',
+            onStep: function (from, to, percent) {
+                $(this.el).find('.percent').text(Math.round(percent) + "%");
+            },
+            lineWidth: 6,
+            barColor: Theme.colors.yellow
+        });
+        $('#dash_pie_3').easyPieChart({
+            easing: 'easeOutBounce',
+            onStep: function (from, to, percent) {
+                $(this.el).find('.percent').text(Math.round(percent) + "%");
+            },
+            lineWidth: 6,
+            barColor: Theme.colors.green
+        });
+        $('#dash_pie_4').easyPieChart({
+            easing: 'easeOutBounce',
+            onStep: function (from, to, percent) {
+                $(this.el).find('.percent').text(Math.round(percent) + "%");
+            },
+            lineWidth: 6,
+            barColor: Theme.colors.pink
+        });
+        var chart2 = window.chart = $('#dash_pie_2').data('easyPieChart');
+        var chart1 = window.chart = $('#dash_pie_1').data('easyPieChart');
+        var chart3 = window.chart = $('#dash_pie_3').data('easyPieChart');
+        var chart4 = window.chart = $('#dash_pie_4').data('easyPieChart');
+    });
+</script>
+<script>
+    var chart = AmCharts.makeChart("chartdiv", {
+        "type": "pie",
+        "theme": "light",
+        "dataProvider": [{
+            "title": "制造业细信息",
+            "value": 4852
+        }, {
+            "title": "Returning1",
+            "value": 5211
+        }, {
+            "title": "Returning2",
+            "value": 6211
+        },
+            {
+                "title": "Returning3",
+                "value": 7211
+            },
+            {
+                "title": "Returning4",
+                "value": 8888
+            }],
+        "titleField": "title",
+        "valueField": "value",
+        "labelRadius": 5,
+
+        "radius": "42%",
+        "innerRadius": "60%",
+        "labelText": "[[title]]",
+        "export": {
+            "enabled": true
+        }
+    });
+    var chart = AmCharts.makeChart("szchartdiv", {
+        "type": "radar",
+        "theme": "light",
+        "dataProvider": [{
+            "hy": "增值税",
+            "hyss": 245531.32
+        }, {
+            "hy": "营业税",
+            "hyss": 162110.16
+        }, {
+            "hy": "消费税",
+            "hyss": 114138.66
+        }, {
+            "hy": "房产税",
+            "hyss": 113666.46
+        }, {
+            "hy": "所得税",
+            "hyss": 112469.26
+        }, {
+            "hy": "其他",
+            "hyss": 49836.19
+        }],
+        "valueAxes": [{
+            "axisTitleOffset": 20,
+            "minimum": 0,
+            "axisAlpha": 0.1
+        }],
+        "startDuration": 2,
+        "graphs": [{
+            "balloonText": "2017年至今,税收为:[[value]]万元",
+            "bullet": "round",
+            "lineThickness": 2,
+            "valueField": "hyss"
+        }],
+        "categoryField": "hy"
+
+    });
+    function zhcx() {
+        var searchkey = $("#searchkey").val();
+        parent.addTab("/home/" + searchkey, "", "综合查询");
+    }
+</script>
+
+</body>
+
+</html>

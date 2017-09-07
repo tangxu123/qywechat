@@ -90,11 +90,11 @@ public abstract class InMsg implements Serializable {
 		this.msgType = msgType;
 	}
 
-	public String getAgentID() {
+	public String getAgentId() {
 		return agentId;
 	}
 
-	public void setAgentID(String agentID) {
-		this.agentId = agentID;
+	public void setAgentId(String agentId) {
+		this.agentId = agentId;
 	}
 }
