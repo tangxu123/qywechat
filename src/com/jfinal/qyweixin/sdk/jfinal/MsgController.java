@@ -9,6 +9,7 @@ import com.jfinal.kit.HttpKit;
 import com.jfinal.kit.PropKit;
 import com.jfinal.kit.StrKit;
 import com.jfinal.log.Log;
+import com.jfinal.plugin.spring.Inject;
 import com.jfinal.qyweixin.sdk.api.ApiConfigKit;
 import com.jfinal.qyweixin.sdk.kit.MsgEncryptKit;
 import com.jfinal.qyweixin.sdk.msg.InMsgParser;
@@ -29,6 +30,7 @@ import com.jfinal.qyweixin.sdk.msg.in.event.InMenuEvent;
 import com.jfinal.qyweixin.sdk.msg.in.event.InQrCodeEvent;
 import com.jfinal.qyweixin.sdk.msg.out.OutMsg;
 import com.jfinal.qyweixin.sdk.msg.out.OutTextMsg;
+import com.ludateam.wechat.api.MessageService;
 import com.platform.constant.ConstantInit;
 import com.platform.mvc.base.BaseController;
 
@@ -41,6 +43,9 @@ public abstract class MsgController extends BaseController {
     private String inMsgXml = null;        // 本次请求 xml数据
     private InMsg inMsg = null;            // 本次请求 xml 解析后的 InMsg 对象
 
+
+    @Inject.BY_NAME
+    private MessageService messageService;
     /**
      * weixin 公众号服务器调用唯一入口，即在开发者中心输入的 URL 必须要指向此 action
      */
@@ -56,9 +61,9 @@ public abstract class MsgController extends BaseController {
         // 解析消息并根据消息类型分发到相应的处理方法
         InMsg msg = getInMsg();
         if (msg instanceof InTextMsg)
-            processInTextMsg((InTextMsg) msg);
+            processInTextMsg((InTextMsg) msg,messageService);
         else if (msg instanceof InImageMsg)
-            processInImageMsg((InImageMsg) msg);
+            processInImageMsg((InImageMsg) msg,messageService);
         else if (msg instanceof InVoiceMsg)
             processInVoiceMsg((InVoiceMsg) msg);
         else if (msg instanceof InVideoMsg)
@@ -144,10 +149,10 @@ public abstract class MsgController extends BaseController {
     }
 
     // 处理接收到的文本消息
-    protected abstract void processInTextMsg(InTextMsg inTextMsg);
+    protected abstract void processInTextMsg(InTextMsg inTextMsg,MessageService messageService);
 
     // 处理接收到的图片消息
-    protected abstract void processInImageMsg(InImageMsg inImageMsg);
+    protected abstract void processInImageMsg(InImageMsg inImageMsg,MessageService messageService);
 
     // 处理接收到的语音消息
     protected abstract void processInVoiceMsg(InVoiceMsg inVoiceMsg);

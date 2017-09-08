@@ -14,6 +14,7 @@ import com.jfinal.qyweixin.sdk.msg.in.event.InJobEvent;
 import com.jfinal.qyweixin.sdk.msg.in.event.InLocationEvent;
 import com.jfinal.qyweixin.sdk.msg.in.event.InMenuEvent;
 import com.jfinal.qyweixin.sdk.msg.in.event.InQrCodeEvent;
+import com.ludateam.wechat.api.MessageService;
 
 /**
  * MsgControllerAdapter 对 MsgController 部分方法提供了默认实现，
@@ -23,11 +24,11 @@ public abstract  class MsgControllerAdapter extends MsgController {
 
 	 // 接收文本消息事件
     @Override
-    protected abstract void processInTextMsg(InTextMsg inTextMsg);
+    protected abstract void processInTextMsg(InTextMsg inTextMsg, MessageService messageService);
 
     // 接收图片消息事件
     @Override
-    protected void processInImageMsg(InImageMsg inImageMsg) {
+    protected void processInImageMsg(InImageMsg inImageMsg, MessageService messageService) {
         renderDefault();
     }
 
