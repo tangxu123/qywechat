@@ -47,6 +47,9 @@ public class QySyncUserController extends BaseController {
         HashMap<String, String> map = FastJson.getJson().parse(jsonStr, HashMap.class);
 
         ApiResult apiResult = MediaApi.uploadMedia(MediaApi.MediaType.FILE, map.get("content"));
+
+
+
         String json = apiResult.getJson();
         String mediaId = JSON.parseObject(json).getString("media_id");
         log.info(mediaId);

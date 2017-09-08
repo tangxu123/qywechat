@@ -60,12 +60,13 @@ import com.platform.annotation.Controller;
 public class QyWeixinMsgController extends MsgControllerAdapter {
     private static final Log log = Log.getLog(QyWeixinMsgController.class);
 
-    @Inject.BY_NAME
-    private MessageService messageService;
-    
+   /* @Inject.BY_NAME
+    private MessageService messageService;*/
+
+
     @Override
-    protected void processInTextMsg(InTextMsg inTextMsg) {
-    	
+    protected void processInTextMsg(InTextMsg inTextMsg,MessageService messageService) {
+
     	log.info("start processInTextMsg");
     	log.info("messageService init "+messageService);
         String msgContent = inTextMsg.getContent().trim();
@@ -76,7 +77,7 @@ public class QyWeixinMsgController extends MsgControllerAdapter {
 		msgMap.put("createTime", format.format(new Date(createTimeLong * 1000)));
 		log.info("msgjson" + msgMap);
 		messageService.receiveMessage(JSON.toJSONString(msgMap));
-        
+
         System.out.println("收到的信息：" + msgContent);
         if ("OAuth".equalsIgnoreCase(msgContent)) {
             String url = PropKit.get("domain") + "/wechat/qyoauth";
@@ -91,7 +92,7 @@ public class QyWeixinMsgController extends MsgControllerAdapter {
             renderOutTextMsg("授权地址" + urlStr);
         } else {
         	// 其它文本消息直接返回原值 + 帮助提示
-            renderOutTextMsg("\t文本消息已成功接收，内容为： " + inTextMsg.getContent() + "\n\n");
+            //renderOutTextMsg("\t文本消息已成功接收，内容为： " + inTextMsg.getContent() + "\n\n");
         }
     }
 
@@ -99,17 +100,17 @@ public class QyWeixinMsgController extends MsgControllerAdapter {
      * 实现父类抽方法，处理图片消息
      */
     @Override
-    protected void processInImageMsg(InImageMsg inImageMsg) {
+    protected void processInImageMsg(InImageMsg inImageMsg,MessageService messageService) {
 		Map msgMap = (Map) JSON.toJSON(inImageMsg);
 		long createTimeLong = Long.parseLong(String.valueOf(inImageMsg.getCreateTime()));
 		SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 		msgMap.put("createTime", format.format(new Date(createTimeLong * 1000)));
 		messageService.receiveMessage(JSON.toJSONString(msgMap));
-    	
-        OutImageMsg outMsg = new OutImageMsg(inImageMsg);
+
+        //OutImageMsg outMsg = new OutImageMsg(inImageMsg);
         // 将刚发过来的图片再发回去
-        outMsg.setMediaId(inImageMsg.getMediaId());
-        render(outMsg);
+        //outMsg.setMediaId(inImageMsg.getMediaId());
+        //render(outMsg);
     }
 
     /**
@@ -280,12 +281,4 @@ public class QyWeixinMsgController extends MsgControllerAdapter {
         SendMessageApi.sendTextMsg(text);
         renderNull();
     }
-
-	public MessageService getMessageService() {
-		return messageService;
-	}
-
-	public void setMessageService(MessageService messageService) {
-		this.messageService = messageService;
-	}
 }
