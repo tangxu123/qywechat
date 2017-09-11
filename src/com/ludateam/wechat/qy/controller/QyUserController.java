@@ -42,4 +42,12 @@ public class QyUserController extends BaseController {
         ApiResult apiResult = ConUserApi.getDepartmentUserList(department_id, fetch_child, status);
         renderText(apiResult.getJson());
     }
+
+    public void departmentlist() {
+        String jsonStr = HttpKit.readData(getRequest());
+        HashMap<String, String> map = FastJson.getJson().parse(jsonStr, HashMap.class);
+        String id = map.get("id");
+        ApiResult apiResult = ConDepartmentApi.getDepartment(id); //部门id。获取指定部门及其下的子部门。 如果不填，默认获取全量组织架构
+        renderText(apiResult.getJson());
+    }
 }
