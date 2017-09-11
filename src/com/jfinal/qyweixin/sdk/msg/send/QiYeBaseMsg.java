@@ -27,6 +27,10 @@ public class QiYeBaseMsg {
      * 表示是否是安全消息，0 表示否，1表示是
      */
     private String safe;
+    /**
+     * 标签ID列表，多个接收者用‘|’分隔，最多支持100个。当touser为@all时忽略本参数
+     */
+    private String totag;
 
     public String getTouser() {
         return touser;
@@ -79,4 +83,12 @@ public class QiYeBaseMsg {
         this.safe = safe;
     }
 
+
+    public String getTotag() {
+        return totag;
+    }
+
+    public void setTotag(String totag) {
+        this.totag = totag;
+    }
 }
