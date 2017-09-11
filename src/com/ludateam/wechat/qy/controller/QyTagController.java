@@ -68,5 +68,9 @@ public class QyTagController extends BaseController {
         ApiResult apiResult = ConTagApi.deleteTagUsers(jsonStr);
         renderText(apiResult.getJson());
     }
+    public void list() {
 
+        ApiResult apiResult = ConTagApi.getTagList();
+        renderText(apiResult.getJson());
+    }
 }
