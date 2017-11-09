@@ -19,8 +19,10 @@ import com.jfinal.json.FastJson;
 import com.jfinal.json.Json;
 import com.jfinal.kit.HttpKit;
 import com.jfinal.log.Log;
+import com.jfinal.qyweixin.sdk.msg.send.QiYeTextMsg;
 import com.jfinal.qyweixin.sdk.utils.HttpUtils;
 import com.jfinal.template.ext.directive.Str;
+import com.ludateam.wechat.qy.vo.SmsObject;
 import com.ludateam.wechat.qy.vo.SubmitRsp;
 import com.platform.annotation.Controller;
 import com.platform.mvc.base.BaseController;
@@ -39,9 +41,17 @@ public class SendSMSController extends BaseController {
 
     public void send() {
 
-        String rwId = getPara("rwId");
-        String sjhm = getPara("sjhm");
-        String dxnr = getPara("dxnr");
+        String jsonStr = HttpKit.readData(getRequest());
+
+        log.info("########################## " +jsonStr);
+
+
+        SmsObject smsObject = FastJson.getJson().parse(jsonStr,SmsObject.class);
+
+
+        String rwId = smsObject.getRwId();
+        String sjhm = smsObject.getSjhm();
+        String dxnr = smsObject.getDxnr();
 
         SubmitReq submitReq = new SubmitReq();
         submitReq.setApId("xhsw");
