@@ -15,27 +15,40 @@ package com.ludateam.wechat.qy.controller;/*
  * Created by Him on 2017/11/8.
  */
 
+import com.jfinal.json.FastJson;
 import com.jfinal.json.Json;
+import com.jfinal.kit.HttpKit;
 import com.jfinal.log.Log;
 import com.jfinal.qyweixin.sdk.utils.HttpUtils;
+import com.jfinal.template.ext.directive.Str;
+import com.ludateam.wechat.qy.vo.SubmitRsp;
 import com.platform.annotation.Controller;
 import com.platform.mvc.base.BaseController;
 import com.platform.tools.security.md.ToolMD5;
 import com.ludateam.wechat.qy.vo.SubmitReq;
 import org.apache.commons.codec.binary.Base64;
 
-@Controller("/sms")
+import java.util.HashMap;
+import java.util.Map;
+
+@Controller("/wechat/sms")
 public class SendSMSController extends BaseController {
+
+
     private static final Log log = Log.getLog(SendSMSController.class);
 
     public void send() {
-        SubmitReq submitReq = new SubmitReq();
 
+        String rwId = getPara("rwId");
+        String sjhm = getPara("sjhm");
+        String dxnr = getPara("dxnr");
+
+        SubmitReq submitReq = new SubmitReq();
         submitReq.setApId("xhsw");
         submitReq.setEcName("上海市地方税务局徐汇区分局");
         submitReq.setSecretKey("!@#asd123");
-        submitReq.setContent("test");
-        submitReq.setMobiles("18616864830");
+        submitReq.setContent(dxnr);
+        submitReq.setMobiles(sjhm);
         submitReq.setAddSerial("");
         submitReq.setSign("EM0TUCaMT");
 
@@ -53,11 +66,13 @@ public class SendSMSController extends BaseController {
         String encode = Base64.encodeBase64String(reqText.getBytes());
 
         String requrl = "http://112.35.1.155:1992/sms/norsubmit";
-
         String resText = HttpUtils.post(requrl, encode);
+        SubmitRsp submitRsp = FastJson.getJson().parse(resText, SubmitRsp.class);
+        submitRsp.setSjhm(sjhm);
+        submitRsp.setRwId(rwId);
 
-        //System.out.println(resText);
-        renderText(resText);
+
+        renderText(Json.getJson().toJson(submitRsp));
     }
 
 }
