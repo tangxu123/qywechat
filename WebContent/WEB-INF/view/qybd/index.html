@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<!--[if IE 8]> <html lang="en" class="ie8"> <![endif]-->
+<!--[if IE 9]> <html lang="en" class="ie9"> <![endif]-->
+<!--[if !IE]><!-->
+<html lang="en">
+<!--<![endif]-->
+<!-- BEGIN HEAD -->
+<head>
+<meta charset="UTF-8" />
+<title>办税员与纳税企业绑定关系</title>
+<meta content="width=device-width, initial-scale=1.0" name="viewport" />
+<meta content="" name="description" />
+<meta content="" name="author" />
+
+<!-- start: The fav icon -->
+<link rel="icon" type="image/x-icon" href="${cxt!}/files/images/favicon.ico" />
+<link rel="shortcut icon" type="image/x-icon" href="${cxt!}/files/images/favicon.ico" />
+<!-- end: The fav icon -->
+
+<link rel="stylesheet" type="text/css" href="${cxt!}/ui/metrolab/assets/bootstrap/css/bootstrap.min.css" />
+<link rel="stylesheet" type="text/css" href="${cxt!}/ui/metrolab/assets/bootstrap/css/bootstrap-responsive.min.css" />
+<link rel="stylesheet" type="text/css" href="${cxt!}/ui/metrolab/assets/bootstrap/css/bootstrap-fileupload.css" />
+<link rel="stylesheet" type="text/css" href="${cxt!}/ui/metrolab/assets/font-awesome/css/font-awesome.css" />
+<link rel="stylesheet" type="text/css" href="${cxt!}/ui/metrolab/css/style.css" />
+<link rel="stylesheet" type="text/css" href="${cxt!}/ui/metrolab/css/style-responsive.css" />
+<link rel="stylesheet" type="text/css" href="${cxt!}/ui/metrolab/css/style-default.css" id="style_color" />
+<script type="text/javascript">
+	var cxt = "${cxt!}"; // 上下文基础路径
+	var localePram = "${localePram!}"; // 用户选择的语言环境，或者默认展示的语言环境
+	function changeBinding(){
+		var userid = $("#userid").val();
+	    var selectedDjxh = $("input[name='qiye']:checked").val();
+	   	if(userid == ""){
+	    	return;
+	    }
+	    if(selectedDjxh == ""){
+	    	return;
+	    }
+		var data = {userid:userid,djxh:selectedDjxh};
+		$.ajax({
+			type : "post",
+			url : encodeURI(encodeURI(cxt + "/wechat/qybd/update")),
+			headers : {"localePram" : localePram}, 
+			data : data,
+			dataType : "json",
+			contentType: "application/x-www-form-urlencoded; charset=UTF-8",
+			async: false,
+			cache: false,
+			success:function(data){
+				//alert(data.errmsg);
+			}
+		});
+	}
+</script>
+</head>
+<!-- END HEAD -->
+<!-- BEGIN BODY -->
+<body class="fixed-top">
+	    <!-- BEGIN PAGE CONTAINER-->
+	    <div class="container-fluid">
+	
+	        <!-- BEGIN ADVANCED TABLE widget-->
+	        <div class="row-fluid">
+	            <div class="span12">
+					<input type="hidden" id="userid" name="userid" value="${escapeHtml(userId!)}" />
+	                <!-- BEGIN EXAMPLE TABLE widget-->
+	                <div class="widget red">
+	                    <div class="widget-title">
+	                        <h4>
+	                            <i class="icon-reorder"></i>纳税人列表
+	                        </h4>
+	                    </div>
+	                    <div class="widget-body">
+	                        <div class="space15"></div>
+	                        <table class="table table-striped table-bordered" id="dataTable">
+	                            <thead>
+		                            <tr>
+		                                <th class="hidden-phone">选择</th>
+		                                <th class="hidden-phone">企业名称</th>
+		                            </tr>
+	                            </thead>
+	                            <tbody>
+	                            <% for(bind in bindingList){ %>
+		                            <tr class="odd gradeX">
+		                                <td class="hidden-phone">
+										<input type="radio" name="qiye" value="${bind.djxh}" ${ bind.isUse=='Y' ? "checked='checked'" : ""}   onchange='changeBinding()'></td>
+		                                <td class="hidden-phone">${bind.nsrmc}</td>
+		                            </tr>
+		                       <% } %>
+	                            </tbody>
+	                        </table>
+	                    </div>
+	                </div>
+	            </div>
+	        </div>
+	    </div>
+	<!-- JQUERY -->
+<script src="${cxt!}/static/js/jquery.min.js"></script>
+<!-- BOOTSTRAP -->
+<script src="${cxt!}/static/js/bootstrap.min.js"></script>
+</body>
+</html>

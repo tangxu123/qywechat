@@ -16,32 +16,21 @@ package com.ludateam.wechat.qy.controller;
  * Created by Him on 2017/7/4.
  */
 
-import com.alibaba.fastjson.JSON;
-import com.alibaba.fastjson.JSONObject;
-import com.jfinal.json.FastJson;
-import com.jfinal.kit.HttpKit;
-import com.jfinal.kit.PropKit;
-import com.jfinal.log.Log;
-import com.jfinal.plugin.spring.Inject;
-import com.jfinal.qyweixin.sdk.api.ApiConfig;
-import com.jfinal.qyweixin.sdk.api.ApiResult;
-import com.jfinal.qyweixin.sdk.api.SendMessageApi;
-import com.jfinal.qyweixin.sdk.jfinal.ApiController;
-import com.jfinal.qyweixin.sdk.msg.send.*;
-
-import com.ludateam.wechat.api.UserService;
-import com.ludateam.wechat.entity.User;
-import com.platform.annotation.Controller;
-
-
-import org.apache.commons.io.IOUtils;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
-
-import java.io.BufferedReader;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+
+import com.jfinal.json.FastJson;
+import com.jfinal.kit.HttpKit;
+import com.jfinal.log.Log;
+import com.jfinal.qyweixin.sdk.api.ApiResult;
+import com.jfinal.qyweixin.sdk.api.SendMessageApi;
+import com.jfinal.qyweixin.sdk.jfinal.ApiController;
+import com.jfinal.qyweixin.sdk.msg.send.Article;
+import com.jfinal.qyweixin.sdk.msg.send.News;
+import com.jfinal.qyweixin.sdk.msg.send.QiYeNewsMsg;
+import com.jfinal.qyweixin.sdk.msg.send.QiYeTextMsg;
+import com.platform.annotation.Controller;
 
 @Controller("/wechat/qyapi")
 public class QyWeixinApiController extends ApiController {

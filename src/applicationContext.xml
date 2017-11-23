@@ -14,21 +14,24 @@
 
     <!-- 用户服务接口 -->
     <!-- retries表示失败后的重试次数，timeout表示超时时间，actives表示客户端并发限制数 服务端并发控制可用executes参数 -->
-    <dubbo:reference id="userService"  protocol="dubbo" interface="com.ludateam.wechat.api.UserService">
-        <dubbo:method name="getUserByPhone" retries="2" timeout="5000"></dubbo:method>
-        <dubbo:method name="getUserByName" actives="10"></dubbo:method>
-    </dubbo:reference>
+
     <dubbo:reference id="messageService"  protocol="dubbo" interface="com.ludateam.wechat.api.MessageService">
         <dubbo:method name="sendTextMessage" retries="2" timeout="5000"></dubbo:method>
         <dubbo:method name="receiveMessage" actives="10"></dubbo:method>
     </dubbo:reference>
     <dubbo:reference id="callService"  protocol="dubbo" interface="com.ludateam.wechat.api.CallService">
         <dubbo:method name="callService" retries="2" timeout="5000"></dubbo:method>
+        <dubbo:method name="getBindingList" retries="2" timeout="5000" actives="10"></dubbo:method>
+        <dubbo:method name="setDefaultCompany" retries="2" timeout="5000" actives="10"></dubbo:method>
     </dubbo:reference>
     <bean id="qyWeixinApiController" class="com.ludateam.wechat.qy.controller.QyWeixinApiController">
 
     </bean>
     <bean id="qyWeixinMsgController" class="com.ludateam.wechat.qy.controller.QyWeixinMsgController">
+
+    </bean>
+
+    <bean id="msgController" abstract="true" class="com.jfinal.qyweixin.sdk.jfinal.MsgController">
 
     </bean>
 </beans>
