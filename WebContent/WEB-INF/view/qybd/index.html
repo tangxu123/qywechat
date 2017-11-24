@@ -1,31 +1,20 @@
 <!DOCTYPE html>
-<!--[if IE 8]> <html lang="en" class="ie8"> <![endif]-->
-<!--[if IE 9]> <html lang="en" class="ie9"> <![endif]-->
-<!--[if !IE]><!-->
-<html lang="en">
-<!--<![endif]-->
-<!-- BEGIN HEAD -->
+<html>
 <head>
-<meta charset="UTF-8" />
-<title>办税员与纳税企业绑定关系</title>
-<meta content="width=device-width, initial-scale=1.0" name="viewport" />
-<meta content="" name="description" />
-<meta content="" name="author" />
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <!--  <title>办税员与纳税企业绑定关系</title>-->
+    <meta name="viewport" content="initial-scale=1, maximum-scale=1">
+    <link rel="shortcut icon" href="/favicon.ico">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
 
-<!-- start: The fav icon -->
-<link rel="icon" type="image/x-icon" href="${cxt!}/files/images/favicon.ico" />
-<link rel="shortcut icon" type="image/x-icon" href="${cxt!}/files/images/favicon.ico" />
-<!-- end: The fav icon -->
+    <link rel="stylesheet" href="//g.alicdn.com/msui/sm/0.6.2/css/sm.min.css">
+    <link rel="stylesheet" href="//g.alicdn.com/msui/sm/0.6.2/css/sm-extend.min.css">
+    <link rel="stylesheet" href="${cxt!}/ui/icon/iconfont.css">
 
-<link rel="stylesheet" type="text/css" href="${cxt!}/ui/metrolab/assets/bootstrap/css/bootstrap.min.css" />
-<link rel="stylesheet" type="text/css" href="${cxt!}/ui/metrolab/assets/bootstrap/css/bootstrap-responsive.min.css" />
-<link rel="stylesheet" type="text/css" href="${cxt!}/ui/metrolab/assets/bootstrap/css/bootstrap-fileupload.css" />
-<link rel="stylesheet" type="text/css" href="${cxt!}/ui/metrolab/assets/font-awesome/css/font-awesome.css" />
-<link rel="stylesheet" type="text/css" href="${cxt!}/ui/metrolab/css/style.css" />
-<link rel="stylesheet" type="text/css" href="${cxt!}/ui/metrolab/css/style-responsive.css" />
-<link rel="stylesheet" type="text/css" href="${cxt!}/ui/metrolab/css/style-default.css" id="style_color" />
-<script type="text/javascript">
-	var cxt = "${cxt!}"; // 上下文基础路径
+    <script type="text/javascript">
+      var cxt = "${cxt!}"; // 上下文基础路径
 	var localePram = "${localePram!}"; // 用户选择的语言环境，或者默认展示的语言环境
 	function changeBinding(){
 		var userid = $("#userid").val();
@@ -39,7 +28,7 @@
 		var data = {userid:userid,djxh:selectedDjxh};
 		$.ajax({
 			type : "post",
-			url : encodeURI(encodeURI(cxt + "/wechat/qybd/update")),
+			url : encodeURI(encodeURI(cxt + "/wechat/qybd/change")),
 			headers : {"localePram" : localePram}, 
 			data : data,
 			dataType : "json",
@@ -47,56 +36,65 @@
 			async: false,
 			cache: false,
 			success:function(data){
-				//alert(data.errmsg);
+				$.alert(data.errmsg,function(){
+					wx.closeWindow();
+				});
 			}
 		});
 	}
-</script>
+    </script>
 </head>
-<!-- END HEAD -->
-<!-- BEGIN BODY -->
-<body class="fixed-top">
-	    <!-- BEGIN PAGE CONTAINER-->
-	    <div class="container-fluid">
-	
-	        <!-- BEGIN ADVANCED TABLE widget-->
-	        <div class="row-fluid">
-	            <div class="span12">
-					<input type="hidden" id="userid" name="userid" value="${escapeHtml(userId!)}" />
-	                <!-- BEGIN EXAMPLE TABLE widget-->
-	                <div class="widget red">
-	                    <div class="widget-title">
-	                        <h4>
-	                            <i class="icon-reorder"></i>纳税人列表
-	                        </h4>
-	                    </div>
-	                    <div class="widget-body">
-	                        <div class="space15"></div>
-	                        <table class="table table-striped table-bordered" id="dataTable">
-	                            <thead>
-		                            <tr>
-		                                <th class="hidden-phone">选择</th>
-		                                <th class="hidden-phone">企业名称</th>
-		                            </tr>
-	                            </thead>
-	                            <tbody>
-	                            <% for(bind in bindingList){ %>
-		                            <tr class="odd gradeX">
-		                                <td class="hidden-phone">
-										<input type="radio" name="qiye" value="${bind.djxh}" ${ bind.isUse=='Y' ? "checked='checked'" : ""}   onchange='changeBinding()'></td>
-		                                <td class="hidden-phone">${bind.nsrmc}</td>
-		                            </tr>
-		                       <% } %>
-	                            </tbody>
-	                        </table>
-	                    </div>
-	                </div>
-	            </div>
-	        </div>
-	    </div>
-	<!-- JQUERY -->
-<script src="${cxt!}/static/js/jquery.min.js"></script>
-<!-- BOOTSTRAP -->
-<script src="${cxt!}/static/js/bootstrap.min.js"></script>
+
+<body>
+<input type="hidden" id="userid" name="userid" value="${escapeHtml(userId!)}" />
+<div class="page-group">
+    <div class="page page-current">
+        <header class="bar bar-nav">
+            <a class="icon icon-left pull-left"></a>
+
+            <h1 class="title">办税员与纳税企业绑定关系</h1>
+        </header>
+
+        <div class="content pull-to-refresh-content">
+            <div class="pull-to-refresh-layer">
+                <div class="preloader"></div>
+                <div class="pull-to-refresh-arrow"></div>
+            </div>
+            <div id="my-input"></div>
+            <div class="content-block-title">纳税人列表</div>
+            <div class="list-block">
+                <ul>
+                    <% for(bind in bindingList){ %>
+
+                    <li class="item-content">
+                        <div class="item-media"><input type="radio" id="qiye${bindLP.index}" name="qiye" value="${bind.djxh}" ${ bind.isUse=='Y' ?
+                            "checked='checked'" : ""}   /></div>
+                        <div class="item-inner">
+                            <div class="item-title" index="qiye${bindLP.index}">${bind.nsrmc}</div>
+                        </div>
+                    </li>
+                    <% } %>
+                </ul>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script type='text/javascript' src='//g.alicdn.com/sj/lib/zepto/zepto.min.js' charset='utf-8'></script>
+<script type='text/javascript' src='//g.alicdn.com/msui/sm/0.6.2/js/sm.min.js' charset='utf-8'></script>
+<script type='text/javascript' src='//g.alicdn.com/msui/sm/0.6.2/js/sm-extend.min.js' charset='utf-8'></script>
+<script type="text/javascript" src="http://res.wx.qq.com/open/js/jweixin-1.2.0.js"></script>
+<script>
+    $.init();
+    $(document).on('click','input[name="qiye"]',function () {
+        changeBinding();
+    });
+    $("div.item-title").on('touchstart',function (e) {
+       var id = $(e.target).attr("index");
+       document.getElementById(id).checked="checked";
+	   changeBinding();
+	   e.preventDefault();
+    });
+</script>
 </body>
 </html>
