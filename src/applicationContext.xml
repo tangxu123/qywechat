@@ -24,14 +24,8 @@
         <dubbo:method name="getBindingList" retries="2" timeout="5000" actives="10"></dubbo:method>
         <dubbo:method name="setDefaultCompany" retries="2" timeout="5000" actives="10"></dubbo:method>
     </dubbo:reference>
-    <bean id="qyWeixinApiController" class="com.ludateam.wechat.qy.controller.QyWeixinApiController">
-
-    </bean>
-    <bean id="qyWeixinMsgController" class="com.ludateam.wechat.qy.controller.QyWeixinMsgController">
-
-    </bean>
-
-    <bean id="msgController" abstract="true" class="com.jfinal.qyweixin.sdk.jfinal.MsgController">
-
-    </bean>
+    <bean id="qyWeixinApiController" class="com.ludateam.wechat.qy.controller.QyWeixinApiController"></bean>
+    <bean id="qyWeixinMsgController" class="com.ludateam.wechat.qy.controller.QyWeixinMsgController"></bean>
+    <bean id="qyBingdingController" class="com.ludateam.wechat.qy.mvc.qybd.QyBingdingController"></bean>
+    <bean id="msgController" abstract="true" class="com.jfinal.qyweixin.sdk.jfinal.MsgController"></bean>
 </beans>
