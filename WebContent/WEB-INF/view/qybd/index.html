@@ -19,13 +19,14 @@
 	function changeBinding(){
 		var userid = $("#userid").val();
 	    var selectedDjxh = $("input[name='qiye']:checked").val();
+	    var nsrmc = $("input[name='qiye']:checked").attr("nsrmc");
 	   	if(userid == ""){
 	    	return;
 	    }
 	    if(selectedDjxh == ""){
 	    	return;
 	    }
-		var data = {userid:userid,djxh:selectedDjxh};
+		var data = {userid:userid,djxh:selectedDjxh,nsrmc:nsrmc};
 		$.ajax({
 			type : "post",
 			url : encodeURI(encodeURI(cxt + "/wechat/qybd/change")),
@@ -67,7 +68,7 @@
                     <% for(bind in bindingList){ %>
 
                     <li class="item-content">
-                        <div class="item-media"><input type="radio" id="qiye${bindLP.index}" name="qiye" value="${bind.djxh}" ${ bind.isUse=='Y' ?
+                        <div class="item-media"><input type="radio" id="qiye${bindLP.index}" nsrmc="${bind.nsrmc}"  name="qiye" value="${bind.djxh}" ${ bind.isUse=='Y' ?
                             "checked='checked'" : ""}   /></div>
                         <div class="item-inner">
                             <div class="item-title" index="qiye${bindLP.index}">${bind.nsrmc}</div>
