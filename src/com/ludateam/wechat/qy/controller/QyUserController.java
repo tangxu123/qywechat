@@ -32,17 +32,40 @@ import java.util.HashMap;
 public class QyUserController extends BaseController {
     private static final Log log = Log.getLog(QyUserController.class);
 
+	/**
+	 * 获取部门成员(详情)
+	 * @param departmentId 获取的部门id
+	 * @param fetch_child 1/0：是否递归获取子部门下面的成员
+	 * @param status 0获取全部成员，1获取已关注成员列表，2获取禁用成员列表，4获取未关注成员列表。status可叠加，未填写则默认为4
+	 * @return
+	 */
     public void list() {
         String jsonStr = HttpKit.readData(getRequest());
         HashMap<String, String> map = FastJson.getJson().parse(jsonStr, HashMap.class);
-
         String department_id = map.get("department_id"); //获取的部门id
         String fetch_child = map.get("fetch_child"); //1/0：是否递归获取子部门下面的成员
-        String status = map.get("status"); //激活状态: 1=已激活，2=已禁用，4=未激活 已激活代表已激活企业微信或已关注微信插件。未激活代表既未激活企业微信又未关注微信插件。
+        String status = map.get("status");
         ApiResult apiResult = ConUserApi.getDepartmentUserList(department_id, fetch_child, status);
         renderText(apiResult.getJson());
     }
 
+	/**
+	 * 获取部门成员
+	 * @param departmentId 获取的部门id
+	 * @param fetch_child 1/0：是否递归获取子部门下面的成员
+	 * @param status 0获取全部成员，1获取已关注成员列表，2获取禁用成员列表，4获取未关注成员列表。status可叠加，未填写则默认为4
+	 * @return
+	 */
+    public void simplelist() {
+        String jsonStr = HttpKit.readData(getRequest());
+        HashMap<String, String> map = FastJson.getJson().parse(jsonStr, HashMap.class);
+        String department_id = map.get("department_id"); //获取的部门id
+        String fetch_child = map.get("fetch_child"); //1/0：是否递归获取子部门下面的成员
+        String status = map.get("status"); 
+        ApiResult apiResult = ConUserApi.getDepartmentUserSimpleList(department_id, fetch_child, status);
+        renderText(apiResult.getJson());
+    }
+    
     public void departmentlist() {
         String jsonStr = HttpKit.readData(getRequest());
         HashMap<String, String> map = FastJson.getJson().parse(jsonStr, HashMap.class);
