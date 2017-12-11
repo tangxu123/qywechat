@@ -15,8 +15,7 @@ import com.jfinal.qyweixin.sdk.api.ApiConfigKit;
 import com.jfinal.qyweixin.sdk.api.ApiResult;
 import com.jfinal.qyweixin.sdk.api.OAuthApi;
 import com.jfinal.qyweixin.sdk.api.SendMessageApi;
-import com.jfinal.qyweixin.sdk.msg.send.QiYeTextMsg;
-import com.jfinal.qyweixin.sdk.msg.send.Text;
+import com.jfinal.qyweixin.sdk.msg.send.*;
 import com.ludateam.wechat.api.CallService;
 import com.ludateam.wechat.qy.entity.TaxEnterprise;
 import com.ludateam.wechat.qy.vo.BindingRep;
@@ -161,14 +160,25 @@ public class QyBingdingController extends BaseController {
             String jsonString = callService.setDefaultCompany(userid, djxh);
 
             //发送消息
-            QiYeTextMsg text = new QiYeTextMsg();
-            text.setAgentid("9");
-            text.setText(new Text("您当前绑定的身份为:" + nsrmc));
-            text.setSafe("0");
-            text.setTouser(userid);
 
+            QiYeNewsMsg news =   new QiYeNewsMsg();
+            news.setArticleCount(1);
 
-            ApiResult sendTextMsg = SendMessageApi.sendTextMsg(text);
+            News news1 = new News();
+
+            ArrayList<Article> list = new ArrayList<Article>();
+            Article article = new Article();
+            article.setTitle("绑定成功");
+            article.setDescription("您当前绑定的身份为:" + nsrmc);
+            list.add(article);
+            news1.setArticles(list);
+            news.setNews(news1);
+
+            news.setMsgtype("news");
+            news.setAgentid("9");
+            news.setTouser(userid);
+
+            SendMessageApi.sendNewsMsg(news);
 
             renderJson(jsonString);
         } catch (Exception e) {
