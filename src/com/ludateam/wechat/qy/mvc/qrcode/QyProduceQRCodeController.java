@@ -1,4 +1,4 @@
-package com.ludateam.wechat.qy.mvc.dtqh;
+package com.ludateam.wechat.qy.mvc.qrcode;
 
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
@@ -100,22 +100,32 @@ public class QyProduceQRCodeController extends BaseController {
             setSessionAttr("openId", openid);
             log.info("-------------userId--------------------:" + userId);
             log.info("-------------userId--------------------:" + userId);
-            log.info("-------------userId--------------------:" + userId);
             try {
                 String jsonString = callService.getVipSqid(userId);
-                log.info("-------------jsonString--------------------");
                 log.info("-------------jsonString--------------------:" + jsonString);
-                log.info("-------------jsonString--------------------");
-                
-				VipSqidRep vipRep = FastJson.getJson().parse(jsonString, VipSqidRep.class);
-				if ("0".equals(vipRep.getErrcode())) {
-					renderQrCode(vipRep.getSqid(), 100, 100);
-				} else {
-					renderText(vipRep.getErrmsg());
-				}
+                VipSqidRep vipRep = FastJson.getJson().parse(jsonString,VipSqidRep.class);
+                setAttr("errcode", vipRep.getErrcode());
+                setAttr("errmsg", vipRep.getErrmsg());
+                setAttr("sqid", vipRep.getSqid());
             } catch (Exception e) {
                 e.printStackTrace();
             }
+    		render("/qrcode/index.html");
         }
+    }
+    
+    public void show() {
+        try {
+        	String userid = getPara("userid");
+            String jsonString = callService.getVipSqid(userid);
+            log.info("-------------jsonString--------------------:" + jsonString);
+            VipSqidRep vipRep = FastJson.getJson().parse(jsonString,VipSqidRep.class);
+            setAttr("errcode", vipRep.getErrcode());
+            setAttr("errmsg", vipRep.getErrmsg());
+            setAttr("sqid", vipRep.getSqid());
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+		render("/qrcode/index.html");
     }
 }

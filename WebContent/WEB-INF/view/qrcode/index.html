@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>取号二维码</title>
+    <meta name="viewport" content="initial-scale=1, maximum-scale=1">
+    <link rel="shortcut icon" href="/favicon.ico">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <style type="text/css">
+		body{
+			text-align:center;
+		}
+		#qrcode{
+			margin-top:120px;
+		}
+		#sqid{
+			display:none;
+			margin-top:100px;
+			text-align:center;
+			line-height:30px;
+			color:#2b2323;
+			font-weight:600;
+			font-size:24px;
+			font-family: 微软雅黑,黑体,宋体;
+		}
+	</style>
+    <script type="text/javascript" src="${cxt!}/jsfile/qrcode/jquery.min.js"></script>
+    <script type="text/javascript" src="${cxt!}/jsfile/qrcode/qrcode.min.js"></script>
+</head>
+<body>
+	<div id="sqid">${sqid!}</div>
+	<div id="qrcode"></div>
+    <script type="text/javascript">
+	    var iLeft = (window.screen.width - 125 -16) / 2;
+		var errcode = "${errcode!}";
+		var errmsg = "${errmsg!}";
+		var sqid = "${sqid!}";
+		if("0" == errcode){
+			$("#qrcode").css("padding-left",iLeft);
+			var qrcode = new QRCode("qrcode", {
+			    text: "vipno",
+			    width: 125,
+			    height: 125,
+			    colorDark : "#000000",
+			    colorLight : "#ffffff",
+			    correctLevel : QRCode.CorrectLevel.H
+			});
+			// 清除代码
+			qrcode.clear();
+			// 生成另外一个二维码
+			qrcode.makeCode(sqid);
+			$("#sqid").show();
+		}else{
+			alert(errmsg);
+		}
+    </script>
+</body>
+</html>
