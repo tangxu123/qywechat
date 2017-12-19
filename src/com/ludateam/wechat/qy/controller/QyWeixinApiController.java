@@ -66,24 +66,9 @@ public class QyWeixinApiController extends ApiController {
      * 图文混排的消息
      */
     public void sendNewsMessage() {
-        QiYeNewsMsg qiYeNewsMsg = new QiYeNewsMsg();
-        qiYeNewsMsg.setAgentid("4");
-        qiYeNewsMsg.setArticleCount(1);
-        qiYeNewsMsg.setSafe("0");
-        qiYeNewsMsg.setTouser("Him");
-
-        News news = new News();
-        List<Article> articles = new ArrayList<Article>();
-        Article article = new Article();
-        article.setTitle("【图解税收】一图掌握 7月1日起增值税税率调整为11%的商品");
-        article.setDescription("一图掌握 7月1日起增值税税率调整为11%的商品");
-        article.setPicurl("https://mmbiz.qlogo.cn/mmbiz/ibHRiaZ9MRcUpjHhhNQzCl9zGicPBWibh1ndW6Mj27ibCREGGVa9mag0iatwDJ1fSPhsib2LiaBVVenAU8ibqW1kGeka9HQ/0?wx_fmt=png");
-        article.setUrl("https://mp.weixin.qq.com/s/0romzmtiWqzH44jLUxMnug");
-        articles.add(article);
-        news.setArticles(articles);
-        qiYeNewsMsg.setNews(news);
-
-        ApiResult sendTextMsg = SendMessageApi.sendNewsMsg(qiYeNewsMsg);
+        String jsonStr = HttpKit.readData(getRequest());
+        QiYeNewsMsg news = FastJson.getJson().parse(jsonStr, QiYeNewsMsg.class);
+        ApiResult sendTextMsg = SendMessageApi.sendNewsMsg(news);
         renderText(sendTextMsg.getJson());
     }
 }
