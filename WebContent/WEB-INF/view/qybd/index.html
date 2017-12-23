@@ -3,7 +3,6 @@
 <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <!--  <title>办税员与纳税企业绑定关系</title>-->
     <meta name="viewport" content="initial-scale=1, maximum-scale=1">
     <link rel="shortcut icon" href="/favicon.ico">
     <meta name="apple-mobile-web-app-capable" content="yes">
@@ -38,7 +37,8 @@
 			cache: false,
 			success:function(data){
 				$.alert(data.errmsg,function(){
-					wx.closeWindow();
+					//wx.closeWindow();
+					window.location = cxt + "/wechat/vipnumber";
 				});
 			}
 		});
@@ -51,9 +51,7 @@
 <div class="page-group">
     <div class="page page-current">
         <header class="bar bar-nav">
-            <a class="icon icon-left pull-left"></a>
-
-            <h1 class="title">选择当前身份</h1>
+            <h1 class="title">选择当前企业</h1>
         </header>
 
         <div class="content pull-to-refresh-content">
@@ -62,7 +60,7 @@
                 <div class="pull-to-refresh-arrow"></div>
             </div>
             <div id="my-input"></div>
-            <div class="content-block-title">纳税人列表</div>
+            <div class="content-block-title" style="text-align:left;margin:10px;line-height:30px;font-size:20px;">已实名认证企业列表</div>
             <div class="list-block">
                 <ul>
                     <% for(bind in bindingList){ %>

@@ -3,17 +3,27 @@
 <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <title>取号二维码</title>
+    <!--  <title>办税员与纳税企业绑定关系</title>-->
     <meta name="viewport" content="initial-scale=1, maximum-scale=1">
     <link rel="shortcut icon" href="/favicon.ico">
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black">
+
+    <link rel="stylesheet" href="//g.alicdn.com/msui/sm/0.6.2/css/sm.min.css">
+    <link rel="stylesheet" href="//g.alicdn.com/msui/sm/0.6.2/css/sm-extend.min.css">
+    <link rel="stylesheet" href="${cxt!}/ui/icon/iconfont.css">
     <style type="text/css">
 		body{
 			text-align:center;
 		}
+		.nsrmc{
+			text-align:center;
+			margin:50px 5px;
+			line-height:30px;
+			font-size:20px;
+		}
 		#qrcode{
-			margin-top:120px;
+			margin-top:80px;
 		}
 		#sqid{
 			display:none;
@@ -26,18 +36,51 @@
 			font-family: 微软雅黑,黑体,宋体;
 		}
 	</style>
-    <script type="text/javascript" src="${cxt!}/jsfile/qrcode/jquery.min.js"></script>
-    <script type="text/javascript" src="${cxt!}/jsfile/qrcode/qrcode.min.js"></script>
-</head>
-<body>
-	<div id="sqid">${sqid!}</div>
-	<div id="qrcode"></div>
     <script type="text/javascript">
-	    var iLeft = (window.screen.width - 125 -16) / 2;
-		var errcode = "${errcode!}";
-		var errmsg = "${errmsg!}";
+      	var cxt = "${cxt!}"; // 上下文基础路径
+		var localePram = "${localePram!}"; // 用户选择的语言环境，或者默认展示的语言环境
+    </script>
+</head>
+
+<body>
+<input type="hidden" id="userid" name="userid" value="${escapeHtml(userId!)}" />
+<div class="page-group">
+    <div class="page page-current">
+        <header class="bar bar-nav">
+            <h1 class="title">当前企业</h1>
+            <a href="${cxt!}/wechat/qybd/index" class="icon icon-settings pull-right"></a>
+        </header>
+        <div class="content pull-to-refresh-content">
+            <div class="pull-to-refresh-layer">
+                <div class="preloader"></div>
+                <div class="pull-to-refresh-arrow"></div>
+            </div>
+            <div class="content-block-title nsrmc">${escapeHtml(nsrmc!)}</div>
+            <div id="my-input">
+            	<div id="sqid">${sqid!}</div>
+				<div id="qrcode"></div>
+            </div>
+        </div>
+    </div>
+</div>
+<script type="text/javascript" src="${cxt!}/jsfile/qrcode/jquery.min.js"></script>
+<script type="text/javascript" src="${cxt!}/jsfile/qrcode/qrcode.min.js"></script>
+<script type='text/javascript' src='//g.alicdn.com/sj/lib/zepto/zepto.min.js' charset='utf-8'></script>
+<script type='text/javascript' src='//g.alicdn.com/msui/sm/0.6.2/js/sm.min.js' charset='utf-8'></script>
+<script type='text/javascript' src='//g.alicdn.com/msui/sm/0.6.2/js/sm-extend.min.js' charset='utf-8'></script>
+<script type="text/javascript" src="http://res.wx.qq.com/open/js/jweixin-1.2.0.js"></script>
+<script type="text/javascript">
+	    //$.init();
+	    $(document).on('refresh', '.pull-to-refresh-content',function(e) {
+	        // 模拟2s的加载过程
+	        setTimeout(function() {
+	            // 加载完毕需要重置
+	            $.pullToRefreshDone('.pull-to-refresh-content');
+	        }, 1000);
+	    });
+	    var iLeft = (window.screen.width - 125) / 2;
 		var sqid = "${sqid!}";
-		if("0" == errcode){
+		if("" != sqid){
 			$("#qrcode").css("padding-left",iLeft);
 			var qrcode = new QRCode("qrcode", {
 			    text: "vipno",
@@ -52,9 +95,7 @@
 			// 生成另外一个二维码
 			qrcode.makeCode(sqid);
 			$("#sqid").show();
-		}else{
-			alert(errmsg);
 		}
-    </script>
+</script>
 </body>
 </html>

@@ -2,6 +2,7 @@ package com.ludateam.wechat.qy.mvc.qrcode;
 
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
+import java.util.List;
 
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
@@ -14,6 +15,8 @@ import com.jfinal.qyweixin.sdk.api.ApiConfigKit;
 import com.jfinal.qyweixin.sdk.api.ApiResult;
 import com.jfinal.qyweixin.sdk.api.OAuthApi;
 import com.ludateam.wechat.api.CallService;
+import com.ludateam.wechat.qy.entity.TaxEnterprise;
+import com.ludateam.wechat.qy.vo.BindingRep;
 import com.ludateam.wechat.qy.vo.VipSqidRep;
 import com.platform.annotation.Controller;
 import com.platform.mvc.base.BaseController;
@@ -101,12 +104,29 @@ public class QyProduceQRCodeController extends BaseController {
             log.info("-------------userId--------------------:" + userId);
             log.info("-------------userId--------------------:" + userId);
             try {
-                String jsonString = callService.getVipSqid(userId);
-                log.info("-------------jsonString--------------------:" + jsonString);
-                VipSqidRep vipRep = FastJson.getJson().parse(jsonString,VipSqidRep.class);
-                setAttr("errcode", vipRep.getErrcode());
-                setAttr("errmsg", vipRep.getErrmsg());
-                setAttr("sqid", vipRep.getSqid());
+              	String nsrmc = "";
+            	String sqid = "";
+                String jsonString = callService.getBindingList(userId);
+                BindingRep bindingRep = FastJson.getJson().parse(jsonString, BindingRep.class);
+                if ("0".equals(bindingRep.getErrcode())) {
+                	List<TaxEnterprise> bindingList = bindingRep.getBindingList();
+        			for (TaxEnterprise taxEnterprise : bindingList) {
+        				if("Y".equals(taxEnterprise.getIsUse())){
+        					nsrmc = taxEnterprise.getNsrmc();
+        					break;
+        				}
+        			}
+                    
+        			String vipString = callService.getVipSqid(userId);
+        			VipSqidRep vipRep = FastJson.getJson().parse(vipString, VipSqidRep.class);
+        			if ("0".equals(vipRep.getErrcode())) {
+        				sqid = vipRep.getSqid();
+        			}
+                } 
+                
+                setAttr("sqid", sqid);
+                setAttr("nsrmc", nsrmc);
+                setAttr("userId", userId);
             } catch (Exception e) {
                 e.printStackTrace();
             }
@@ -115,17 +135,30 @@ public class QyProduceQRCodeController extends BaseController {
     }
     
     public void show() {
-        try {
-        	String userid = getPara("userid");
-            String jsonString = callService.getVipSqid(userid);
-            log.info("-------------jsonString--------------------:" + jsonString);
-            VipSqidRep vipRep = FastJson.getJson().parse(jsonString,VipSqidRep.class);
-            setAttr("errcode", vipRep.getErrcode());
-            setAttr("errmsg", vipRep.getErrmsg());
-            setAttr("sqid", vipRep.getSqid());
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-		render("/qrcode/index.html");
+      	String nsrmc = "";
+    	String sqid = "";
+        String userid = getRequest().getParameter("userid");
+        String jsonString = callService.getBindingList(userid);
+        BindingRep bindingRep = FastJson.getJson().parse(jsonString, BindingRep.class);
+        if ("0".equals(bindingRep.getErrcode())) {
+        	List<TaxEnterprise> bindingList = bindingRep.getBindingList();
+			for (TaxEnterprise taxEnterprise : bindingList) {
+				if("Y".equals(taxEnterprise.getIsUse())){
+					nsrmc = taxEnterprise.getNsrmc();
+					break;
+				}
+			}
+            
+			String vipString = callService.getVipSqid(userid);
+			VipSqidRep vipRep = FastJson.getJson().parse(vipString, VipSqidRep.class);
+			if ("0".equals(vipRep.getErrcode())) {
+				sqid = vipRep.getSqid();
+			}
+        } 
+        
+        setAttr("sqid", sqid);
+        setAttr("nsrmc", nsrmc);
+        setAttr("userId", userid);
+        render("/qrcode/index.html");
     }
 }
