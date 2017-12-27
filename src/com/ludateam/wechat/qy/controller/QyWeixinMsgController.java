@@ -167,7 +167,7 @@ public class QyWeixinMsgController extends MsgControllerAdapter {
     protected void processInFollowEvent(InFollowEvent inFollowEvent) {
         if (InFollowEvent.EVENT_INFOLLOW_SUBSCRIBE.equals(inFollowEvent.getEvent())) {
             OutTextMsg outMsg = new OutTextMsg(inFollowEvent);
-            outMsg.setContent("感谢关注徐汇专管员企业号");
+            outMsg.setContent("尊敬的纳税人：\n\t\t\t\t\t\t\t为深化税务系统\"放管服\"改革，进一步优化营商环境，我局推出\"上海徐汇税务号\"微信服务，期待能带给您优质的纳税服务和全新的办税体验！\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t徐汇区税务局");
             render(outMsg);
         }// 如果为取消关注事件，将无法接收到传回的信息
         if (InFollowEvent.EVENT_INFOLLOW_UNSUBSCRIBE.equals(inFollowEvent.getEvent())) {
