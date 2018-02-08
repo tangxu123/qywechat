@@ -17,7 +17,6 @@ import com.jfinal.qyweixin.sdk.api.OAuthApi;
 import com.ludateam.wechat.api.CallService;
 import com.ludateam.wechat.qy.entity.TaxEnterprise;
 import com.ludateam.wechat.qy.vo.BindingRep;
-import com.ludateam.wechat.qy.vo.VipSqidRep;
 import com.platform.annotation.Controller;
 import com.platform.mvc.base.BaseController;
 
@@ -123,7 +122,6 @@ public class QyProduceQuestionnaireController extends BaseController {
 			log.info("-------------userId--------------------:" + userId);
 			try {
 				String nsrmc = "";
-				String sqid = "";
 				String djxh = "";
 				String jsonString = callService.getBindingList(userId);
 				BindingRep bindingRep = FastJson.getJson().parse(jsonString,
@@ -138,16 +136,7 @@ public class QyProduceQuestionnaireController extends BaseController {
 							break;
 						}
 					}
-
-					String vipString = callService.getVipSqid(userId);
-					VipSqidRep vipRep = FastJson.getJson().parse(vipString,
-							VipSqidRep.class);
-					if ("0".equals(vipRep.getErrcode())) {
-						sqid = vipRep.getSqid();
-					}
 				}
-
-				setAttr("sqid", sqid);
 				setAttr("nsrmc", nsrmc);
 				setAttr("userId", userId);
 				setAttr("djxh", djxh);
@@ -156,35 +145,5 @@ public class QyProduceQuestionnaireController extends BaseController {
 			}
 			render("/questionnaire/index.html");
 		}
-	}
-
-	public void show() {
-		String nsrmc = "";
-		String sqid = "";
-		String userid = getRequest().getParameter("userid");
-		String jsonString = callService.getBindingList(userid);
-		BindingRep bindingRep = FastJson.getJson().parse(jsonString,
-				BindingRep.class);
-		if ("0".equals(bindingRep.getErrcode())) {
-			List<TaxEnterprise> bindingList = bindingRep.getBindingList();
-			for (TaxEnterprise taxEnterprise : bindingList) {
-				if ("Y".equals(taxEnterprise.getIsUse())) {
-					nsrmc = taxEnterprise.getNsrmc();
-					break;
-				}
-			}
-
-			String vipString = callService.getVipSqid(userid);
-			VipSqidRep vipRep = FastJson.getJson().parse(vipString,
-					VipSqidRep.class);
-			if ("0".equals(vipRep.getErrcode())) {
-				sqid = vipRep.getSqid();
-			}
-		}
-
-		setAttr("sqid", sqid);
-		setAttr("nsrmc", nsrmc);
-		setAttr("userId", userid);
-		render("/questionnaire/index.html");
 	}
 }
