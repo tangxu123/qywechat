@@ -26,7 +26,6 @@ import java.util.Map;
 import com.alibaba.fastjson.JSON;
 import com.jfinal.kit.PropKit;
 import com.jfinal.log.Log;
-import com.jfinal.plugin.spring.Inject;
 import com.jfinal.qyweixin.sdk.api.ApiResult;
 import com.jfinal.qyweixin.sdk.api.ConBatchApi;
 import com.jfinal.qyweixin.sdk.api.SendMessageApi;
@@ -44,7 +43,7 @@ import com.jfinal.qyweixin.sdk.msg.in.event.InJobEvent;
 import com.jfinal.qyweixin.sdk.msg.in.event.InMenuEvent;
 import com.jfinal.qyweixin.sdk.msg.in.event.InQrCodeEvent;
 import com.jfinal.qyweixin.sdk.msg.in.event.ScanCodeInfo;
-import com.jfinal.qyweixin.sdk.msg.out.OutImageMsg;
+import com.jfinal.qyweixin.sdk.msg.out.OutNewsMsg;
 import com.jfinal.qyweixin.sdk.msg.out.OutTextMsg;
 import com.jfinal.qyweixin.sdk.msg.out.OutVoiceMsg;
 import com.jfinal.qyweixin.sdk.msg.send.Article;
@@ -166,9 +165,23 @@ public class QyWeixinMsgController extends MsgControllerAdapter {
     @Override
     protected void processInFollowEvent(InFollowEvent inFollowEvent) {
         if (InFollowEvent.EVENT_INFOLLOW_SUBSCRIBE.equals(inFollowEvent.getEvent())) {
-            OutTextMsg outMsg = new OutTextMsg(inFollowEvent);
-            outMsg.setContent("尊敬的纳税人：\n       为深化税务系统\"放管服\"改革，进一步优化营商环境，我局推出\"上海徐汇税务号\"微信服务，期待能带给您优质的纳税服务和全新的办税体验！\n                    徐汇区税务局");
-            render(outMsg);
+			if ("19".equals(inFollowEvent.getAgentId())) {
+	            List<com.jfinal.qyweixin.sdk.msg.out.News> articles = new ArrayList<com.jfinal.qyweixin.sdk.msg.out.News>();
+	            com.jfinal.qyweixin.sdk.msg.out.News news = new com.jfinal.qyweixin.sdk.msg.out.News();
+	            news.setTitle("大调研");
+	            news.setDescription("徐汇区大调研");
+	            news.setPicUrl("http://sw.xh.sh.cn:8080/qywx/static/img/xhqddy.jpg");
+	            news.setUrl("http://sw.xh.sh.cn:8080/qywx/wechat/questionnaire");
+	            articles.add(news);
+	            OutNewsMsg outMsg = new OutNewsMsg(inFollowEvent);
+	            outMsg.setArticles(articles);
+	            render(outMsg);
+			}
+			if ("10".equals(inFollowEvent.getAgentId())) {
+	            OutTextMsg outMsg = new OutTextMsg(inFollowEvent);
+	            outMsg.setContent("尊敬的纳税人：\n       为深化税务系统\"放管服\"改革，进一步优化营商环境，我局推出\"上海徐汇税务号\"微信服务，期待能带给您优质的纳税服务和全新的办税体验！\n                    徐汇区税务局");
+				render(outMsg);
+			}
         }// 如果为取消关注事件，将无法接收到传回的信息
         if (InFollowEvent.EVENT_INFOLLOW_UNSUBSCRIBE.equals(inFollowEvent.getEvent())) {
             log.debug("取消关注：" + inFollowEvent.getFromUserName());

@@ -17,6 +17,7 @@ import com.jfinal.qyweixin.sdk.api.OAuthApi;
 import com.ludateam.wechat.api.CallService;
 import com.ludateam.wechat.qy.entity.TaxEnterprise;
 import com.ludateam.wechat.qy.vo.BindingRep;
+import com.ludateam.wechat.qy.vo.VipSqidRep;
 import com.platform.annotation.Controller;
 import com.platform.mvc.base.BaseController;
 
@@ -123,6 +124,7 @@ public class QyProduceQuestionnaireController extends BaseController {
 			try {
 				String nsrmc = "";
 				String djxh = "";
+				String sqid = "";
 				String jsonString = callService.getBindingList(userId);
 				BindingRep bindingRep = FastJson.getJson().parse(jsonString,
 						BindingRep.class);
@@ -136,10 +138,16 @@ public class QyProduceQuestionnaireController extends BaseController {
 							break;
 						}
 					}
+        			String vipString = callService.getVipSqid(userId);
+        			VipSqidRep vipRep = FastJson.getJson().parse(vipString, VipSqidRep.class);
+        			if ("0".equals(vipRep.getErrcode())) {
+        				sqid = vipRep.getSqid();
+        			}
 				}
 				setAttr("nsrmc", nsrmc);
 				setAttr("userId", userId);
 				setAttr("djxh", djxh);
+				setAttr("sqid", sqid);
 			} catch (Exception e) {
 				e.printStackTrace();
 			}
