@@ -122,31 +122,12 @@ public class QyProduceQuestionnaireController extends BaseController {
 			log.info("-------------userId--------------------:" + userId);
 			log.info("-------------userId--------------------:" + userId);
 			try {
-				String nsrmc = "";
-				String djxh = "";
 				String sqid = "";
-				String jsonString = callService.getBindingList(userId);
-				BindingRep bindingRep = FastJson.getJson().parse(jsonString,
-						BindingRep.class);
-				if ("0".equals(bindingRep.getErrcode())) {
-					List<TaxEnterprise> bindingList = bindingRep
-							.getBindingList();
-					for (TaxEnterprise taxEnterprise : bindingList) {
-						if ("Y".equals(taxEnterprise.getIsUse())) {
-							nsrmc = taxEnterprise.getNsrmc();
-							djxh = taxEnterprise.getDjxh();
-							break;
-						}
-					}
-        			String vipString = callService.getVipSqid(userId);
-        			VipSqidRep vipRep = FastJson.getJson().parse(vipString, VipSqidRep.class);
-        			if ("0".equals(vipRep.getErrcode())) {
-        				sqid = vipRep.getSqid();
-        			}
+				String jsonString = callService.getSmbsSqid(userId);
+				VipSqidRep vipRep = FastJson.getJson().parse(jsonString, VipSqidRep.class);
+				if ("0".equals(vipRep.getErrcode())) {
+					sqid = vipRep.getSqid();
 				}
-				setAttr("nsrmc", nsrmc);
-				setAttr("userId", userId);
-				setAttr("djxh", djxh);
 				setAttr("sqid", sqid);
 			} catch (Exception e) {
 				e.printStackTrace();

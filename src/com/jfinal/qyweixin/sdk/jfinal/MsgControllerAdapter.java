@@ -62,7 +62,7 @@ public abstract  class MsgControllerAdapter extends MsgController {
 
 	//  关注/取消关注事件
     @Override
-    protected abstract void processInFollowEvent(InFollowEvent inFollowEvent);
+    protected abstract void processInFollowEvent(InFollowEvent inFollowEvent, MessageService messageService);
 
 	 // 自定义菜单事件
     @Override

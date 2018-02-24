@@ -163,9 +163,11 @@ public class QyWeixinMsgController extends MsgControllerAdapter {
      * 实现父类抽方法，处理关注/取消关注消息
      */
     @Override
-    protected void processInFollowEvent(InFollowEvent inFollowEvent) {
+    protected void processInFollowEvent(InFollowEvent inFollowEvent,MessageService messageService) {
         if (InFollowEvent.EVENT_INFOLLOW_SUBSCRIBE.equals(inFollowEvent.getEvent())) {
 			if ("19".equals(inFollowEvent.getAgentId())) {
+				String msgjson = "{\"wxzhid\":\""+inFollowEvent.getFromUserName()+"\",\"fsnr\":\"徐汇区大调研\",\"wxyyid\":19}";
+				messageService.saveSystemMessage(msgjson);
 	            List<com.jfinal.qyweixin.sdk.msg.out.News> articles = new ArrayList<com.jfinal.qyweixin.sdk.msg.out.News>();
 	            com.jfinal.qyweixin.sdk.msg.out.News news = new com.jfinal.qyweixin.sdk.msg.out.News();
 	            news.setTitle("大调研");
@@ -178,8 +180,11 @@ public class QyWeixinMsgController extends MsgControllerAdapter {
 	            render(outMsg);
 			}
 			if ("10".equals(inFollowEvent.getAgentId())) {
+				String content = "尊敬的纳税人：\n       为深化税务系统\"放管服\"改革，进一步优化营商环境，我局推出\"上海徐汇税务号\"微信服务，期待能带给您优质的纳税服务和全新的办税体验！\n                    徐汇区税务局";
+				String msgjson = "{\"wxzhid\":\""+inFollowEvent.getFromUserName()+"\",\"fsnr\":\""+content.replace("\"", "\\\"")+"\",\"wxyyid\":10}";
+				messageService.saveSystemMessage(msgjson);
 	            OutTextMsg outMsg = new OutTextMsg(inFollowEvent);
-	            outMsg.setContent("尊敬的纳税人：\n       为深化税务系统\"放管服\"改革，进一步优化营商环境，我局推出\"上海徐汇税务号\"微信服务，期待能带给您优质的纳税服务和全新的办税体验！\n                    徐汇区税务局");
+	            outMsg.setContent(content);
 				render(outMsg);
 			}
         }// 如果为取消关注事件，将无法接收到传回的信息

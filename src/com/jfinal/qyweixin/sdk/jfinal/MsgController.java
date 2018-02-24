@@ -73,7 +73,7 @@ public abstract class MsgController extends BaseController {
         else if (msg instanceof InLocationMsg)
             processInLocationMsg((InLocationMsg) msg);
         else if (msg instanceof InFollowEvent)
-            processInFollowEvent((InFollowEvent) msg);
+            processInFollowEvent((InFollowEvent) msg,messageService);
         else if (msg instanceof InLocationEvent)
             processInLocationEvent((InLocationEvent) msg);
         else if (msg instanceof InMenuEvent)
@@ -167,7 +167,7 @@ public abstract class MsgController extends BaseController {
     protected abstract void processInLocationMsg(InLocationMsg inLocationMsg);
 
     // 处理接收到的关注/取消关注事件
-    protected abstract void processInFollowEvent(InFollowEvent inFollowEvent);
+    protected abstract void processInFollowEvent(InFollowEvent inFollowEvent,MessageService messageService);
 
     // 处理接收到的上报地理位置事件
     protected abstract void processInLocationEvent(InLocationEvent inLocationEvent);
