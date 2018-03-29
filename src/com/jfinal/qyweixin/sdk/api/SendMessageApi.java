@@ -12,6 +12,7 @@ import com.jfinal.qyweixin.sdk.msg.send.QiYeFileMsg;
 import com.jfinal.qyweixin.sdk.msg.send.QiYeImageMsg;
 import com.jfinal.qyweixin.sdk.msg.send.QiYeMpNewsMsg;
 import com.jfinal.qyweixin.sdk.msg.send.QiYeNewsMsg;
+import com.jfinal.qyweixin.sdk.msg.send.QiYeTextCardMsg;
 import com.jfinal.qyweixin.sdk.msg.send.QiYeTextMsg;
 import com.jfinal.qyweixin.sdk.msg.send.QiYeVideoMsg;
 import com.jfinal.qyweixin.sdk.msg.send.QiYeVoiceMsg;
@@ -96,6 +97,16 @@ public class SendMessageApi {
 	 */
 	public static ApiResult sendFileMsg(QiYeFileMsg file) {
 		String jsonStr = JsonKit.toJson(file);
+		return sendMessage(jsonStr);
+	}
+	
+	/**
+	 * 文本卡片消息
+	 * @param text
+	 * @return
+	 */
+	public static ApiResult sendTextCardMsg(QiYeTextCardMsg textcard) {
+		String jsonStr = JsonKit.toJson(textcard);
 		return sendMessage(jsonStr);
 	}
 	

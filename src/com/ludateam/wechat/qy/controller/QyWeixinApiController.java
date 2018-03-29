@@ -17,8 +17,6 @@ package com.ludateam.wechat.qy.controller;
  */
 
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
 
 import com.jfinal.json.FastJson;
 import com.jfinal.kit.HttpKit;
@@ -26,9 +24,8 @@ import com.jfinal.log.Log;
 import com.jfinal.qyweixin.sdk.api.ApiResult;
 import com.jfinal.qyweixin.sdk.api.SendMessageApi;
 import com.jfinal.qyweixin.sdk.jfinal.ApiController;
-import com.jfinal.qyweixin.sdk.msg.send.Article;
-import com.jfinal.qyweixin.sdk.msg.send.News;
 import com.jfinal.qyweixin.sdk.msg.send.QiYeNewsMsg;
+import com.jfinal.qyweixin.sdk.msg.send.QiYeTextCardMsg;
 import com.jfinal.qyweixin.sdk.msg.send.QiYeTextMsg;
 import com.platform.annotation.Controller;
 
@@ -71,4 +68,15 @@ public class QyWeixinApiController extends ApiController {
         ApiResult sendTextMsg = SendMessageApi.sendNewsMsg(news);
         renderText(sendTextMsg.getJson());
     }
+    
+    /**
+     * 文本卡片消息
+     */
+   public void sendTextcardMessage() {
+       String jsonStr = HttpKit.readData(getRequest());
+       QiYeTextCardMsg textcard = FastJson.getJson().parse(jsonStr, QiYeTextCardMsg.class);
+       ApiResult sendTextMsg = SendMessageApi.sendTextCardMsg(textcard);
+       renderText(sendTextMsg.getJson());
+   }
+   
 }

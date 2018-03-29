@@ -5,5 +5,5 @@ package com.jfinal.qyweixin.sdk.msg.send;
  *
  */
 public enum MessageType {
-	text, music, news, mpnews, image, link, location, video, voice, event, thumb, file;
+	text, music, news, mpnews, image, link, location, video, voice, event, thumb, file, textcard;
 }
