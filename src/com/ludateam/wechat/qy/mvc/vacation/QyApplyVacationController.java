@@ -2,6 +2,9 @@ package com.ludateam.wechat.qy.mvc.vacation;
 
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
+import java.security.MessageDigest;
+
+import org.apache.commons.codec.digest.DigestUtils;
 
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
@@ -11,6 +14,7 @@ import com.jfinal.log.Log;
 import com.jfinal.qyweixin.sdk.api.ApiConfigKit;
 import com.jfinal.qyweixin.sdk.api.ApiResult;
 import com.jfinal.qyweixin.sdk.api.OAuthApi;
+import com.ludateam.wechat.qy.utils.MD5Utils;
 import com.platform.annotation.Controller;
 import com.platform.mvc.base.BaseController;
 
@@ -21,10 +25,12 @@ public class QyApplyVacationController extends BaseController {
 
 	public void index() {
 		try {
-			String redirect_uri = URLEncoder.encode(PropKit.get("domain") + "/wechat/vacation/main", "utf-8");
+			String redirect_uri = URLEncoder.encode(PropKit.get("domain")
+					+ "/wechat/vacation/main", "utf-8");
 			String codeUrl = OAuthApi.getCodeUrl(redirect_uri, "123", true);
 			System.out.println("codeUrl>>>" + codeUrl);
-			HandlerKit.redirect301(codeUrl, getRequest(), getResponse(),new boolean[] { true });
+			HandlerKit.redirect301(codeUrl, getRequest(), getResponse(),
+					new boolean[] { true });
 		} catch (UnsupportedEncodingException e) {
 			e.printStackTrace();
 		}
@@ -47,9 +53,16 @@ public class QyApplyVacationController extends BaseController {
 					userId = object.getString("UserId");
 					// 如果获取userId为空 说明没有关注
 					if (userId != null && !userId.equals("")) {
-						ApiResult toOpenIdApiResult = OAuthApi.ToOpenId("{\"userid\":\""+ userId+ "\",\"agentid\":"+ ApiConfigKit.getApiConfig().getAgentId() + "}");
+						ApiResult toOpenIdApiResult = OAuthApi
+								.ToOpenId("{\"userid\":\""
+										+ userId
+										+ "\",\"agentid\":"
+										+ ApiConfigKit.getApiConfig()
+												.getAgentId() + "}");
 						if (toOpenIdApiResult.isSucceed()) {
-							openid = JSON.parseObject(toOpenIdApiResult.getJson()).getString("openid");
+							openid = JSON.parseObject(
+									toOpenIdApiResult.getJson()).getString(
+									"openid");
 						}
 					} else {
 						openid = object.getString("OpenId");
@@ -57,18 +70,32 @@ public class QyApplyVacationController extends BaseController {
 						// 如果未关�? openid无法转化为userid
 						ApiResult toUserIdApiResult = OAuthApi.ToUserId(json);
 						if (toUserIdApiResult.isSucceed()) {
-							userId = JSON.parseObject(toUserIdApiResult.getJson()).getString("userid");
+							userId = JSON.parseObject(
+									toUserIdApiResult.getJson()).getString(
+									"userid");
 						}
 					}
 				} catch (Exception e) {
 					e.printStackTrace();
 				}
 			}
+			
 			setSessionAttr("userId", userId);
 			setSessionAttr("openId", openid);
-			setAttr("wxzhid", userId);
+			String md5UserId = MD5Utils.encodeString(userId);
+			setAttr("wxzhid", md5UserId);
+			
 			log.info("-------------userId--------------------:" + userId);
+			log.info("-------------userId--------------------:" + userId);
+			log.info("-------------userId--------------------:" + userId);
+			log.info("-------------userId--------------------:" + userId);
+			log.info("-------------md5UserId--------------------:" + md5UserId);
+			log.info("-------------md5UserId--------------------:" + md5UserId);
+			log.info("-------------md5UserId--------------------:" + md5UserId);
+			log.info("-------------md5UserId--------------------:" + md5UserId);
+
 			render("/vacation/index.html");
 		}
 	}
+
 }
