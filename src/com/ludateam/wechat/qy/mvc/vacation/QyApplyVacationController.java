@@ -83,6 +83,7 @@ public class QyApplyVacationController extends BaseController {
 			setSessionAttr("userId", userId);
 			setSessionAttr("openId", openid);
 			String md5UserId = MD5Utils.encodeString(userId);
+			setAttr("userId", userId);
 			setAttr("wxzhid", md5UserId);
 			
 			log.info("-------------userId--------------------:" + userId);
