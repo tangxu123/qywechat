@@ -48,6 +48,36 @@ public class OAuthApi {
 		
 		return sbf.toString();
 	}
+	
+	/**
+	 * 企业获取code
+	 * 
+	 * @param redirectUri 授权后重定向的回调链接地址
+	 * @param state 状态参数
+	 * @param agentid 应用id
+	 * @param isUserInfo 是否获取有信息
+	 * @return 企业用户code
+	 */
+	public static String getCodeUrl(String redirectUri, String state,
+			String agentid, boolean isUserInfo) {
+		String scope = "snsapi_base";
+		if (isUserInfo) {
+			scope = "snsapi_privateinfo";
+		}
+
+		StringBuffer sbf = new StringBuffer();
+		sbf.append(getCodeUrl).append(ApiConfigKit.getApiConfig().getCorpId())
+				.append("&redirect_uri=").append(redirectUri)
+				.append("&response_type=code").append("&agentid=")
+				.append(agentid).append("&scope=").append(scope);
+		if (!StrKit.isBlank(state)) {
+			sbf.append("&state=").append(state);
+		}
+		sbf.append("#wechat_redirect");
+
+		return sbf.toString();
+	}
+	
 	/**
 	 * 根据code获取成员信息
 	 * @param code

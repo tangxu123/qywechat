@@ -20,7 +20,7 @@ public class XhnmhController extends BaseController {
 	   public void index() {
 	        try {
 	            String redirect_uri = URLEncoder.encode(PropKit.get("domain") + "/wechat/xhnmh/main", "utf-8");
-	            String codeUrl = OAuthApi.getCodeUrl(redirect_uri, "123", true);
+	            String codeUrl = OAuthApi.getCodeUrl(redirect_uri, "123","13" ,true);
 	            System.out.println("codeUrl>>>" + codeUrl);
 	            redirect(codeUrl);
 	        } catch (UnsupportedEncodingException e) {

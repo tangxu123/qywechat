@@ -2,9 +2,6 @@ package com.ludateam.wechat.qy.mvc.vacation;
 
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
-import java.security.MessageDigest;
-
-import org.apache.commons.codec.digest.DigestUtils;
 
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
@@ -25,9 +22,8 @@ public class QyApplyVacationController extends BaseController {
 
 	public void index() {
 		try {
-			String redirect_uri = URLEncoder.encode(PropKit.get("domain")
-					+ "/wechat/vacation/main", "utf-8");
-			String codeUrl = OAuthApi.getCodeUrl(redirect_uri, "123", true);
+			String redirect_uri = URLEncoder.encode(PropKit.get("domain") + "/wechat/vacation/main", "utf-8");
+			String codeUrl = OAuthApi.getCodeUrl(redirect_uri, "123", "19", true);
 			System.out.println("codeUrl>>>" + codeUrl);
 			HandlerKit.redirect301(codeUrl, getRequest(), getResponse(),
 					new boolean[] { true });
@@ -84,6 +80,7 @@ public class QyApplyVacationController extends BaseController {
 			setSessionAttr("openId", openid);
 			String md5UserId = MD5Utils.encodeString(userId);
 			setAttr("userId", userId);
+			setAttr("openId", openid);
 			setAttr("wxzhid", md5UserId);
 			
 			log.info("-------------userId--------------------:" + userId);
