@@ -1,0 +1,7 @@
+.picker-calendar-day.picker-calendar-day-today span{
+    background: #65AB79;
+    color: #ffffff;
+}
+#my-input{
+    font-weight: bold
+}
