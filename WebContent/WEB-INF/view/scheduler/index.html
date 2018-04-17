@@ -123,7 +123,7 @@
 </div>
 <div class="popup popup-about">
     <div class="content-block">
-        <p>指派与会人员</p>
+        <p class="item-title">指派与会人员</p>
         <div class="list-block media-list">
             <ul>
                 <li>
@@ -164,8 +164,10 @@
         </div>
         <div class="content-block">
             <div class="row">
-                <div class="col-50"><a href="#" class="button button-big button-fill button-danger close-popup">取消</a></div>
-                <div class="col-50"><a href="#" class="button button-big button-fill button-success close-popup">确定</a></div>
+                <div class="col-50"><a href="#" class="button button-big button-fill button-danger close-popup">取消</a>
+                </div>
+                <div class="col-50"><a href="#" class="button button-big button-fill button-success close-popup">确定</a>
+                </div>
             </div>
         </div>
     </div>
@@ -185,7 +187,6 @@
         $("#my-input").calendar({
 //            value: ['2017-7-25'],
             onDayClick: function (p, dayContainer, year, month, day) {
-
                 $.alert(day);
             },
             onMonthYearChangeEnd: function (o, y, m) {
@@ -203,29 +204,38 @@
         init(new Date().getFullYear(), new Date().getMonth() + 1);
     });
 
+    function getData(y, m) {
+        $.ajax({
+            url: '/wechat/myscheduler/getSchedules', method: "POST", data: {year: y, month: m},
+            success: function (data, textStatus, jqXHR) {
+                console.info(data);
+                setSchedule(y, m, data);
+            }
+        });
+    }
+
     function init(y, m) { // 年 ， 月
         //$.alert(y , m);
-
-        //TODO ajax
-        var d = [{'d': '2018-3-20', 'count': 2}, {'d': '2018-3-16', 'count': 6}, {
-            'd': '2018-3-25',
-            'count': 2
-        }, {'d': '2018-3-12', 'count': 5}];
-
-        /*  var t_year = new Date().getFullYear();
-          var t_month = new Date().getMonth() + 1;*/
+        getData(y, m);
+        /* var d = [{'d': '2018-3-20', 'count': 2}, {'d': '2018-3-16', 'count': 6}, {
+             'd': '2018-3-25',
+             'count': 2
+         }, {'d': '2018-3-12', 'count': 5}];*/
 
 
-        setSchedule(y, m, d);
     }
 
     function setSchedule(y, m, d) {
         $("." + y).remove();
-        var t_day = new Date().getDate();
         $.each(d, function (index, v) {
             var temp_date = new Date(v.d);
 
-            if (temp_date.getDate() < t_day) {
+            v.d = temp_date.getFullYear() + "-" + temp_date.getMonth() + "-" + temp_date.getDate();
+
+            var date = new Date();
+            var t = date.getFullYear() + "/" + (date.getMonth() + 1) + "/" + date.getDate();
+
+            if (temp_date < new Date(t)) {
                 $(".picker-calendar-day[data-date='" + v.d + "']").not(".picker-calendar-day-prev").not(".picker-calendar-day-next").append("<div class='" + y + "' style='width: 15px;height: 15px;line-height: 15px;position:relative; border-radius:100%;top: -8px;left: -7px; color:white;background: gray'>" + v.count + "</div>");
             } else {
                 $(".picker-calendar-day[data-date='" + v.d + "']").not(".picker-calendar-day-prev").not(".picker-calendar-day-next").append("<div class='" + y + "' style='width: 15px;height: 15px;line-height: 15px;position:relative; border-radius:100%;top: -8px;left: -7px; color:white;background: red'>" + v.count + "</div>");
@@ -236,19 +246,16 @@
     $(document).on('refresh', '.pull-to-refresh-content', function (e) {
         // 模拟2s的加载过程
         //setTimeout(function () {
-        //TODO ajax 刷新
+        //TODO AJAX 刷新
         var current_year = $(".picker-calendar-month-current").attr('data-year');
-        var current_month = $(".picker-calendar-month-current").attr('data-month') + 1;
+        var current_month = $(".picker-calendar-month-current").attr('data-month') / 1 + 1;
 
-        var t = new Date().getFullYear() + "-" + new Date().getMonth() + "-" + new Date().getDate();
+        console.info(current_month);
+        //var t = new Date().getFullYear() + "-" + new Date().getMonth() + "-" + new Date().getDate();
 
-        var d = [{'d': '2018-3-20', 'count': 2}, {'d': '2018-3-16', 'count': 6}, {
-            'd': '2018-3-25',
-            'count': 2
-        }, {'d': '2018-3-12', 'count': 5}];
-        d.push({'d': t, 'count': parseInt(Math.random() * 5, 10)});
+        getData(current_year, current_month);
 
-        setSchedule(current_year, current_month, d);
+        //setSchedule(current_year, current_month, d);
         // 加载完毕需要重置
         $.pullToRefreshDone('.pull-to-refresh-content');
         //}, 2000);
@@ -256,14 +263,14 @@
 
     $(".button-success.close-popup").on('click', function () {
         //获取选中的人员
-        $.each($("input:checkbox[name='checkbox']:checked"),function (index,v) {
+        $.each($("input:checkbox[name='checkbox']:checked"), function (index, v) {
             console.info($(v).val());
         });
     });
     $(".button-danger.close-popup").on('click', function () {
 
-        $.each($("input:checkbox[name='checkbox']"),function (index,v) {
-            $(v).prop("checked",false);
+        $.each($("input:checkbox[name='checkbox']"), function (index, v) {
+            $(v).prop("checked", false);
         });
     });
     /*$(document).on('click', '.create-actions', function () {
