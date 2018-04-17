@@ -3,28 +3,28 @@
 <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
-  <!--  <title>我的待办</title>-->
+    <!--  <title>我的待办</title>-->
     <meta name="viewport" content="initial-scale=1, maximum-scale=1">
     <link rel="shortcut icon" href="/favicon.ico">
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black">
 
-    <link rel="stylesheet" href="//g.alicdn.com/msui/sm/0.6.2/css/sm.min.css">
-    <link rel="stylesheet" href="//g.alicdn.com/msui/sm/0.6.2/css/sm-extend.min.css">
-    <link rel="stylesheet" href="${cxt!}/ui/icon/iconfont.css" >
-    <style>
-
-
-    </style>
+    <!--   <link rel="stylesheet" href="//g.alicdn.com/msui/sm/0.6.2/css/sm.min.css">
+       <link rel="stylesheet" href="//g.alicdn.com/msui/sm/0.6.2/css/sm-extend.min.css">-->
+    <link rel="stylesheet" href="${cxt!}/static/light7/css/light7.min.css">
+    <link rel="stylesheet" href="${cxt!}/static/light7/css/light7-swiper.min.css">
+    <link rel="stylesheet" href="${cxt!}/ui/icon/iconfont.css">
+    <link rel="stylesheet" href="${cxt!}/static/schedule/app.css">
 </head>
 <body>
 
 <div class="page-group">
     <div class="page page-current">
+
         <header class="bar bar-nav">
             <a class="icon icon-left pull-left"></a>
-            <a class="icon icon-friends pull-right create-actions"></a>
-            <h1 class="title">我的待办 </h1>
+            <!--<a class="icon icon-friends pull-right create-actions"></a>-->
+            <h1 class="title">会议管理 </h1>
         </header>
 
         <div class="content pull-to-refresh-content">
@@ -33,11 +33,58 @@
                 <div class="pull-to-refresh-arrow"></div>
             </div>
             <div id="my-input"></div>
-            <div class="content-block-title">07月16日 周日 <a href="${cxt!}/wechat/myscheduler/add" external>
+            <div class="content-block-title">今天 <!--<a href="${cxt!}/wechat/myscheduler/add" external>
+                <img src="${cxt!}/ui/add.png" style="width: 22px;height: 22px;float: right">-->
+                </a></div>
+            <div class="list-block">
+                <ul>
+                    <li class="item-content item-link  open-popup open-about" data-popup=".popup-about">
+                        <div class="item-media"><i class="icon iconfont icon-huodongxiangqu" style="color: green"></i>
+                        </div>
+                        <div class="item-inner">
+                            <div class="item-title">双创工作会议</div>
+                            <div class="item-subtitle">10:30</div>
+                        </div>
+                    </li>
+                    <li class="item-content item-link open-popup open-about">
+                        <div class="item-media"><i class="icon iconfont icon-huodongxiangqu" style="color: red"></i>
+                        </div>
+                        <div class="item-inner  ">
+                            <div class="item-title ">部门会议</div>
+                            <div class="item-subtitle">13:30</div>
+                        </div>
+                    </li>
+                </ul>
+            </div>
+            <div class="content-block-title">明天</div>
+            <div class="list-block">
+                <ul>
+                    <div class="card-content">
+                        <div class="card-content-inner">
+                            <p class="color-gray" align="center">暂无会议</p>
+                        </div>
+                    </div>
+                </ul>
+            </div>
+            <!--<div class="content-block-title">07月17日 周一 <a href="${cxt!}/wechat/myscheduler/add" external>
                 <img src="${cxt!}/ui/add.png" style="width: 22px;height: 22px;float: right">
             </a></div>
             <div class="list-block">
                 <ul>
+                    <li class="item-content">
+                        <div class="item-media"><i class="icon iconfont icon-huodongxiangqu" style="color: red"></i></div>
+                        <div class="item-inner">
+                            <div class="item-title">待办事项名称</div>
+
+                        </div>
+                    </li>
+                    <li class="item-content">
+                        <div class="item-media"><i class="icon iconfont icon-huodongxiangqu" style="color: red"></i></div>
+                        <div class="item-inner">
+                            <div class="item-title">待办事项名称</div>
+
+                        </div>
+                    </li>
                     <li class="item-content">
                         <div class="item-media"><i class="icon iconfont icon-huodongxiangqu" style="color: green"></i></div>
                         <div class="item-inner">
@@ -46,72 +93,90 @@
                         </div>
                     </li>
                     <li class="item-content">
-                        <div class="item-media"><i class="icon iconfont icon-huodongxiangqu" style="color: red"></i></div>
+                        <div class="item-media"><i class="icon iconfont icon-huodongxiangqu" style="color: green"></i></div>
+                        <div class="item-inner">
+                            <div class="item-title">待办事项名称</div>
+
+                        </div>
+                    </li>
+                    <li class="item-content">
+                        <div class="item-media"><i class="icon iconfont icon-huodongxiangqu" style="color: green"></i></div>
+                        <div class="item-inner">
+                            <div class="item-title">待办事项名称</div>
+
+                        </div>
+                    </li>
+                    <li class="item-content">
+                        <div class="item-media"><i class="icon iconfont icon-huodongxiangqu" style="color: green"></i></div>
                         <div class="item-inner">
                             <div class="item-title">待办事项名称</div>
 
                         </div>
                     </li>
                 </ul>
-            </div>
-            <div class="content-block-title">07月17日 周一 <a href="${cxt!}/wechat/myscheduler/add" external>
-                <img src="${cxt!}/ui/add.png" style="width: 22px;height: 22px;float: right">
-            </a></div>
-            <div class="list-block">
-                <ul>
-                    <li class="item-content">
-                        <div class="item-media"><i class="icon iconfont icon-huodongxiangqu" style="color: red"></i></div>
-                        <div class="item-inner">
-                            <div class="item-title">待办事项名称</div>
-
-                        </div>
-                    </li>
-                    <li class="item-content">
-                        <div class="item-media"><i class="icon iconfont icon-huodongxiangqu" style="color: red"></i></div>
-                        <div class="item-inner">
-                            <div class="item-title">待办事项名称</div>
-
-                        </div>
-                    </li>
-                    <li class="item-content">
-                        <div class="item-media"><i class="icon iconfont icon-huodongxiangqu" style="color: green"></i></div>
-                        <div class="item-inner">
-                            <div class="item-title">待办事项名称</div>
-
-                        </div>
-                    </li>
-                    <li class="item-content">
-                        <div class="item-media"><i class="icon iconfont icon-huodongxiangqu" style="color: green"></i></div>
-                        <div class="item-inner">
-                            <div class="item-title">待办事项名称</div>
-
-                        </div>
-                    </li>
-                    <li class="item-content">
-                        <div class="item-media"><i class="icon iconfont icon-huodongxiangqu" style="color: green"></i></div>
-                        <div class="item-inner">
-                            <div class="item-title">待办事项名称</div>
-
-                        </div>
-                    </li>
-                    <li class="item-content">
-                        <div class="item-media"><i class="icon iconfont icon-huodongxiangqu" style="color: green"></i></div>
-                        <div class="item-inner">
-                            <div class="item-title">待办事项名称</div>
-
-                        </div>
-                    </li>
-                </ul>
-            </div>
+            </div>-->
         </div>
 
 
     </div>
-</div>
 
-<script type='text/javascript' src='//g.alicdn.com/sj/lib/zepto/zepto.min.js' charset='utf-8'></script>
+</div>
+<div class="popup popup-about">
+    <div class="content-block">
+        <p>指派与会人员</p>
+        <div class="list-block media-list">
+            <ul>
+                <li>
+                    <label class="label-checkbox item-content">
+                        <input name="checkbox" type="checkbox" value="石头">
+                        <div class="item-media"><i class="icon icon-form-checkbox"></i></div>
+                        <div class="item-inner">
+                            <div class="item-title-row">
+                                <div class="item-title">石头</div>
+                            </div>
+                        </div>
+                    </label>
+
+                </li>
+                <li>
+                    <label class="label-checkbox item-content">
+                        <input name="checkbox" type="checkbox" value="剪刀">
+                        <div class="item-media"><i class="icon icon-form-checkbox"></i></div>
+                        <div class="item-inner">
+                            <div class="item-title-row">
+                                <div class="item-title">剪刀</div>
+                            </div>
+                        </div>
+                    </label>
+                </li>
+                <li>
+                    <label class="label-checkbox item-content">
+                        <input name="checkbox" type="checkbox" value="布">
+                        <div class="item-media"><i class="icon icon-form-checkbox"></i></div>
+                        <div class="item-inner">
+                            <div class="item-title-row">
+                                <div class="item-title">布</div>
+                            </div>
+                        </div>
+                    </label>
+                </li>
+            </ul>
+        </div>
+        <div class="content-block">
+            <div class="row">
+                <div class="col-50"><a href="#" class="button button-big button-fill button-danger close-popup">取消</a></div>
+                <div class="col-50"><a href="#" class="button button-big button-fill button-success close-popup">确定</a></div>
+            </div>
+        </div>
+    </div>
+</div>
+<script type='text/javascript' src='${cxt!}/static/light7/js/jquery-3.3.1.min.js' charset='utf-8'></script>
+<script type='text/javascript' src='${cxt!}/static/light7/js/light7.min.js' charset='utf-8'></script>
+<script type='text/javascript' src='${cxt!}/static/light7/js/light7-swiper.min.js' charset='utf-8'></script>
+<script type='text/javascript' src='${cxt!}/static/light7/js/i18n/cn.js' charset='utf-8'></script>
+<!--<script type='text/javascript' src='//g.alicdn.com/sj/lib/zepto/zepto.min.js' charset='utf-8'></script>
 <script type='text/javascript' src='//g.alicdn.com/msui/sm/0.6.2/js/sm.min.js' charset='utf-8'></script>
-<script type='text/javascript' src='//g.alicdn.com/msui/sm/0.6.2/js/sm-extend.min.js' charset='utf-8'></script>
+<script type='text/javascript' src='//g.alicdn.com/msui/sm/0.6.2/js/sm-extend.min.js' charset='utf-8'></script>-->
 <script>
     //打开自动初始化页面的功能
     //建议不要打开自动初始化，而是自己调用 $.init 方法完成初始化
@@ -127,36 +192,81 @@
                 init(y, m + 1);
             }
         });
-       /* $(".picker-calendar-day").live("click", function () {
-            var day = $(this).attr('data-day');
-            var month = $(this).attr('data-month');
-            var year = $(this).attr('data-year');
-            var date = $(this).attr('data-date');
-            $.alert(date);
-        });*/
+        /* $(".picker-calendar-day").live("click", function () {
+             var day = $(this).attr('data-day');
+             var month = $(this).attr('data-month');
+             var year = $(this).attr('data-year');
+             var date = $(this).attr('data-date');
+             $.alert(date);
+         });*/
 
         init(new Date().getFullYear(), new Date().getMonth() + 1);
     });
-    function init(y, m) {
-         $("." + y).remove();
-        //TODO ajax
-        var d = [{'d': '2017-6-16', 'count': 2}, {'d': '2017-6-17', 'count': 6}, {
-            'd': '2017-6-25',
-            'count': 2
-        }, {'d': '2017-6-12', 'count': 5}];
 
+    function init(y, m) { // 年 ， 月
+        //$.alert(y , m);
+
+        //TODO ajax
+        var d = [{'d': '2018-3-20', 'count': 2}, {'d': '2018-3-16', 'count': 6}, {
+            'd': '2018-3-25',
+            'count': 2
+        }, {'d': '2018-3-12', 'count': 5}];
+
+        /*  var t_year = new Date().getFullYear();
+          var t_month = new Date().getMonth() + 1;*/
+
+
+        setSchedule(y, m, d);
+    }
+
+    function setSchedule(y, m, d) {
+        $("." + y).remove();
+        var t_day = new Date().getDate();
         $.each(d, function (index, v) {
-            $(".picker-calendar-day[data-date='" + v.d + "']").not(".picker-calendar-day-prev").not(".picker-calendar-day-next").append("<div class='" + y + "' style='width: 15px;height: 15px;line-height: 15px;position:relative; border-radius:100%;top: -8px; color:white;background: red'>" + v.count + "</div>");
+            var temp_date = new Date(v.d);
+
+            if (temp_date.getDate() < t_day) {
+                $(".picker-calendar-day[data-date='" + v.d + "']").not(".picker-calendar-day-prev").not(".picker-calendar-day-next").append("<div class='" + y + "' style='width: 15px;height: 15px;line-height: 15px;position:relative; border-radius:100%;top: -8px;left: -7px; color:white;background: gray'>" + v.count + "</div>");
+            } else {
+                $(".picker-calendar-day[data-date='" + v.d + "']").not(".picker-calendar-day-prev").not(".picker-calendar-day-next").append("<div class='" + y + "' style='width: 15px;height: 15px;line-height: 15px;position:relative; border-radius:100%;top: -8px;left: -7px; color:white;background: red'>" + v.count + "</div>");
+            }
         });
     }
-    $(document).on('refresh', '.pull-to-refresh-content',function(e) {
+
+    $(document).on('refresh', '.pull-to-refresh-content', function (e) {
         // 模拟2s的加载过程
-        setTimeout(function() {
-            // 加载完毕需要重置
-            $.pullToRefreshDone('.pull-to-refresh-content');
-        }, 2000);
+        //setTimeout(function () {
+        //TODO ajax 刷新
+        var current_year = $(".picker-calendar-month-current").attr('data-year');
+        var current_month = $(".picker-calendar-month-current").attr('data-month') + 1;
+
+        var t = new Date().getFullYear() + "-" + new Date().getMonth() + "-" + new Date().getDate();
+
+        var d = [{'d': '2018-3-20', 'count': 2}, {'d': '2018-3-16', 'count': 6}, {
+            'd': '2018-3-25',
+            'count': 2
+        }, {'d': '2018-3-12', 'count': 5}];
+        d.push({'d': t, 'count': parseInt(Math.random() * 5, 10)});
+
+        setSchedule(current_year, current_month, d);
+        // 加载完毕需要重置
+        $.pullToRefreshDone('.pull-to-refresh-content');
+        //}, 2000);
     });
-    $(document).on('click','.create-actions',function () {
+
+    $(".button-success.close-popup").on('click', function () {
+        //获取选中的人员
+        $.each($("input:checkbox[name='checkbox']:checked"),function (index,v) {
+            console.info($(v).val());
+        });
+    });
+    $(".button-danger.close-popup").on('click', function () {
+
+        $.each($("input:checkbox[name='checkbox']"),function (index,v) {
+            $(v).prop("checked",false);
+        });
+    });
+    /*$(document).on('click', '.create-actions', function () {
         var buttons1 = [
             {
                 text: '请选择',
@@ -164,14 +274,14 @@
             },
             {
                 text: '我的待办',
-               /* bold: true,*/
-                onClick: function() {
+                /!* bold: true,*!/
+                onClick: function () {
                     $.alert("你选择了“我的待办“");
                 }
             },
             {
                 text: '下属待办',
-                onClick: function() {
+                onClick: function () {
                     $.alert("你选择了“下属待办“");
                 }
             }
@@ -184,7 +294,7 @@
         ];
         var groups = [buttons1, buttons2];
         $.actions(groups);
-    });
+    });*/
 </script>
 </body>
 </html>
