@@ -24,6 +24,7 @@ import com.jfinal.log.Log;
 import com.jfinal.qyweixin.sdk.api.ApiConfigKit;
 import com.jfinal.qyweixin.sdk.api.ApiResult;
 import com.jfinal.qyweixin.sdk.api.OAuthApi;
+import com.ludateam.wechat.qy.entity.Scheduler;
 import com.platform.annotation.Controller;
 import com.platform.mvc.base.BaseController;
 import com.platform.mvc.base.BaseModel;
@@ -32,11 +33,17 @@ import org.apache.xmlbeans.impl.jam.internal.elements.SourcePositionImpl;
 import java.io.UnsupportedEncodingException;
 import java.net.SocketPermission;
 import java.net.URLEncoder;
+import java.util.*;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
+
+import static java.util.Comparator.comparingLong;
+import static java.util.stream.Collectors.collectingAndThen;
+import static java.util.stream.Collectors.toCollection;
 
 @Controller("/wechat/myscheduler")
 public class QySchedulerController extends BaseController {
     private static final Log log = Log.getLog(QySchedulerController.class);
-
 
 
     public void index() {
@@ -50,12 +57,12 @@ public class QySchedulerController extends BaseController {
         }*/
 
 
-
         setAttr("userId", "");
         setAttr("openid", "");
         render("/scheduler/index.html");
 
     }
+
     public void main() {
         String userId = null;
         String deviceId = null;
@@ -111,7 +118,36 @@ public class QySchedulerController extends BaseController {
             render("/scheduler/index.html");
         }
     }
+
     public void add() {
         render("/scheduler/add.html");
     }
+
+    public void getSchedules() {
+        String year = getPara("year");
+        Integer month = Integer.parseInt(getPara("month"));
+
+        List<Scheduler> schedulerlist = new ArrayList<Scheduler>();
+
+        for (int i = 0; i < 10; i++) {
+            Scheduler scheduler = new Scheduler();
+            scheduler.setD(year + "/" +  month   + "/" + new Random().nextInt(30));
+            scheduler.setCount(i);
+            schedulerlist.add(scheduler);
+        }
+        List<Scheduler> returnlist = new ArrayList<>();
+
+        Map<String, Integer> s = schedulerlist.stream().collect(Collectors.groupingBy(Scheduler::getD, Collectors.summingInt(Scheduler::getCount)));
+
+        s.forEach((k,v)->{
+            Scheduler scheduler = new Scheduler();
+            scheduler.setD(k);
+            scheduler.setCount(v);
+            returnlist.add(scheduler );
+        });
+
+        renderJson(returnlist);
+    }
+
+
 }
