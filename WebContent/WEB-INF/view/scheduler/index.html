@@ -29,7 +29,7 @@
         <h1 class="title">会议管理 </h1>
     </header>
 
-    <div class="content   pull-to-refresh-content">
+    <div class="content   pull-to-refresh-content" data-ptr-distance="55">
         <div class="pull-to-refresh-layer">
             <div class="preloader"></div>
             <div class="pull-to-refresh-arrow"></div>
@@ -37,7 +37,7 @@
         <div class="content-inner">
             <div id="my-input"></div>
 
-            <div id="content" style="height: 200px;overflow: auto;position:relative" class="infinite-scroll"></div>
+            <div id="content" style="height: 500px;overflow: auto;position:relative" class="infinite-scroll"></div>
         </div>
 
     </div>
@@ -108,6 +108,7 @@
     //打开自动初始化页面的功能
     //建议不要打开自动初始化，而是自己调用 $.init 方法完成初始化
     $.init();
+
     $(function () {
         $("#my-input").calendar({
             onDayClick: function (p, dayContainer, year, month, day) {
@@ -139,7 +140,7 @@
                 meeting_data = data.meetings;
                 tpl.serv('/wechat/myscheduler/getTpl', meeting_data, function (html) {
                     $("#content").html(html);
-                    var p = y+"-" + m + "-" + d;
+                    var p = y + "-" + m + "-" + d;
                     console.info(p);
                     console.info($(".content-block-title[name='" + p + "']").position().top);
                     $("#content").animate({scrollTop: 0}, 1).animate({scrollTop: $(".content-block-title[name='" + p + "']").position().top}, 1000);
