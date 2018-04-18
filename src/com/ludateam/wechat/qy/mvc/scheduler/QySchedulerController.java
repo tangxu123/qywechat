@@ -24,7 +24,10 @@ import com.jfinal.log.Log;
 import com.jfinal.qyweixin.sdk.api.ApiConfigKit;
 import com.jfinal.qyweixin.sdk.api.ApiResult;
 import com.jfinal.qyweixin.sdk.api.OAuthApi;
+import com.ludateam.wechat.qy.entity.Meeting;
+import com.ludateam.wechat.qy.entity.MeetingData;
 import com.ludateam.wechat.qy.entity.Scheduler;
+import com.ludateam.wechat.qy.entity.SchedulerData;
 import com.platform.annotation.Controller;
 import com.platform.mvc.base.BaseController;
 import com.platform.mvc.base.BaseModel;
@@ -33,10 +36,13 @@ import org.apache.xmlbeans.impl.jam.internal.elements.SourcePositionImpl;
 import java.io.UnsupportedEncodingException;
 import java.net.SocketPermission;
 import java.net.URLEncoder;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.*;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
+import static java.util.Comparator.comparing;
 import static java.util.Comparator.comparingLong;
 import static java.util.stream.Collectors.collectingAndThen;
 import static java.util.stream.Collectors.toCollection;
@@ -45,6 +51,7 @@ import static java.util.stream.Collectors.toCollection;
 public class QySchedulerController extends BaseController {
     private static final Log log = Log.getLog(QySchedulerController.class);
 
+    SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
 
     public void index() {
        /* try {
@@ -123,31 +130,160 @@ public class QySchedulerController extends BaseController {
         render("/scheduler/add.html");
     }
 
-    public void getSchedules() {
-        String year = getPara("year");
-        Integer month = Integer.parseInt(getPara("month"));
+    public void getTpl() {
+        render("/scheduler/tpl_data.html");
+    }
 
-        List<Scheduler> schedulerlist = new ArrayList<Scheduler>();
-
-        for (int i = 0; i < 10; i++) {
-            Scheduler scheduler = new Scheduler();
-            scheduler.setD(year + "/" +  month   + "/" + new Random().nextInt(30));
-            scheduler.setCount(i);
-            schedulerlist.add(scheduler);
+    /**
+     * 获取所在周日期
+     *
+     * @param dataStr
+     * @return
+     */
+    public List<String> getFirstAndLastOfWeek(String dataStr) throws ParseException {
+        List<String> returnList = new ArrayList();
+        Calendar temp;
+        Calendar cal = Calendar.getInstance();
+        cal.setTime(new SimpleDateFormat("yyyy-MM-dd").parse(dataStr));
+        int d = 0;
+        if (cal.get(Calendar.DAY_OF_WEEK) == 1) {
+            d = -6;
+        } else {
+            d = 2 - cal.get(Calendar.DAY_OF_WEEK);
         }
+        cal.add(Calendar.DAY_OF_WEEK, d);
+        // 所在周开始日期
+        String data1 = new SimpleDateFormat("yyyy-MM-dd").format(cal.getTime());
+        returnList.add(data1);
+
+        for (int i = 1; i < 7; i++) {
+            temp = (Calendar) cal.clone();
+            temp.add(Calendar.DAY_OF_WEEK, i);
+            returnList.add(new SimpleDateFormat("yyyy-MM-dd").format(temp.getTime()));
+
+        }
+        return returnList;
+    }
+
+    public List<String> getFirstAndLastOfMonth(String dataStr) throws ParseException {
+        List<String> returnList = new ArrayList();
+        Calendar temp;
+        SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
+        Calendar c = Calendar.getInstance();
+        c.setTime(new SimpleDateFormat("yyyy-MM-dd").parse(dataStr));
+        c.add(Calendar.MONTH, 0);
+        //设置为1号,当前日期既为本月第一天
+        c.set(Calendar.DAY_OF_MONTH, 1);
+        String first = format.format(c.getTime());
+
+        for (int i = 1; i <= c.getActualMaximum(Calendar.DAY_OF_MONTH); i++) {
+            temp = (Calendar) c.clone();
+            temp.set(Calendar.DATE, i);
+            returnList.add(format.format(temp.getTime()));
+        }
+        //获取当前月最后一天
+        Calendar ca = Calendar.getInstance();
+        ca.set(Calendar.DAY_OF_MONTH, ca.getActualMaximum(Calendar.DAY_OF_MONTH));
+        String last = format.format(ca.getTime());
+
+        return returnList;
+    }
+
+    /**
+     * 模拟数据
+     *
+     * @return
+     */
+    private List<Meeting> getMockData(List<String> weekDays, List<String> monthDays) {
+        List<Meeting> returnMeetingList = new ArrayList<>();
+        System.out.println(weekDays);
+        System.out.println(monthDays);
+
+        for (int i = 0; i < 100; i++) {
+            Meeting meeting = new Meeting();
+            meeting.setHydd("测试会议地点-" + i);
+            meeting.setHymc("测试会议名称-" + i);
+            meeting.setHynr("测试会议内容-" + i);
+            Calendar cal = Calendar.getInstance();
+
+            int randomIndex = new Random().nextInt(monthDays.size());
+
+            try {
+                cal.setTime(new SimpleDateFormat("yyyy-MM-dd").parse(monthDays.get(randomIndex)));
+                cal.add(Calendar.HOUR, new Random().nextInt(13));
+
+            } catch (ParseException e) {
+                e.printStackTrace();
+            }
+            meeting.setKssj(cal.getTime());
+            meeting.setJssj(cal.getTime());
+            meeting.setShow_kssj(new SimpleDateFormat("HH:mm").format(cal.getTime()));
+            meeting.setCyr("参与人 - " + i);
+
+            returnMeetingList.add(meeting);
+        }
+
+
+        return returnMeetingList;
+    }
+
+    public void getSchedules() throws ParseException {
+        //年
+        Integer year = Integer.parseInt(getPara("year"));
+        //月
+        Integer month = Integer.parseInt(getPara("month"));
+        //日
+        Integer day = Integer.parseInt(getPara("day"));
+
+        Calendar now = Calendar.getInstance();
+        now.set(year, month - 1, day);
+
+        List<String> weekDays = getFirstAndLastOfWeek(format.format(now.getTime()));
+        List<String> monthDays = getFirstAndLastOfMonth(format.format(now.getTime()));
+        //模拟数据
+        List<Meeting> MOCK_DATA = getMockData(weekDays, monthDays);
+
         List<Scheduler> returnlist = new ArrayList<>();
-
-        Map<String, Integer> s = schedulerlist.stream().collect(Collectors.groupingBy(Scheduler::getD, Collectors.summingInt(Scheduler::getCount)));
-
-        s.forEach((k,v)->{
+        MOCK_DATA.stream().collect(Collectors.groupingBy(p -> {
+            return format.format(p.getKssj());
+        }, Collectors.counting())).forEach((k, v) -> {
             Scheduler scheduler = new Scheduler();
             scheduler.setD(k);
             scheduler.setCount(v);
-            returnlist.add(scheduler );
+            returnlist.add(scheduler);
         });
 
-        renderJson(returnlist);
+
+        List<MeetingData> meetingDataList = new ArrayList<>();
+        //日历下方会议列表只显示本周
+        List<Meeting> thisweekmeetinglist = MOCK_DATA.stream().filter(s -> {
+            return weekDays.contains(new SimpleDateFormat("yyyy-MM-dd").format(s.getKssj()));
+        }).collect(Collectors.toList());
+
+        thisweekmeetinglist.stream().collect(Collectors.groupingBy(p->{ return new SimpleDateFormat("yyyy-M-d").format(p.getKssj());})).forEach((k, v) -> {
+            MeetingData meetingData = new MeetingData();
+            meetingData.setTitle(k);
+            try {
+                meetingData.setTitledate(new SimpleDateFormat("yyyy-M-d").parse(k));
+            } catch (ParseException e) {
+                e.printStackTrace();
+            }
+
+            meetingData.setMeetingList(v);
+            meetingDataList.add(meetingData);
+        });
+
+        List<MeetingData> sortedMeetingDataList = meetingDataList.stream().sorted(comparing(MeetingData::getTitledate)).collect(Collectors.toList());
+
+
+        SchedulerData schedulerData = new SchedulerData();
+        schedulerData.setData(returnlist);
+        schedulerData.setMeetings(sortedMeetingDataList);
+        renderJson(schedulerData);
     }
 
-
+    public static void main(String[] args) throws ParseException {
+        QySchedulerController controller = new QySchedulerController();
+        System.out.println(controller.getFirstAndLastOfMonth("2018-02-22"));
+    }
 }
