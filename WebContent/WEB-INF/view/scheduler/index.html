@@ -15,112 +15,37 @@
     <link rel="stylesheet" href="${cxt!}/static/light7/css/light7-swiper.min.css">
     <link rel="stylesheet" href="${cxt!}/ui/icon/iconfont.css">
     <link rel="stylesheet" href="${cxt!}/static/schedule/app.css">
+    <script src="${cxt!}/static/js/tpl.js"></script>
+
 </head>
 <body>
 
-<div class="page-group">
-    <div class="page page-current">
 
-        <header class="bar bar-nav">
-            <a class="icon icon-left pull-left"></a>
-            <!--<a class="icon icon-friends pull-right create-actions"></a>-->
-            <h1 class="title">会议管理 </h1>
-        </header>
+<div class="page   page-current">
 
-        <div class="content pull-to-refresh-content">
-            <div class="pull-to-refresh-layer">
-                <div class="preloader"></div>
-                <div class="pull-to-refresh-arrow"></div>
-            </div>
-            <div id="my-input"></div>
-            <div class="content-block-title">今天 <!--<a href="${cxt!}/wechat/myscheduler/add" external>
-                <img src="${cxt!}/ui/add.png" style="width: 22px;height: 22px;float: right">-->
-                </a></div>
-            <div class="list-block">
-                <ul>
-                    <li class="item-content item-link  open-popup open-about" data-popup=".popup-about">
-                        <div class="item-media"><i class="icon iconfont icon-huodongxiangqu" style="color: green"></i>
-                        </div>
-                        <div class="item-inner">
-                            <div class="item-title">双创工作会议</div>
-                            <div class="item-subtitle">10:30</div>
-                        </div>
-                    </li>
-                    <li class="item-content item-link open-popup open-about">
-                        <div class="item-media"><i class="icon iconfont icon-huodongxiangqu" style="color: red"></i>
-                        </div>
-                        <div class="item-inner  ">
-                            <div class="item-title ">部门会议</div>
-                            <div class="item-subtitle">13:30</div>
-                        </div>
-                    </li>
-                </ul>
-            </div>
-            <div class="content-block-title">明天</div>
-            <div class="list-block">
-                <ul>
-                    <div class="card-content">
-                        <div class="card-content-inner">
-                            <p class="color-gray" align="center">暂无会议</p>
-                        </div>
-                    </div>
-                </ul>
-            </div>
-            <!--<div class="content-block-title">07月17日 周一 <a href="${cxt!}/wechat/myscheduler/add" external>
-                <img src="${cxt!}/ui/add.png" style="width: 22px;height: 22px;float: right">
-            </a></div>
-            <div class="list-block">
-                <ul>
-                    <li class="item-content">
-                        <div class="item-media"><i class="icon iconfont icon-huodongxiangqu" style="color: red"></i></div>
-                        <div class="item-inner">
-                            <div class="item-title">待办事项名称</div>
+    <header class="bar bar-nav">
+        <!-- <a class="icon icon-left pull-left"></a>-->
+        <!--<a class="icon icon-friends pull-right create-actions"></a>-->
+        <h1 class="title">会议管理 </h1>
+    </header>
 
-                        </div>
-                    </li>
-                    <li class="item-content">
-                        <div class="item-media"><i class="icon iconfont icon-huodongxiangqu" style="color: red"></i></div>
-                        <div class="item-inner">
-                            <div class="item-title">待办事项名称</div>
-
-                        </div>
-                    </li>
-                    <li class="item-content">
-                        <div class="item-media"><i class="icon iconfont icon-huodongxiangqu" style="color: green"></i></div>
-                        <div class="item-inner">
-                            <div class="item-title">待办事项名称</div>
-
-                        </div>
-                    </li>
-                    <li class="item-content">
-                        <div class="item-media"><i class="icon iconfont icon-huodongxiangqu" style="color: green"></i></div>
-                        <div class="item-inner">
-                            <div class="item-title">待办事项名称</div>
-
-                        </div>
-                    </li>
-                    <li class="item-content">
-                        <div class="item-media"><i class="icon iconfont icon-huodongxiangqu" style="color: green"></i></div>
-                        <div class="item-inner">
-                            <div class="item-title">待办事项名称</div>
-
-                        </div>
-                    </li>
-                    <li class="item-content">
-                        <div class="item-media"><i class="icon iconfont icon-huodongxiangqu" style="color: green"></i></div>
-                        <div class="item-inner">
-                            <div class="item-title">待办事项名称</div>
-
-                        </div>
-                    </li>
-                </ul>
-            </div>-->
+    <div class="content   pull-to-refresh-content">
+        <div class="pull-to-refresh-layer">
+            <div class="preloader"></div>
+            <div class="pull-to-refresh-arrow"></div>
         </div>
+        <div class="content-inner">
+            <div id="my-input"></div>
 
+            <div id="content" style="height: 200px;overflow: auto;position:relative" class="infinite-scroll"></div>
+        </div>
 
     </div>
 
+
 </div>
+
+
 <div class="popup popup-about">
     <div class="content-block">
         <p class="item-title">指派与会人员</p>
@@ -185,12 +110,11 @@
     $.init();
     $(function () {
         $("#my-input").calendar({
-//            value: ['2017-7-25'],
             onDayClick: function (p, dayContainer, year, month, day) {
-                $.alert(day);
+                init(year, month / 1 + 1, day);
             },
             onMonthYearChangeEnd: function (o, y, m) {
-                init(y, m + 1);
+                init(y, m + 1, 1);
             }
         });
         /* $(".picker-calendar-day").live("click", function () {
@@ -201,28 +125,34 @@
              $.alert(date);
          });*/
 
-        init(new Date().getFullYear(), new Date().getMonth() + 1);
+        init(new Date().getFullYear(), new Date().getMonth() + 1, new Date().getDate());
     });
+    var meeting_data;
 
-    function getData(y, m) {
+    function getData(y, m, d) {
         $.ajax({
-            url: '/wechat/myscheduler/getSchedules', method: "POST", data: {year: y, month: m},
+            url: '/wechat/myscheduler/getSchedules', method: "POST", data: {year: y, month: m, day: d},
             success: function (data, textStatus, jqXHR) {
                 console.info(data);
-                setSchedule(y, m, data);
+                setSchedule(y, m, data.data);
+
+                meeting_data = data.meetings;
+                tpl.serv('/wechat/myscheduler/getTpl', meeting_data, function (html) {
+                    $("#content").html(html);
+                    var p = y+"-" + m + "-" + d;
+                    console.info(p);
+                    console.info($(".content-block-title[name='" + p + "']").position().top);
+                    $("#content").animate({scrollTop: 0}, 1).animate({scrollTop: $(".content-block-title[name='" + p + "']").position().top}, 1000);
+
+                    //$("html,body").animate({scrollTop: $(".content-block-title[name='" + p + "']").offset().top},1000);
+                });
             }
         });
     }
 
-    function init(y, m) { // 年 ， 月
+    function init(y, m, d) { // 年 ， 月
         //$.alert(y , m);
-        getData(y, m);
-        /* var d = [{'d': '2018-3-20', 'count': 2}, {'d': '2018-3-16', 'count': 6}, {
-             'd': '2018-3-25',
-             'count': 2
-         }, {'d': '2018-3-12', 'count': 5}];*/
-
-
+        getData(y, m, d);
     }
 
     function setSchedule(y, m, d) {
@@ -234,7 +164,7 @@
 
             var date = new Date();
             var t = date.getFullYear() + "/" + (date.getMonth() + 1) + "/" + date.getDate();
-
+            //当天前 灰色角标
             if (temp_date < new Date(t)) {
                 $(".picker-calendar-day[data-date='" + v.d + "']").not(".picker-calendar-day-prev").not(".picker-calendar-day-next").append("<div class='" + y + "' style='width: 15px;height: 15px;line-height: 15px;position:relative; border-radius:100%;top: -8px;left: -7px; color:white;background: gray'>" + v.count + "</div>");
             } else {
@@ -249,11 +179,12 @@
         //TODO AJAX 刷新
         var current_year = $(".picker-calendar-month-current").attr('data-year');
         var current_month = $(".picker-calendar-month-current").attr('data-month') / 1 + 1;
+        var current_day = 1;
 
-        console.info(current_month);
+        console.info(current_day);
         //var t = new Date().getFullYear() + "-" + new Date().getMonth() + "-" + new Date().getDate();
 
-        getData(current_year, current_month);
+        getData(current_year, current_month, current_day);
 
         //setSchedule(current_year, current_month, d);
         // 加载完毕需要重置

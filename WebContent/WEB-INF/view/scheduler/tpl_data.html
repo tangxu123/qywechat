@@ -1,0 +1,45 @@
+if (meeting_data == null || meeting_data.length ==0){
+    <div class="content-block-title">今天</div>
+    <div class="list-block">
+        <ul>
+            <div class="card-content">
+                <div class="card-content-inner">
+                    <p class="color-gray" align="center">暂无会议</p>
+                </div>
+            </div>
+        </ul>
+    </div>
+}else{
+    for(var i=0;i<meeting_data.length;i++){
+    var meeting = meeting_data[i];
+
+    <div class="content-block-title" name="@meeting.title">@meeting.title</div>
+    <div class="list-block">
+        <ul>
+            if (meeting.meetingList == null){
+
+
+                        <div class="card-content">
+                            <div class="card-content-inner">
+                                <p class="color-gray" align="center">暂无会议</p>
+                            </div>
+                        </div>
+
+
+            }else{
+                for(var j=0;j<meeting.meetingList.length;j++){
+                var m_data = meeting.meetingList[j];
+                <li class="item-content item-link  open-popup open-about" data-popup=".popup-about">
+                    <div class="item-media"><i class="icon iconfont icon-huodongxiangqu" style="color: green"></i>
+                    </div>
+                    <div class="item-inner">
+                        <div class="item-title">@m_data.hymc</div>
+                        <div class="item-subtitle">@m_data.show_kssj</div>
+                    </div>
+                </li>
+                }
+            }
+        </ul>
+    </div>
+    }
+}
