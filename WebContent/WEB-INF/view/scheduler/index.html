@@ -36,12 +36,10 @@
         </div>
         <div class="content-inner">
             <div id="my-input"></div>
-
             <div id="content" style="height: 500px;overflow: auto;position:relative" class="infinite-scroll"></div>
         </div>
 
     </div>
-
 
 </div>
 
@@ -143,7 +141,7 @@
                     var p = y + "-" + m + "-" + d;
                     console.info(p);
                     console.info($(".content-block-title[name='" + p + "']").position().top);
-                    $("#content").animate({scrollTop: 0}, 1).animate({scrollTop: $(".content-block-title[name='" + p + "']").position().top}, 1000);
+                    $("#content").scrollTop(0).animate({scrollTop: $(".content-block-title[name='" + p + "']").position().top}, 1000);
 
                     //$("html,body").animate({scrollTop: $(".content-block-title[name='" + p + "']").offset().top},1000);
                 });
