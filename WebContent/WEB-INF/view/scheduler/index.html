@@ -130,13 +130,13 @@
 
     function getData(y, m, d) {
         $.ajax({
-            url: '/wechat/myscheduler/getSchedules', method: "POST", data: {year: y, month: m, day: d},
+            url: '${cxt!}/wechat/myscheduler/getSchedules', method: "POST", data: {year: y, month: m, day: d},
             success: function (data, textStatus, jqXHR) {
                 console.info(data);
                 setSchedule(y, m, data.data);
 
                 meeting_data = data.meetings;
-                tpl.serv('/wechat/myscheduler/getTpl', meeting_data, function (html) {
+                tpl.serv('${cxt!}/wechat/myscheduler/getTpl', meeting_data, function (html) {
                     $("#content").html(html);
                     var p = y + "-" + m + "-" + d;
                     console.info(p);
