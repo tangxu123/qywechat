@@ -31,7 +31,7 @@ import com.jfinal.qyweixin.sdk.api.media.MediaMpNews;
 import com.jfinal.qyweixin.sdk.api.media.XHMediaMpNews;
 import com.jfinal.qyweixin.sdk.jfinal.ApiController;
 import com.jfinal.qyweixin.sdk.msg.send.*;
-import com.jfinal.qyweixin.sdk.utils.SFtpUtil;
+
 import com.platform.annotation.Controller;
 
 @Controller("/wechat/qyapi")
