@@ -74,6 +74,21 @@ public class QyWeixinApiController extends ApiController {
         renderText(sendTextMsg.getJson());
     }
 
+    public void getMpNews() {
+        ApiResult result = MediaApi.batchGetMaterial(MediaApi.MediaType.MPNEWS, 0, 10, 15);
+
+        renderText(result.getJson());
+    }
+
+    public void sendMpNewsMessage() {
+        String jsonStr = HttpKit.readData(getRequest());
+        XHMediaMpNews xhMediaMpNews = JSON.parseObject(jsonStr,XHMediaMpNews.class);
+        xhMediaMpNews.setMsgtype("mpnews");
+
+        ApiResult result = SendMessageApi.sendMpNewsMsg(xhMediaMpNews);
+        renderText(result.getJson());
+    }
+
     public void sendImageMessage() throws Exception {
         String jsonStr = HttpKit.readData(getRequest());
         QiYeImageMsg qiYeImageMsg = new QiYeImageMsg();
