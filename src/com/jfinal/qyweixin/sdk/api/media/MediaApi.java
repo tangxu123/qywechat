@@ -4,6 +4,7 @@ import java.io.File;
 import java.util.HashMap;
 import java.util.Map;
 
+import com.jfinal.json.FastJson;
 import com.jfinal.kit.HttpKit;
 import com.jfinal.qyweixin.sdk.api.AccessTokenApi;
 import com.jfinal.qyweixin.sdk.api.ApiResult;
@@ -22,7 +23,7 @@ public class MediaApi {
 	 * 用于上传图片、语音、视频等媒体资源文件以及普通文件（如doc，ppt）
 	 */
 	public static enum MediaType {
-		IMAGE, VOICE, VIDEO, FILE;
+		IMAGE, VOICE, VIDEO, FILE,MPNEWS,NEW;
 		
 		// 转化成小写形式
 		public String get() {
@@ -160,7 +161,7 @@ public class MediaApi {
 		dataMap.put("count", count);
 		dataMap.put("agentid", agentid);
 		
-		String jsonResult = HttpKit.post(url, JsonUtils.toJson(dataMap));
+		String jsonResult = HttpKit.post(url, FastJson.getJson().toJson(dataMap));
 		return new ApiResult(jsonResult);
 	}
 	
