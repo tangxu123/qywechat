@@ -16,14 +16,20 @@ package com.ludateam.wechat.qy.controller;
  * Created by Him on 2017/7/4.
  */
 
+import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.OutputStream;
+import java.net.HttpURLConnection;
+import java.net.MalformedURLException;
+import java.net.URL;
 
 import com.alibaba.fastjson.JSON;
 import com.jfinal.json.FastJson;
 import com.jfinal.kit.HttpKit;
 import com.jfinal.log.Log;
 import com.jfinal.qyweixin.sdk.api.ApiResult;
+import com.jfinal.qyweixin.sdk.api.ConUserApi;
 import com.jfinal.qyweixin.sdk.api.SendMessageApi;
 import com.jfinal.qyweixin.sdk.api.media.MediaApi;
 import com.jfinal.qyweixin.sdk.api.media.MediaHelper;
@@ -32,7 +38,12 @@ import com.jfinal.qyweixin.sdk.api.media.XHMediaMpNews;
 import com.jfinal.qyweixin.sdk.jfinal.ApiController;
 import com.jfinal.qyweixin.sdk.msg.send.*;
 
+import com.jfinal.render.ContentType;
 import com.platform.annotation.Controller;
+
+import javax.imageio.ImageIO;
+import javax.servlet.ServletOutputStream;
+import javax.servlet.http.HttpServletResponse;
 
 @Controller("/wechat/qyapi")
 public class QyWeixinApiController extends ApiController {
@@ -74,15 +85,82 @@ public class QyWeixinApiController extends ApiController {
         renderText(sendTextMsg.getJson());
     }
 
+    /**
+     * getAvatar 获取微信企业号关注用户头像
+     */
+    public void getAvatar() {
+
+        InputStream is = null;
+        ByteArrayOutputStream outStream = null;
+        HttpURLConnection httpUrl = null;
+        String userId = getPara("userid");
+        ApiResult result = ConUserApi.getUser(userId);
+        String avatarUrl = JSON.parseObject(result.getJson()).getString("avatar");
+        HttpServletResponse response = this.getResponse();
+        response.setHeader("Pragma", "no-cache");
+        response.setHeader("Cache-Control", "no-cache");
+        response.setDateHeader("Expires", 0);
+        response.setContentType("image/jpeg");
+        OutputStream stream = null;
+        try {
+            URL url = new URL(avatarUrl);
+
+            httpUrl = (HttpURLConnection) url.openConnection();
+            httpUrl.connect();
+            httpUrl.getInputStream();
+            is = httpUrl.getInputStream();
+
+            outStream = new ByteArrayOutputStream();
+            //创建一个Buffer字符串
+            byte[] buffer = new byte[1024];
+            //每次读取的字符串长度，如果为-1，代表全部读取完毕
+            int len = 0;
+            //使用一个输入流从buffer里把数据读取出来
+            while ((len = is.read(buffer)) != -1) {
+                //用输出流往buffer里写入数据，中间参数代表从哪个位置开始读，len代表读取的长度
+                outStream.write(buffer, 0, len);
+            }
+            stream = response.getOutputStream();
+            stream.write(outStream.toByteArray());
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            if (stream != null) {
+                try {
+                    stream.flush();
+                    stream.close();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+            if (is != null) {
+                try {
+                    is.close();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+            if (outStream != null) {
+                try {
+                    outStream.close();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+            if (httpUrl != null) {
+                httpUrl.disconnect();
+            }
+        }
+    }
+
     public void getMpNews() {
         ApiResult result = MediaApi.batchGetMaterial(MediaApi.MediaType.MPNEWS, 0, 10, 15);
-
         renderText(result.getJson());
     }
 
     public void sendMpNewsMessage() {
         String jsonStr = HttpKit.readData(getRequest());
-        XHMediaMpNews xhMediaMpNews = JSON.parseObject(jsonStr,XHMediaMpNews.class);
+        XHMediaMpNews xhMediaMpNews = JSON.parseObject(jsonStr, XHMediaMpNews.class);
         xhMediaMpNews.setMsgtype("mpnews");
 
         ApiResult result = SendMessageApi.sendMpNewsMsg(xhMediaMpNews);
