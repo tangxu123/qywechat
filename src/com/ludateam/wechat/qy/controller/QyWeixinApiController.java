@@ -96,61 +96,7 @@ public class QyWeixinApiController extends ApiController {
         String userId = getPara("userid");
         ApiResult result = ConUserApi.getUser(userId);
         String avatarUrl = JSON.parseObject(result.getJson()).getString("avatar");
-        HttpServletResponse response = this.getResponse();
-        response.setHeader("Pragma", "no-cache");
-        response.setHeader("Cache-Control", "no-cache");
-        response.setDateHeader("Expires", 0);
-        response.setContentType("image/jpeg");
-        OutputStream stream = null;
-        try {
-            URL url = new URL(avatarUrl);
-
-            httpUrl = (HttpURLConnection) url.openConnection();
-            httpUrl.connect();
-            httpUrl.getInputStream();
-            is = httpUrl.getInputStream();
-
-            outStream = new ByteArrayOutputStream();
-            //创建一个Buffer字符串
-            byte[] buffer = new byte[1024];
-            //每次读取的字符串长度，如果为-1，代表全部读取完毕
-            int len = 0;
-            //使用一个输入流从buffer里把数据读取出来
-            while ((len = is.read(buffer)) != -1) {
-                //用输出流往buffer里写入数据，中间参数代表从哪个位置开始读，len代表读取的长度
-                outStream.write(buffer, 0, len);
-            }
-            stream = response.getOutputStream();
-            stream.write(outStream.toByteArray());
-        } catch (Exception e) {
-            e.printStackTrace();
-        } finally {
-            if (stream != null) {
-                try {
-                    stream.flush();
-                    stream.close();
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-            }
-            if (is != null) {
-                try {
-                    is.close();
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-            }
-            if (outStream != null) {
-                try {
-                    outStream.close();
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-            }
-            if (httpUrl != null) {
-                httpUrl.disconnect();
-            }
-        }
+        redirect(avatarUrl+"64");
     }
 
     public void getMpNews() {
