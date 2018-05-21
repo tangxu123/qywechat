@@ -89,10 +89,6 @@ public class QyWeixinApiController extends ApiController {
      * getAvatar 获取微信企业号关注用户头像
      */
     public void getAvatar() {
-
-        InputStream is = null;
-        ByteArrayOutputStream outStream = null;
-        HttpURLConnection httpUrl = null;
         String userId = getPara("userid");
         ApiResult result = ConUserApi.getUser(userId);
         String avatarUrl = JSON.parseObject(result.getJson()).getString("avatar");
