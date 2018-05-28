@@ -7,6 +7,7 @@ package com.jfinal.qyweixin.sdk.api;
 
 import com.jfinal.kit.HttpKit;
 import com.jfinal.kit.JsonKit;
+import com.jfinal.qyweixin.sdk.api.media.XHMediaMpNews;
 import com.jfinal.qyweixin.sdk.kit.ParaMap;
 import com.jfinal.qyweixin.sdk.msg.send.QiYeFileMsg;
 import com.jfinal.qyweixin.sdk.msg.send.QiYeImageMsg;
@@ -88,8 +89,11 @@ public class SendMessageApi {
 		String jsonStr = JsonKit.toJson(mpNews);
 		return sendMessage(jsonStr);
 	}
-	
 
+	public static ApiResult sendMpNewsMsg(XHMediaMpNews mpNews) {
+		String jsonStr = JsonKit.toJson(mpNews);
+		return sendMessage(jsonStr);
+	}
 	/**
 	 * 文件消息
 	 * @param file
