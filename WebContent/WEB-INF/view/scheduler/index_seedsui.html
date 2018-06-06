@@ -1,0 +1,199 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <!--  <title>我的待办</title>-->
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0, user-scalable=0, minimum-scale=1.0, maximum-scale=1.0">
+    <meta name="format-detection" content="telephone=no">
+    <link rel="shortcut icon" href="/favicon.ico">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+
+    <link rel="stylesheet" href="${cxt!}/static/light7/css/light7.min.css">
+    <link rel="stylesheet" href="${cxt!}/static/light7/css/light7-swiper.min.css">
+    <link rel="stylesheet" href="${cxt!}/ui/icon/iconfont.css">
+    <link rel="stylesheet" href="${cxt!}/static/schedule/app.css">
+    <link rel="stylesheet" href="${cxt!}/static/seedsui/seedsui/seedsui.min.css">
+    <script src="${cxt!}/static/js/tpl.js"></script>
+
+</head>
+<body>
+<div class="page   page-current">
+  <!--  pull-to-refresh-content-->
+
+    <div class="content   " data-ptr-distance="55">
+       <!-- <div class="pull-to-refresh-layer">
+            <div class="preloader"></div>
+            <div class="pull-to-refresh-arrow"></div>
+        </div>-->
+        <div class="content-inner">
+            <section id="page_week" class="active"  >
+                <article style="background-color:white;top:1px">
+                    <div class="calendar   " id="calender_select_container">
+                        <ul class="list noborder nobg">
+                            <li style="padding:10px 0;">
+                                <div class="justify arrowleft" style="display: none">
+                                    <i class="icon icon-arrowleft"></i>
+                                </div>
+                                <div class="justify-content calendar-title">2016-2-15 周一</div>
+                                <div class="justify arrowright" style="display: none">
+                                    <i class="icon icon-arrowright"></i>
+                                </div>
+                            </li>
+                        </ul>
+                        <div class="calender_container">
+                            <div class='day'>
+                                <div class="week-day-line">
+                                    <div class="day-name">日</div>
+                                    <div class="day-name">一</div>
+                                    <div class="day-name">二</div>
+                                    <div class="day-name">三</div>
+                                    <div class="day-name">四</div>
+                                    <div class="day-name">五</div>
+                                    <div class="day-name">六</div>
+                                </div>
+                                <div class="week-day-line">
+                                    <div class="day-name">日</div>
+                                    <div class="day-name">一</div>
+                                    <div class="day-name">二</div>
+                                    <div class="day-name">三</div>
+                                    <div class="day-name">四</div>
+                                    <div class="day-name">五</div>
+                                    <div class="day-name">六</div>
+                                </div>
+                                <div class="week-day-line">
+                                    <div class="day-name">日</div>
+                                    <div class="day-name">一</div>
+                                    <div class="day-name">二</div>
+                                    <div class="day-name">三</div>
+                                    <div class="day-name">四</div>
+                                    <div class="day-name">五</div>
+                                    <div class="day-name">六</div>
+                                </div>
+                            </div>
+                            <div class='date_container'>
+                                <div class="month_container">
+
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div id="content"    style=" height: 200px;overflow: auto;position:relative" class="infinite-scroll">
+
+                    </div>
+                </article>
+
+            </section>
+
+
+        </div>
+
+    </div>
+
+</div>
+
+
+
+<script type='text/javascript' src='${cxt!}/static/light7/js/jquery-3.3.1.min.js' charset='utf-8'></script>
+<script type='text/javascript' src='${cxt!}/static/light7/js/light7.min.js' charset='utf-8'></script>
+<script type='text/javascript' src='${cxt!}/static/light7/js/light7-swiper.min.js' charset='utf-8'></script>
+<script type='text/javascript' src='${cxt!}/static/light7/js/i18n/cn.js' charset='utf-8'></script>
+<script src="${cxt!}/static/seedsui/seedsui/seedsui.min.js"></script>
+<script>
+    $.init();
+    $(function () {
+        init(new Date().getFullYear(), new Date().getMonth() + 1, new Date().getDate());
+    });
+    function init(y, m, d) { // 年 ， 月
+        //$.alert(y , m);
+        getData(y, m, d);
+    }
+    function getData(y, m, d) {
+        $.ajax({
+            url: '${cxt!}/wechat/myscheduler/getSchedules', method: "POST", data: {year: y, month: m, day: d},
+            success: function (data, textStatus, jqXHR) {
+                console.info(data);
+                setSchedule(y, m, data.data);
+
+               meeting_data = data.meetings;
+                tpl.serv('${cxt!}/wechat/myscheduler/getTpl', meeting_data, function (html) {
+                    $("#content").html(html);
+                    var p = y + "-" + m + "-" + d;
+
+                    $("#content").scrollTop(0).animate({scrollTop: $("summary[name='" + p + "']").position().top}, 1000);
+
+                    //$("html,body").animate({scrollTop: $(".content-block-title[name='" + p + "']").offset().top},1000);
+                });
+            }
+        });
+    }
+    function setSchedule(y, m, d) {
+        $("." + y).remove();
+        $.each(d, function (index, v) {
+            var temp_date = new Date(v.d);
+
+            v.d = temp_date.getFullYear() + "-" + temp_date.getMonth() + "-" + temp_date.getDate();
+
+            var date = new Date();
+            var t = date.getFullYear() + "/" + (date.getMonth() + 1) + "/" + date.getDate();
+            //当天前 灰色角标
+            if (temp_date < new Date(t)) {
+                $(".show-date[data-date='" + v.d + "']").append("<div class='" + y + "'  style='width: 15px;height: 15px;line-height: 15px;position:relative; border-radius:100%;top: -40px;left: 28px; color:gray; font-weight: bold '>" + v.count + "</div>");
+            } else {
+                $(".show-date[data-date='" + v.d + "']").append("<div class='" + y + "' style='width: 15px;height: 15px;line-height: 15px;position:relative; border-radius:100%;top: -40px;left: 28px; color:red;font-weight: bold '>" + v.count + "</div>");
+            }
+        });
+    }
+    var tempWeekSelectObject = new DateSelect({
+            activeDate: new Date()
+        }),
+        tempDivId = "calender_select_container";
+    var tempCalenderObject = new Calender({
+        dateSelectObject: tempWeekSelectObject,
+        mode: 'month',
+        containerDivId: tempDivId,
+        onChange: function (date) {
+            //alert(date + "==== " + date.getFullYear() + "-" + (date.getMonth() + 1) + "-" + date.getDate());
+            init(date.getFullYear(), date.getMonth() + 1, date.getDate());
+        }
+    });
+
+    function calendarCollapse() {
+        tempCalenderObject.switchToWeek();
+    }
+
+    function calendarExpand() {
+        tempCalenderObject.switchToMonth();
+    }
+
+    function today() {
+        tempCalenderObject.jumpToDate(new Date());
+    }
+
+    console.log(tempCalenderObject);
+
+    $(document).on('refresh', '.pull-to-refresh-content', function (e) {
+        // 模拟2s的加载过程
+        //setTimeout(function () {
+        //TODO AJAX 刷新
+        var current_year = tempCalenderObject.getActiveDate().getFullYear();
+        var current_month =tempCalenderObject.getActiveDate().getMonth()+1;
+        var current_day = tempCalenderObject.getActiveDate().getDate();
+
+
+        //var t = new Date().getFullYear() + "-" + new Date().getMonth() + "-" + new Date().getDate();
+
+        getData(current_year, current_month, current_day);
+        init(current_year, current_month, current_day)
+        //setSchedule(current_year, current_month, d);
+        // 加载完毕需要重置
+        $.pullToRefreshDone('.pull-to-refresh-content');
+        //}, 2000);
+    });
+
+
+</script>
+</body>
+</html>
