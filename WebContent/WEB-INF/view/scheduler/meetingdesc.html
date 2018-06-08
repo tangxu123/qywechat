@@ -1,0 +1,50 @@
+var meetingdesc = meeting_data[0];
+var hydd = meetingdesc.hydd;
+var kssj = meetingdesc.kssj;
+var ksrq = meetingdesc.ksrq;
+var hysj = ksrq + "  " + kssj  ;
+var hynr = meetingdesc.hynr;
+var hymc = meetingdesc.hymc;
+<header class="bar bar-nav" style="background: none">
+<h1 class="title" style="color: #333333;font-weight: 600;">会议详情</h1>
+</header>
+<div class="list-block media-list" >
+    <ul style="background:none">
+        <li>
+            <label class="label-checkbox item-content">
+                <div class="item-inner">
+                    <div class="item-title-row">
+                        <div class="item-title">会议名称</div>
+                        <div style="display: block" class="item-title">@hymc</div>
+                    </div>
+                    <hr  width="1px"  style="height:100px;" color="#F1F1F1"/>
+                    <div class="item-title-row">
+                        <div class="item-title">会议地点</div>
+                        <div style="display: block" class="item-title">@hydd</div>
+                    </div>
+                    <hr  width="1px"  style="height:100px;" color="#F1F1F1"/>
+                    <div class="item-title-row">
+                        <div class="item-title">会议时间</div>
+                        <div style="display: block" class="item-title">@hysj</div>
+                    </div>
+                    <hr  width="1px"  style="height:100px;" color="#F1F1F1"/>
+                    <div class="item-title-row">
+                        <div class="item-title">会议内容：</div>
+                    </div>
+                    <p class="item-title" style="padding-bottom:50px;color: #666666;white-space: normal">@hynr</p>
+
+                </div>
+            </label>
+
+        </li>
+    </ul>
+</div>
+
+<div class="content-block">
+    <div class="row">
+        <div class="col-50"><a href="#" class="button button-big button-fill button-damage close-popup">取消</a>
+        </div>
+        <div onclick="blockOrNone();" class="col-50"><a href="#" class="button button-big button-fill button-success ">指派</a>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,27 @@
+var meetingdesc = meeting_data[0];
+var hydd = meetingdesc.hydd;
+var kssj = meetingdesc.kssj;
+var show_kssj = meetingdesc.show_kssj;
+var hysj = kssj + "  " + show_kssj;
+var hynr = meetingdesc.hynr;
+var hymc = meetingdesc.hymc;
+<div class="content-block">
+    <div class="item-media" style="color: #333333;font-weight: bold"><i class="icon iconfont icon-huodongxiangqu" style="color: green"></i>&nbsp;&nbsp;@hymc
+    </div>
+    <hr  width="3px"  style="height:100px;" color="#D3D3D3"/>
+    <p class="item-title" style="color: #333333;font-weight: 600">@hysj</p>
+    <hr  width="1px"  style="height:100px;" color="#F1F1F1"/>
+    <p class="item-title" style="color: #333333;font-weight: 600">@hydd</p>
+    <hr  width="1px"  style="height:100px;" color="#F1F1F1"/>
+    <p class="item-title" style="color: #333333;font-weight: 600">会议内容：</p>
+    <p class="item-title" style="padding-bottom:50px;color: #666666;">@hynr</p>
+    <hr  width="1px"  style="height:100px;" color="#F1F1F1"/>
+</div>
+<div class="content-block">
+    <div class="row">
+        <div class="col-50"><a href="#" class="button button-big button-fill button-damage close-popup">取消</a>
+        </div>
+        <div onclick="blockOrNone();" class="col-50"><a href="#" class="button button-big button-fill button-success ">指派</a>
+        </div>
+    </div>
+</div>

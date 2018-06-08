@@ -16,9 +16,13 @@ package com.ludateam.wechat.qy.entity;
  * Created by Him on 2018/4/17.
  */
 
-import java.util.Date;
 
-public class Meeting {
+
+public class Meeting{
+    /**
+     * 会议编号
+     */
+    private String hybh;
     /**
      * 会议地点
      */
@@ -31,21 +35,34 @@ public class Meeting {
      * 会议内容
      */
     private String hynr;
-
-    private String  show_kssj;
+    /**
+     * 开始日期
+     */
+    private String  ksrq;
 
     /**
      * 开始时间
      */
-    private Date  kssj;
+    private String  kssj;
+
+    /**
+     * 结束日期
+     */
+    private String  jsrq;
+
     /**
      * 结束时间
      */
-    private Date  jssj;
-    /**
-     * 参与人
-     */
-    private String  cyr;
+    private String  jssj;
+
+
+    public String getHybh() {
+        return hybh;
+    }
+
+    public void setHybh(String hybh) {
+        this.hybh = hybh;
+    }
 
     public String getHydd() {
         return hydd;
@@ -71,35 +88,35 @@ public class Meeting {
         this.hynr = hynr;
     }
 
-    public Date getKssj() {
+    public String getKsrq() {
+        return ksrq;
+    }
+
+    public void setKsrq(String ksrq) {
+        this.ksrq = ksrq;
+    }
+
+    public String getKssj() {
         return kssj;
     }
 
-    public void setKssj(Date kssj) {
+    public void setKssj(String kssj) {
         this.kssj = kssj;
     }
 
-    public Date getJssj() {
+    public String getJsrq() {
+        return jsrq;
+    }
+
+    public void setJsrq(String jsrq) {
+        this.jsrq = jsrq;
+    }
+
+    public String getJssj() {
         return jssj;
     }
 
-    public void setJssj(Date jssj) {
+    public void setJssj(String jssj) {
         this.jssj = jssj;
-    }
-
-    public String getCyr() {
-        return cyr;
-    }
-
-    public void setCyr(String cyr) {
-        this.cyr = cyr;
-    }
-
-    public String getShow_kssj() {
-        return show_kssj;
-    }
-
-    public void setShow_kssj(String show_kssj) {
-        this.show_kssj = show_kssj;
     }
 }

@@ -16,10 +16,20 @@ package com.ludateam.wechat.qy.entity;/*
  */
 
 import java.util.List;
+import java.util.Map;
 
 public class SchedulerData {
     private List<Scheduler> data;
     private List<MeetingData> meetings;
+    private List<Map<String,String>> swrys;
+
+    public List<Map<String, String>> getSwrys() {
+        return swrys;
+    }
+
+    public void setSwrys(List<Map<String, String>> swrys) {
+        this.swrys = swrys;
+    }
 
     public List<Scheduler> getData() {
         return data;

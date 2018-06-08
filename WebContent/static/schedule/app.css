@@ -3,5 +3,13 @@
     color: #ffffff;
 }
 #my-input{
-    font-weight: bold
+    font-weight: bold;
+
+}
+
+i.icon.icon-next, i.icon.icon-prev {
+    background-image: none;
+}
+.list-block ul{
+    border-top: none;
 }
