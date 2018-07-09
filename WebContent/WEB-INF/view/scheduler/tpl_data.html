@@ -1,5 +1,5 @@
 if (meeting_data == null || meeting_data.length ==0){
-<div class="content-block-title">今天</div>
+<div  class="content-block-title" style="display:none">今天</div>
 <div class="list-block">
     <ul style="background:none">
         <div class="card-content">
@@ -12,8 +12,10 @@ if (meeting_data == null || meeting_data.length ==0){
 }else{
 for(var i=0;i<meeting_data.length;i++){
 var meeting = meeting_data[i];
-
-<div class="content-block-title" name="@meeting.title">@meeting.title</div>
+var rq = meeting.title;
+var weekDay = ["周日", "周一", "周二", "周三", "周四", "周五", "周六"];  
+var zj = weekDay[new Date(Date.parse(rq.replace(/\-/g,"/"))).getDay()];
+<div class="content-block-title" id="@meeting.title" name="@meeting.title">@meeting.title    @zj</div>
 <div class="list-block">
     <ul style="background:none">
         if (meeting.meetingList == null){
@@ -29,13 +31,33 @@ var meeting = meeting_data[i];
         }else{
         for(var j=0;j<meeting.meetingList.length;j++){
         var m_data = meeting.meetingList[j];
-        <li onclick="getSwrys(this.getElementsByTagName('div')[0].innerHTML)"; class="item-content item-link  open-popup open-about" data-popup=".popup-about   ">
+        var ckbj = m_data.ckbj;
+        var zpbj = m_data.zpbj;
+        var hymc = m_data.hymc;
+        if(hymc.replace(/[^\x00-\xff]/g,"**").length>14){
+                hymc=getByteVal(hymc,26)+"...";
+
+            }
+
+        <li style="padding-left: 0rem" onclick="getSwrys(this.getElementsByTagName('div')[0].innerHTML,this.getElementsByTagName('div')[1].innerHTML)"; class="item-content item-link  open-popup open-about" data-popup=".popup-about   ">
             <div style="display:none" name="hybh">@m_data.hybh</div>
+            <div style="display:none" name="zpbj">@m_data.zpbj</div>
             <div class="item-media" style="display: none"><i class="icon iconfont icon-huodongxiangqu" style="color: green"></i>
             </div>
-            <div class="item-inner">
-                <div class="item-title">@m_data.hymc</div>
-                <div class="item-subtitle">@m_data.kssj</div>
+            <div class="item-inner" style="border-bottom:none">
+                if("noread"==ckbj){
+                <div class="item-title" style="color:#36acf4;">
+                    <img src="${cxt!}/static/img/yuanpoint.svg" style="display:inline-block;width:18px;" />
+                    @hymc</div>
+                    <div class="item-subtitle">@m_data.kssj</div>
+                }else if("readed"==ckbj){
+                    <div class="item-title" style="color:#36acf4;padding-left: .75rem;">@hymc</div>
+                    <div class="item-subtitle">@m_data.kssj</div>
+                }else{
+                    <div class="item-title" style="padding-left: .75rem;">@hymc</div>
+                    <div class="item-subtitle">@m_data.kssj</div>
+                }
+
             </div>
         </li>
         }

@@ -5,8 +5,10 @@ var ksrq = meetingdesc.ksrq;
 var hysj = ksrq + "  " + kssj  ;
 var hynr = meetingdesc.hynr;
 var hymc = meetingdesc.hymc;
+var jld  = meetingdesc.jld;
+var cxdx  = meetingdesc.cxdx;
 <header class="bar bar-nav" style="background: none">
-<h1 class="title" style="color: #333333;font-weight: 600;">会议详情</h1>
+    <h1 class="title" style="color: #333333;font-weight: 600;">会议详情</h1>
 </header>
 <div class="list-block media-list" >
     <ul style="background:none">
@@ -32,19 +34,55 @@ var hymc = meetingdesc.hymc;
                         <div class="item-title">会议内容：</div>
                     </div>
                     <p class="item-title" style="padding-bottom:50px;color: #666666;white-space: normal">@hynr</p>
-
+                    <div class="item-title-row">
+                        <div class="item-title">局领导：</div>
+                    </div>
+                    <p class="item-title" style="padding-bottom:50px;color: #666666;white-space: normal">@jld</p>
+                    <div class="item-title-row">
+                        <div class="item-title">出席对象：</div>
+                    </div>
+                    <p class="item-title" style="padding-bottom:50px;color: #666666;white-space: normal">@cxdx</p>
+                    <div class="item-title-row">
+                        <div class="item-title">本部门参会人员：</div>
+                    </div>
+                    <p class="item-title" style="padding-bottom:50px;color: #666666;white-space: normal"></p>
                 </div>
             </label>
 
         </li>
     </ul>
 </div>
-
+if(rysx==0  || rysx ==1){
 <div class="content-block">
     <div class="row">
-        <div class="col-50"><a href="#" class="button button-big button-fill button-damage close-popup">取消</a>
+        <div class="col-50"><a href="#" class="button button-big button-fill button-damage close-popup">确定</a>
+        </div>
+    </div>
+</div>
+}else if(rysx==2  || rysx ==3){
+    if('Y'==zpbj_qj){
+<div class="content-block">
+    <div class="row">
+        <div onclick="csh();" class="col-50"><a href="#" class="button button-big button-fill button-damage close-popup">取消</a>
         </div>
         <div onclick="blockOrNone();" class="col-50"><a href="#" class="button button-big button-fill button-success ">指派</a>
         </div>
     </div>
 </div>
+    }else{
+<div class="content-block">
+    <div class="row">
+        <div class="col-50"><a href="#" class="button button-big button-fill button-damage close-popup">确定</a>
+        </div>
+    </div>
+</div>
+    }
+
+}else if(rysx==4){
+<div class="content-block">
+    <div class="row">
+        <div class="col-50"><a href="#" class="button button-big button-fill button-damage close-popup">确定</a>
+        </div>
+    </div>
+</div>
+}

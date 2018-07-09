@@ -54,7 +54,22 @@ if (swry_data == null || swry_data.length ==0){
         var swrydm = swry.swrydm;
         var swjgdm = swry.swjgdm;
         var hybh = swry.hybh;
+        var ownerbj = swry.ownerbj;
         <li>
+            if(0 == ownerbj){
+            <label class="label-checkbox item-content">
+                <input name="checkbox" type="checkbox" value=""/>
+                <div class="item-media"><i class="icon icon-form-checkbox"></i></div>
+                <div name="div_swry"class="item-inner">
+                    <div class="item-title-row">
+                        <div style="display: block;color: #00aaaa" class="item-title">@swrymc</div>
+                        <div style="display: block" class="item-title">@swrydm</div>
+                        <div style="display: none"class="item-title">@swjgdm</div>
+                        <div style="display: none"class="item-title">@hybh</div>
+                    </div>
+                </div>
+            </label>
+            }else{
             <label class="label-checkbox item-content">
                 <input name="checkbox" type="checkbox" value=""/>
                 <div class="item-media"><i class="icon icon-form-checkbox"></i></div>
@@ -67,6 +82,8 @@ if (swry_data == null || swry_data.length ==0){
                     </div>
                 </div>
             </label>
+            }
+
 
         </li>
         }

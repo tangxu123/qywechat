@@ -7,6 +7,15 @@ public class MeetingSwry{
     String swjgdm;
     String swrymc;
     String hybh;
+    String ownerbj;
+
+    public String getOwnerbj() {
+        return ownerbj;
+    }
+
+    public void setOwnerbj(String ownerbj) {
+        this.ownerbj = ownerbj;
+    }
 
     public String getSwrydm() {
         return swrydm;

@@ -147,6 +147,7 @@
 
             url: '${cxt!}/wechat/myscheduler/getSwrys', method: "POST", data: {drrydm:swrydm,hybh:hybh},
             success: function (data) {
+
                 swry_data = data.swryList;
                 meeting_data = data.meetingList;
                 tpl.serv('${cxt!}/wechat/myscheduler/getSwryList', swry_data, function (html) {

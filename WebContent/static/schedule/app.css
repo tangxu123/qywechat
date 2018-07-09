@@ -13,3 +13,35 @@ i.icon.icon-next, i.icon.icon-prev {
 .list-block ul{
     border-top: none;
 }
+
+.day-date {
+    font-size: large;
+}
+.list-block .item-link .item-inner {
+    padding-right: 0.5rem;
+    background-image: none;
+}
+
+.content-block-title {
+    position: relative;
+    margin: 0;
+    margin: .75rem .75rem .5rem;
+    overflow: hidden;
+    font-size: .7rem;
+    line-height: 1;
+    color: #6d6d72;
+    text-overflow: ellipsis;
+    text-transform: uppercase;
+    white-space: nowrap;
+}
+
+.list-block {
+    margin: 1rem 0;
+    font-size: .85rem;
+}
+
+.calendar-title {
+    font-size: 20px;
+    text-align: center;
+    display: none;
+}

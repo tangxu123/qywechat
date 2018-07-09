@@ -23,6 +23,8 @@ import java.io.OutputStream;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.util.ArrayList;
+import java.util.List;
 
 import com.alibaba.fastjson.JSON;
 import com.jfinal.json.FastJson;
@@ -85,6 +87,7 @@ public class QyWeixinApiController extends ApiController {
         renderText(sendTextMsg.getJson());
     }
 
+
     /**
      * getAvatar 获取微信企业号关注用户头像
      */
@@ -100,14 +103,14 @@ public class QyWeixinApiController extends ApiController {
         renderText(result.getJson());
     }
 
-    public void sendMpNewsMessage() {
-        String jsonStr = HttpKit.readData(getRequest());
-        XHMediaMpNews xhMediaMpNews = JSON.parseObject(jsonStr, XHMediaMpNews.class);
-        xhMediaMpNews.setMsgtype("mpnews");
-
-        ApiResult result = SendMessageApi.sendMpNewsMsg(xhMediaMpNews);
-        renderText(result.getJson());
-    }
+//    public void sendMpNewsMessage() {
+//        String jsonStr = HttpKit.readData(getRequest());
+//        XHMediaMpNews xhMediaMpNews = JSON.parseObject(jsonStr, XHMediaMpNews.class);
+//        xhMediaMpNews.setMsgtype("mpnews");
+//
+//        ApiResult result = SendMessageApi.sendMpNewsMsg(xhMediaMpNews);
+//        renderText(result.getJson());
+//    }
 
     public void sendImageMessage() throws Exception {
         String jsonStr = HttpKit.readData(getRequest());

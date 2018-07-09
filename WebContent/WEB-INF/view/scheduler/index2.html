@@ -1,0 +1,366 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <!--  <title>我的待办</title>-->
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0, user-scalable=0, minimum-scale=1.0, maximum-scale=1.0">
+    <meta name="format-detection" content="telephone=no">
+    <link rel="shortcut icon" href="/favicon.ico">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+
+    <link rel="stylesheet" href="${cxt!}/static/seedsui/seedsui/seedsui.min.css">
+    <link rel="stylesheet" href="${cxt!}/static/light7/css/light7.min.css">
+    <link rel="stylesheet" href="${cxt!}/static/light7/css/light7-swiper.min.css">
+    <link rel="stylesheet" href="${cxt!}/ui/icon/iconfont.css">
+    <link rel="stylesheet" href="${cxt!}/static/schedule/app.css">
+
+    <script src="${cxt!}/static/js/tpl.js"></script>
+</head>
+<body>
+<input type="hidden" id="wxzhid" name="wxzhid" value="${userId!}" />
+<input type="hidden" id="rysx" name="rysx" value="${rysx!}" />
+
+
+<div class="page   page-current">
+    <!--  pull-to-refresh-content-->
+
+    <div class="content" data-ptr-distance="55">
+        <!-- <div class="pull-to-refresh-layer">
+             <div class="preloader"></div>
+             <div class="pull-to-refresh-arrow"></div>
+         </div>-->
+        <div class="content-inner">
+            <section id="page_week" class="active"  >
+                <article style="background-color:white;top:1px">
+                    <div class="calendar   " id="calender_select_container">
+                        <ul class="list noborder nobg">
+                            <li style="padding:10px 0;">
+                                <div class="justify arrowleft" style="display: none">
+                                    <i class="icon icon-arrowleft"></i>
+                                </div>
+                                <div class="justify-content calendar-title"></div>
+                                <div class="justify arrowright" style="display: none">
+                                    <i class="icon icon-arrowright"></i>
+                                </div>
+                            </li>
+                        </ul>
+                        <div class="calender_container">
+                            <div class='day'>
+                                <div class="week-day-line">
+                                    <div class="day-name">日</div>
+                                    <div class="day-name">一</div>
+                                    <div class="day-name">二</div>
+                                    <div class="day-name">三</div>
+                                    <div class="day-name">四</div>
+                                    <div class="day-name">五</div>
+                                    <div class="day-name">六</div>
+                                </div>
+                                <div class="week-day-line">
+                                    <div class="day-name">日</div>
+                                    <div class="day-name">一</div>
+                                    <div class="day-name">二</div>
+                                    <div class="day-name">三</div>
+                                    <div class="day-name">四</div>
+                                    <div class="day-name">五</div>
+                                    <div class="day-name">六</div>
+                                </div>
+                                <div class="week-day-line">
+                                    <div class="day-name">日</div>
+                                    <div class="day-name">一</div>
+                                    <div class="day-name">二</div>
+                                    <div class="day-name">三</div>
+                                    <div class="day-name">四</div>
+                                    <div class="day-name">五</div>
+                                    <div class="day-name">六</div>
+                                </div>
+                            </div>
+                            <div class='date_container'>
+                                <div class="month_container">
+
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div id="content1"    style="height:350px;overflow: auto;position:relative;" class="infinite-scroll">
+
+                    </div>
+
+                </article>
+
+            </section>
+
+
+        </div>
+
+    </div>
+
+</div>
+<div class="popup popup-about" style="background-image: none;background-size:cover;">
+    <div class="content-block">
+        <div id="swryList"></div>
+
+
+    </div>
+</div>
+
+
+<script type='text/javascript' src='${cxt!}/static/light7/js/jquery-3.3.1.min.js' charset='utf-8'></script>
+<script type='text/javascript' src='${cxt!}/static/light7/js/light7.min.js' charset='utf-8'></script>
+<script type='text/javascript' src='${cxt!}/static/light7/js/light7-swiper.min.js' charset='utf-8'></script>
+<script type='text/javascript' src='${cxt!}/static/light7/js/i18n/cn.js' charset='utf-8'></script>
+<script src="${cxt!}/static/seedsui/seedsui/seedsui.min.js"></script>
+<script>
+    $.init();
+    var swrydm = "";
+    var rysx = "";
+    var swjgdm = "";
+    var yy="";
+    var mm="";
+    var dd="";
+    $(function () {
+        csh(yy,mm,dd);
+    });
+
+    function csh(yy,mm,dd){
+        swrydm =  document.getElementById("wxzhid").value;
+        if(""==yy){
+            init(new Date().getFullYear(), new Date().getMonth() + 1, new Date().getDate());
+        }else{
+            init(yy,mm,dd);
+        }
+
+        $(document).attr('title',$(".calendar-title")[0].innerHTML);
+//        console.info($(".calendar-title")[0].innerHTML);
+
+    }
+
+    function init(y, m, d) { // 年 ， 月
+        //$.alert(y , m);
+        getData(y, m, d);
+
+    }
+
+    function getRysx(swrydm){
+        $.ajax({
+            url: '${cxt!}/wechat/myscheduler/getRysx', method: "POST", data: {drrydm:swrydm},
+            async: false,
+            timeout : 5000, //超时时间设置，单位毫秒
+            success: function (data) {
+                rysx =  data[0].rysx;
+                swjgdm =  data[0].swjgdm;
+//                console.info(rysx);
+//                console.info(swjgdm);
+            }
+        });
+    }
+
+
+
+    var meeting_data;
+    //    13101040424
+    //    13101040361
+    function getData(y, m, d) {
+        getRysx(swrydm);
+
+//        console.info("Y="+y);
+//        console.info("m="+m);
+//        console.info("d="+d);
+        yy = y;
+        mm= m;
+        dd = d;
+        $.ajax({
+            url: '${cxt!}/wechat/myscheduler/getSchedules', method: "POST", data: {year: y, month: m, day: d,drrydm:swrydm,rysx:rysx,jgdm:swjgdm},
+            success: function (data, textStatus, jqXHR) {
+                console.info(data);
+                setSchedule(y, m, data.data);
+
+                meeting_data = data.meetings;
+                tpl.serv('${cxt!}/wechat/myscheduler/getTpl', meeting_data, function (html) {
+                    $("#content1").html(html);
+                    if(1==(m+"").length){
+                        m = "0"+m;
+                    }
+
+                    if(1==(d+"").length){
+                        d = "0"+d;
+                    }
+                    var p = y + "-" + m + "-" + d;
+                    console.info(p);
+
+                    if(0 == $("div[name='" + p + "']").length){
+                        console.info(p);
+                    }else{
+                        $("#content1").scrollTop(0).animate({scrollTop: $("div[name='" + p + "']").position().top}, 500);
+                    }
+
+                    $(document).attr('title',$(".calendar-title")[0].innerHTML);
+                });
+            }
+        });
+    }
+
+
+    function blockOrNone(){
+        document.getElementById("meetingdesc").style.display="none";
+        document.getElementById("swrysss").style.display="block";
+    }
+
+    var swry_data;
+    var zpbj_qj;
+    function getSwrys(hybh,zpbj){
+        $.ajax({
+
+            url: '${cxt!}/wechat/myscheduler/getSwrys', method: "POST", data: {drrydm:swrydm,hybh:hybh},
+            success: function (data) {
+                zpbj_qj = zpbj;
+                swry_data = data.swryList;
+                console.log(swry_data);
+                meeting_data = data.meetingList;
+                tpl.serv('${cxt!}/wechat/myscheduler/getSwryList', swry_data, function (html) {
+                    $("#swryList").html(html);
+                });
+
+            }
+        });
+    }
+    function saveJoinMeetingSwry(bj){
+        document.getElementById("meetingdesc").style.display="block";
+        document.getElementById("swrysss").style.display="none";
+        if(""!=bj && null !=bj && "Y"==bj){
+            var swryStr = "";
+            $("input:checkbox[name='checkbox']:checked").each(function() {
+                swryStr = swryStr + $(this).val() + "#";
+            });
+            swryStr = swryStr.substring(0,swryStr.length-1);
+            if(swryStr!=""){
+                $.ajax({
+
+                    url: '${cxt!}/wechat/myscheduler/bcJoinMeetingSwrys', method: "POST", data: {swryStr:swryStr,drrydm:swrydm},
+                    success: function (data) {
+                        $.toast("保存成功");
+
+                    },error: function(XMLHttpRequest, textStatus, errorThrown) {
+                        $.toast("保存失败");
+                    }
+                });
+            }
+            csh();
+        }
+    }
+
+    $(".button-success.close-popup").on('click', function () {
+        //获取选中的人员
+        $.each($("input:checkbox[name='checkbox']:checked"), function (index, v) {
+            console.info($(v).val());
+        });
+
+    });
+    $(".button-danger.close-popup").on('click', function () {
+
+        $.each($("input:checkbox[name='checkbox']"), function (index, v) {
+            $(v).prop("checked", false);
+        });
+    });
+
+    function zwcd(str){
+        var blen = 0;
+        for(var i=0; i<str.length; i++) {
+            if ((str.charCodeAt(i) & 0xff00) != 0) {
+                blen ++;
+            }
+            blen ++;
+        }
+
+        return blen;
+    }
+
+    function getByteVal(val, max) {
+        var returnValue = '';
+        var byteValLen = 0;
+        for (var i = 0; i < val.length; i++) {
+            if (val[i].match(/[^\x00-\xff]/ig) != null)
+                byteValLen += 2;
+            else
+                byteValLen += 1;
+            if (byteValLen > max)
+                break;
+            returnValue += val[i];
+        }
+        return returnValue;
+    }
+
+
+
+
+    function setSchedule(y, m, d) {
+        $("." + y).remove();
+        $.each(d, function (index, v) {
+            var temp_date = new Date(v.d);
+
+            v.d = temp_date.getFullYear() + "-" + temp_date.getMonth() + "-" + temp_date.getDate();
+
+            var date = new Date();
+            var t = date.getFullYear() + "/" + (date.getMonth() + 1) + "/" + date.getDate();
+            //当天前 灰色角标
+            if (temp_date < new Date(t)) {
+                $(".show-date[data-date='" + v.d + "']").append("<div class='" + y + "'  style='width: 15px;height: 15px;line-height: 15px;position:relative; border-radius:100%;top: -40px;left: 28px; color:gray; font-size:small;font-weight: bold '>" + v.count + "</div>");
+            } else {
+                $(".show-date[data-date='" + v.d + "']").append("<div class='" + y + "' style='width: 15px;height: 15px;line-height: 15px;position:relative; border-radius:100%;top: -40px;left: 28px; color:red;font-size:small;font-weight: bold '>" + v.count + "</div>");
+            }
+        });
+    }
+    var tempWeekSelectObject = new DateSelect({
+            activeDate: new Date()
+        }),
+        tempDivId = "calender_select_container";
+    var tempCalenderObject = new Calender({
+        dateSelectObject: tempWeekSelectObject,
+        mode: 'month',
+        containerDivId: tempDivId,
+        onChange: function (date) {
+            //alert(date + "==== " + date.getFullYear() + "-" + (date.getMonth() + 1) + "-" + date.getDate());
+            init(date.getFullYear(), date.getMonth() + 1, date.getDate());
+        }
+    });
+
+    function calendarCollapse() {
+        tempCalenderObject.switchToWeek();
+    }
+
+    function calendarExpand() {
+        tempCalenderObject.switchToMonth();
+    }
+
+    function today() {
+        tempCalenderObject.jumpToDate(new Date());
+    }
+
+    console.log(tempCalenderObject);
+
+    $(document).on('refresh', '.pull-to-refresh-content', function (e) {
+        // 模拟2s的加载过程
+        //setTimeout(function () {
+        //TODO AJAX 刷新
+        var current_year = tempCalenderObject.getActiveDate().getFullYear();
+        var current_month =tempCalenderObject.getActiveDate().getMonth()+1;
+        var current_day = tempCalenderObject.getActiveDate().getDate();
+
+
+        //var t = new Date().getFullYear() + "-" + new Date().getMonth() + "-" + new Date().getDate();
+
+        getData(current_year, current_month, current_day);
+        init(current_year, current_month, current_day);
+        //setSchedule(current_year, current_month, d);
+        // 加载完毕需要重置
+        $.pullToRefreshDone('.pull-to-refresh-content');
+        //}, 2000);
+
+    });
+
+
+</script>
+</body>
+</html>

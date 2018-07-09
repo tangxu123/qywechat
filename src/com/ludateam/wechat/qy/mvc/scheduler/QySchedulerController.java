@@ -49,7 +49,7 @@ public class QySchedulerController extends BaseController {
     private static final Log log = Log.getLog(QySchedulerController.class);
 
     SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
-//    private final static String url = "http://172.16.2.50:9009";
+//    private final static String url = "http://172.16.2.50:9009/service";
     private final static String url = "http://127.0.0.1:9009/service";
 
 
@@ -74,7 +74,7 @@ public class QySchedulerController extends BaseController {
 
         setAttr("userId", "13101040424");
         setAttr("openid", "");
-        render("/scheduler/index.html");
+        render("/scheduler/index2.html");
 
     }
 
@@ -130,7 +130,7 @@ public class QySchedulerController extends BaseController {
             //renderText(userInfoApiResult.getJson()+">>>userId:"+userId+" deviceId:"+deviceId+" openid:"+openid);
             setAttr("userId", userId);
             setAttr("openid", openid);
-            render("/scheduler/index.html");
+            render("/scheduler/index2.html");
         }
     }
 
@@ -143,11 +143,11 @@ public class QySchedulerController extends BaseController {
     }
 
     public void getSwryList() {
-        render("/scheduler/swry_data.html");
+        render("/scheduler/swry_data2.html");
     }
 
     public void getMeetingDesc() {
-        render("/scheduler/meetingdesc.html");
+        render("/scheduler/meetingdesc2.html");
     }
     /**
      * 获取所在周日期
@@ -171,9 +171,15 @@ public class QySchedulerController extends BaseController {
         String data1 = new SimpleDateFormat("yyyy-MM-dd").format(cal.getTime());
         returnList.add(data1);
 
-        for (int i = 1; i < 7; i++) {
+        for (int i = 1; i < 13; i++) {
             temp = (Calendar) cal.clone();
             temp.add(Calendar.DAY_OF_WEEK, i);
+            returnList.add(new SimpleDateFormat("yyyy-MM-dd").format(temp.getTime()));
+
+        }
+        for (int i = 1; i < 9; i++) {
+            temp = (Calendar) cal.clone();
+            temp.add(Calendar.DAY_OF_WEEK, i*-1);
             returnList.add(new SimpleDateFormat("yyyy-MM-dd").format(temp.getTime()));
 
         }
@@ -204,16 +210,21 @@ public class QySchedulerController extends BaseController {
         return returnList;
     }
 
-    /**
-     * 模拟数据
-     *
-     * @return
-     */
-    private List<Meeting> getMeetingData(String swrydm, String rysx) {
-//        String s = HttpUtils.get(url+"/calendar/meeting/meetings?userid="+swrydm);
-        String s = HttpUtils.get(url+"/meeting/meetings?userid="+swrydm+"&rysx="+rysx);
+    private List<Meeting> getOwnerMeetingData(String swrydm, String rysx) {
+        String s = HttpUtils.get(url+"/meeting/ownerMeetings?userid="+swrydm+"&rysx="+rysx);
 
-        System.out.println("sssssssssssssssssssssssssssssssss="+s);
+        if("".equals(s)){
+            return null;
+        }
+
+        ArrayList<Meeting> meetingList = JSON.parseObject(s, new TypeReference<ArrayList<Meeting>>() {});
+        System.out.println(meetingList);
+        return meetingList;
+    }
+
+    private List<Meeting> getMeetingData(String swrydm, String rysx,String jgdm) {
+//        String s = HttpUtils.get(url+"/calendar/meeting/meetings?userid="+swrydm);
+        String s = HttpUtils.get(url+"/meeting/meetings?userid="+swrydm+"&rysx="+rysx+"&jgdm="+jgdm);
 
         if("".equals(s)){
             return null;
@@ -243,24 +254,30 @@ public class QySchedulerController extends BaseController {
         Integer month = Integer.parseInt(getPara("month"));
         //日
         Integer day = Integer.parseInt(getPara("day"));
+
+
+
         //登入人员代码
         String drrydm = getPara("drrydm");
         //人员属性
         String rysx = getPara("rysx");
+        //机关代码
+        String jgdm = getPara("jgdm");
 
         Calendar now = Calendar.getInstance();
         now.set(year, month - 1, day);
 
         List<String> weekDays = getFirstAndLastOfWeek(format.format(now.getTime()));
         List<String> monthDays = getFirstAndLastOfMonth(format.format(now.getTime()));
-        //模拟数据
-        List<Meeting> MOCK_DATA = getMeetingData(drrydm,rysx);
+        List<Meeting> ownerMeetingData = getOwnerMeetingData(drrydm,rysx);
+        List<Meeting> MOCK_DATA = getMeetingData(drrydm,rysx,jgdm);
         if(null == MOCK_DATA){
             return;
         }
 
+
         List<Scheduler> returnlist = new ArrayList<>();
-        MOCK_DATA.stream().collect(Collectors.groupingBy(p -> {
+        ownerMeetingData.stream().collect(Collectors.groupingBy(p -> {
             return p.getKsrq();
         }, Collectors.counting())).forEach((k, v) -> {
             Scheduler scheduler = new Scheduler();
@@ -289,6 +306,31 @@ public class QySchedulerController extends BaseController {
             meetingDataList.add(meetingData);
         });
 
+
+        String nian  = String.valueOf(year);
+        String yue  = String.valueOf(month);
+        String ri  = String.valueOf(day);
+        if(yue.length()==1){
+            yue = "0"+yue;
+        }
+        if(ri.length()==1){
+            ri = "0"+ri;
+        }
+        String rqq = nian+"-"+yue+"-"+ri;
+        List l = new ArrayList();
+        for(Meeting meeting : MOCK_DATA){
+            l.add(meeting.getKsrq());
+        }
+        if(!l.contains(rqq)){
+            MeetingData md = new MeetingData();
+            md.setTitle(rqq);
+            md.setTitledate(new SimpleDateFormat("yyyy-M-d").parse(rqq));
+            meetingDataList.add(md);
+        }
+
+
+
+
         List<MeetingData> sortedMeetingDataList = meetingDataList.stream().sorted(comparing(MeetingData::getTitledate)).collect(Collectors.toList());
 
 
@@ -304,11 +346,9 @@ public class QySchedulerController extends BaseController {
         String hybh = String.valueOf(getPara("hybh"));
 
 
-
         List<MeetingSwry> returnSwryList = new ArrayList<MeetingSwry>();
 //        String s = HttpUtils.get(url+"/calendar/meeting/designatedPersons?userid="+drrydm+"&meetingNumber="+hybh);
         String s = HttpUtils.get(url+"/meeting/designatedPersons?userid="+drrydm+"&meetingNumber="+hybh);
-
         if("".equals(s)){
             return;
         }
@@ -317,15 +357,15 @@ public class QySchedulerController extends BaseController {
         m.put("swryList",returnSwryList);
         List<Meeting> meetList = new ArrayList();
 //        String ss = HttpUtils.get(url+"/calendar/meeting/desc?meetingNumber="+hybh);
-        String ss = HttpUtils.get(url+"/meeting/desc?meetingNumber="+hybh);
+        String ss = HttpUtils.get(url+"/meeting/desc?userid="+drrydm+"&meetingNumber="+hybh);
 
         if("".equals(ss)){
             return;
         }
 
         meetList = JSON.parseArray(ss,Meeting.class);
+        System.out.println("meetListmeetListmeetListmeetListmeetListmeetList="+meetList.size());
         m.put("meetingList",meetList);
-//        System.out.println(returnSwryList);
 
         renderJson(m);
 
@@ -333,6 +373,7 @@ public class QySchedulerController extends BaseController {
 
     public String bcJoinMeetingSwrys(){
         String s = "F";
+        String drrydm = String.valueOf(getPara("drrydm"));
         try {
         String swryStr = String.valueOf(getPara("swryStr"));
         System.out.println(swryStr);
@@ -346,7 +387,7 @@ public class QySchedulerController extends BaseController {
             base64 = URLEncoder.encode(base64, "UTF-8");
             System.out.println(base64);
 //            String req = url + "/calendar/meeting/persons?persons=" + base64;
-            String req = url + "/meeting/persons?persons=" + base64;
+            String req = url + "/meeting/persons?persons=" + base64+"&lrrydm="+drrydm;
 
             System.out.println(req);
 
