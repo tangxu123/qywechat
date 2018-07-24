@@ -1,0 +1,104 @@
+var meetingdesc = meeting_data[0];
+var hydd = meetingdesc.hydd;
+var kssj = meetingdesc.kssj;
+var ksrq = meetingdesc.ksrq;
+var hysj = ksrq + "  " + kssj  ;
+var hynr = meetingdesc.hynr;
+var hymc = meetingdesc.hymc;
+var jld  = meetingdesc.jld;
+var cxdx  = meetingdesc.cxdx;
+var zpbr = meetingdesc.zpbr;
+var zpzj = meetingdesc.zpzj;
+<div class="list-block media-list">
+    <ul style="background:none;border-bottom:none">
+        <li>
+            <label class="label-checkbox item-content">
+                <div class="item-inner">
+                    <div class="item-title-row" >
+                        <div style="display: block;margin-bottom: 20px" >@hymc</div>
+                    </div>
+                    <div class="item-title-row" style="margin-bottom:15px ">
+                        <div style="display: flex" class="item-title">
+                            <span class="icon icon-home"style="margin-right: 10px"></span>
+                            <p class="item-title" style="margin: 0; color: #666666;white-space: normal">@hydd</p>
+                        </div>
+                    </div>
+                    <div class="item-title-row" style="margin-bottom:15px ">
+                        <div style="display: flex" class="item-title">
+                            <span class="icon icon-clock"style="margin-right: 10px"></span>
+                            <p class="item-title" style="margin: 0; color: #666666;white-space: normal">@hysj</p>
+                        </div>
+                    </div>
+                    <div class="item-title-row" style="display: none">
+                        <div class="item-title">会议内容：</div>
+                    </div>
+                    <p class="item-title" style="display:none;padding-bottom:50px;color: #666666;white-space: normal">@hynr</p>
+                    <div class="item-title-row" style="margin-bottom:15px ">
+                        <div style="display: flex" class="item-title">
+                            <span class="icon icon-me"style="margin-right: 10px"></span>
+                            <p class="item-title" style="margin: 0; color: #666666;white-space: normal">@jld</p>
+                        </div>
+                    </div>
+                    <div class="item-title-row" style="margin-bottom:15px ">
+                        <div style="display: flex" class="item-title">
+                            <span class="icon icon-friends"style="margin-right: 10px"></span>
+                            <p class="item-title" style="margin: 0; color: #666666;white-space: normal">@cxdx</p>
+                        </div>
+                    </div>
+                    <div class="item-title-row" style="margin-top: 30px">
+                        <div class="item-title">本部门参会人员：</div>
+
+                    </div>
+                    if(null != zpzj){
+                        <p class="item-title" style="margin-left:10%;margin-top:10px; color: #666666;white-space: normal">@zpzj</p>
+                    }
+                    if(null != zpbr){
+                        <p class="item-title" style="margin-left:10%;margin-top:10px; color: #666666;white-space: normal">@zpbr</p>
+                    }
+                    if(null == zpzj && null == zpbr){
+                        <p class="item-title" style="margin-left:10%;margin-top:10px; color: #666666;white-space: normal">无</p>
+                    }
+
+
+
+
+                </div>
+            </label>
+
+        </li>
+    </ul>
+</div>
+if(rysx==0  || rysx ==1){
+<div class="content-block">
+    <div class="row" style="border-style:none">
+        <div class="col-50" style="margin-left: 29%"><a href="#" class="button button-big button-fill button-damage close-popup">确定</a>
+        </div>
+    </div>
+</div>
+}else if(rysx==2  || rysx ==3){
+if('Y'==zpbj_qj){
+<div class="content-block">
+    <div class="row" style="border-style:none">
+        <div onclick="csh();" class="col-50"><a href="#" class="button button-big button-fill button-damage close-popup">取消</a>
+        </div>
+        <div onclick="blockOrNone();" class="col-50"><a href="#" class="button button-big button-fill button-success ">指派</a>
+        </div>
+    </div>
+</div>
+}else{
+<div class="content-block">
+    <div class="row" style="border-style:none">
+        <div class="col-50" style="margin-left: 29%"><a href="#" class="button button-big button-fill button-damage close-popup">确定</a>
+        </div>
+    </div>
+</div>
+}
+
+}else if(rysx==4){
+<div class="content-block">
+    <div class="row">
+        <div class="col-50" style="margin-left: 29%"><a href="#" class="button button-big button-fill button-damage close-popup">确定</a>
+        </div>
+    </div>
+</div>
+}

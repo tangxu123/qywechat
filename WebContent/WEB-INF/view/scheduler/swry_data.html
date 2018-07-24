@@ -1,0 +1,105 @@
+<script>
+    $(function(){
+
+        $("input:checkbox").click(function() {
+            $("input:checkbox[name='checkbox']:checked").each(function() {
+                var d = this.nextElementSibling.nextElementSibling.childNodes[0].getElementsByTagName("div");
+                var swrymc = d[0].innerHTML;
+                var swrydm = d[1].innerHTML;
+                var swjgdm = d[2].innerHTML;
+                var hybh = d[3].innerHTML;
+                var s = swrymc+","+swrydm+","+swjgdm+","+hybh;
+                this.value=s;
+            });
+        });
+        tpl.serv('${cxt!}/wechat/myscheduler/getMeetingDesc', meeting_data, function (html) {
+            $("#meetingdesc").html(html);
+        });
+    });
+</script>
+if (swry_data == null || swry_data.length ==0){
+<div id="meetingdesc" style="display:block"></div>
+
+<div id="swrysss" style="display:none;height: 500px;overflow: auto;position:relative" class="infinite-scroll">
+    <div class="list-block">
+        <ul style="background: none">
+            <div class="card-content">
+                <div class="card-content-inner">
+                    <p class="color-gray" align="center">暂无可指派与会人员</p>
+                </div>
+            </div>
+        </ul>
+    </div>
+    <div class="content-block">
+        <div class="row">
+
+            <div onclick="saveJoinMeetingSwry('N')" class="col-50"><a href="#" class="button button-big button-fill button-damage close-popup">取消</a>
+            </div>
+            <div onclick="saveJoinMeetingSwry('Y')" class="col-50"><a href="#" class="button button-big button-fill button-success close-popup">确定</a>
+            </div>
+        </div>
+    </div>
+</div>
+}else{
+<div id="meetingdesc" style="display:block;"></div>
+
+
+<div id="swrysss" style="display: none">
+<p class="item-title">指派与会人员</p>
+<div class="list-block media-list" >
+    <ul style="background:none">
+        for(var i=0;i<swry_data.length;i++){
+        var swry = swry_data[i];
+        var swrymc = swry.swrymc;
+        var swrydm = swry.swrydm;
+        var swjgdm = swry.swjgdm;
+        var hybh = swry.hybh;
+        var ownerbj = swry.ownerbj;
+        <li>
+            if(0 == ownerbj){
+            <label class="label-checkbox item-content">
+                <input name="checkbox" type="checkbox" value=""/>
+                <div class="item-media"><i class="icon icon-form-checkbox"></i></div>
+                <div name="div_swry"class="item-inner">
+                    <div class="item-title-row">
+                        <div style="display: block;color: #00aaaa" class="item-title">@swrymc</div>
+                        <div style="display: block" class="item-title">@swrydm</div>
+                        <div style="display: none"class="item-title">@swjgdm</div>
+                        <div style="display: none"class="item-title">@hybh</div>
+                    </div>
+                </div>
+            </label>
+            }else{
+            <label class="label-checkbox item-content">
+                <input name="checkbox" type="checkbox" value=""/>
+                <div class="item-media"><i class="icon icon-form-checkbox"></i></div>
+                <div name="div_swry"class="item-inner">
+                    <div class="item-title-row">
+                        <div class="item-title">@swrymc</div>
+                        <div style="display: block" class="item-title">@swrydm</div>
+                        <div style="display: none"class="item-title">@swjgdm</div>
+                        <div style="display: none"class="item-title">@hybh</div>
+                    </div>
+                </div>
+            </label>
+            }
+
+
+        </li>
+        }
+    </ul>
+</div>
+    <div class="content-block">
+        <div class="row">
+            <div onclick="saveJoinMeetingSwry('N')" class="col-50"><a href="#" class="button button-big button-fill button-damage close-popup">取消</a>
+            </div>
+            <div onclick="saveJoinMeetingSwry('Y')" class="col-50"><a href="#" class="button button-big button-fill button-success close-popup">确定</a>
+            </div>
+        </div>
+    </div>
+</div>
+}
+
+
+
+

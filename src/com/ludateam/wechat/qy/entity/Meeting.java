@@ -16,9 +16,13 @@ package com.ludateam.wechat.qy.entity;
  * Created by Him on 2018/4/17.
  */
 
-import java.util.Date;
 
-public class Meeting {
+
+public class Meeting{
+    /**
+     * 会议编号
+     */
+    private String hybh;
     /**
      * 会议地点
      */
@@ -31,21 +35,161 @@ public class Meeting {
      * 会议内容
      */
     private String hynr;
-
-    private String  show_kssj;
+    /**
+     * 开始日期
+     */
+    private String  ksrq;
 
     /**
      * 开始时间
      */
-    private Date  kssj;
+    private String  kssj;
+
+    /**
+     * 结束日期
+     */
+    private String  jsrq;
+
     /**
      * 结束时间
      */
-    private Date  jssj;
+    private String  jssj;
+
     /**
-     * 参与人
+     * 录入时间
      */
-    private String  cyr;
+    private String  lrsj;
+
+    /**
+     * 修改时间
+     */
+    private String  xgsj;
+    /**
+     * 录入人员代码
+     */
+    private String  lrrydm;
+
+    /**
+     * 修改人员代码
+     */
+    private String  xgrydm;
+    /**
+     * 录入局领导
+     */
+    private String  jld;
+
+    /**
+     * 指派标记
+     * N 不可指派  Y 可以指派
+     */
+    private String zpbj;
+
+    private String zpzj;
+
+    public String getZpzj() {
+        return zpzj;
+    }
+
+    public void setZpzj(String zpzj) {
+        this.zpzj = zpzj;
+    }
+
+    public String getZpbr() {
+        return zpbr;
+    }
+
+    public void setZpbr(String zpbr) {
+        this.zpbr = zpbr;
+    }
+
+    private String zpbr;
+    /**
+     * 查看标记
+     * readed 代表该会议信息已读
+     * noread 代表该会议信息未读
+     */
+    private String ckbj;
+
+    public String getCkbj() {
+        return ckbj;
+    }
+
+    public void setCkbj(String ckbj) {
+        this.ckbj = ckbj;
+    }
+
+    public String getZpbj() {
+        return zpbj;
+    }
+
+    public void setZpbj(String zpbj) {
+        this.zpbj = zpbj;
+    }
+
+    public String getLrsj() {
+        return lrsj;
+    }
+
+    public void setLrsj(String lrsj) {
+        this.lrsj = lrsj;
+    }
+
+    public String getXgsj() {
+        return xgsj;
+    }
+
+    public void setXgsj(String xgsj) {
+        this.xgsj = xgsj;
+    }
+
+    public String getLrrydm() {
+        return lrrydm;
+    }
+
+    public void setLrrydm(String lrrydm) {
+        this.lrrydm = lrrydm;
+    }
+
+    public String getXgrydm() {
+        return xgrydm;
+    }
+
+    public void setXgrydm(String xgrydm) {
+        this.xgrydm = xgrydm;
+    }
+
+    public String getJld() {
+        return jld;
+    }
+
+    public void setJld(String jld) {
+        this.jld = jld;
+    }
+
+    public String getCxdx() {
+        return cxdx;
+    }
+
+    public void setCxdx(String cxdx) {
+        this.cxdx = cxdx;
+    }
+
+    /**
+     * 修改出席对象
+     */
+
+    private String  cxdx;
+
+
+
+
+    public String getHybh() {
+        return hybh;
+    }
+
+    public void setHybh(String hybh) {
+        this.hybh = hybh;
+    }
 
     public String getHydd() {
         return hydd;
@@ -71,35 +215,35 @@ public class Meeting {
         this.hynr = hynr;
     }
 
-    public Date getKssj() {
+    public String getKsrq() {
+        return ksrq;
+    }
+
+    public void setKsrq(String ksrq) {
+        this.ksrq = ksrq;
+    }
+
+    public String getKssj() {
         return kssj;
     }
 
-    public void setKssj(Date kssj) {
+    public void setKssj(String kssj) {
         this.kssj = kssj;
     }
 
-    public Date getJssj() {
+    public String getJsrq() {
+        return jsrq;
+    }
+
+    public void setJsrq(String jsrq) {
+        this.jsrq = jsrq;
+    }
+
+    public String getJssj() {
         return jssj;
     }
 
-    public void setJssj(Date jssj) {
+    public void setJssj(String jssj) {
         this.jssj = jssj;
-    }
-
-    public String getCyr() {
-        return cyr;
-    }
-
-    public void setCyr(String cyr) {
-        this.cyr = cyr;
-    }
-
-    public String getShow_kssj() {
-        return show_kssj;
-    }
-
-    public void setShow_kssj(String show_kssj) {
-        this.show_kssj = show_kssj;
     }
 }

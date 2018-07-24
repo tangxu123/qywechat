@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html xmlns:c="http://www.w3.org/1999/html">
+<html>
 <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -18,24 +18,24 @@
     <script src="${cxt!}/static/js/tpl.js"></script>
 
 </head>
-<body style="background-image: url(${cxt!}/static/img/bkgrd.jpg);background-size:cover;">
-<input type="hidden" id="wxzhid" name="wxzhid" value="${userId!}" />
-<input type="hidden" id="rysx" name="rysx" value="${rysx!}" />
+<body>
 
 
+<div class="page   page-current">
 
-<div class="page   page-current" style="background: none">
+    <header class="bar bar-nav">
+        <!-- <a class="icon icon-left pull-left"></a>-->
+        <!--<a class="icon icon-friends pull-right create-actions"></a>-->
+        <h1 class="title">会议管理</h1>
+    </header>
 
-
-
-
-    <div class="content   pull-to-refresh-content" data-ptr-distance="55" style="background-image: url(${cxt!}/static/img/bkgrd.jpg);background-size:cover;">
+    <div class="content   pull-to-refresh-content" data-ptr-distance="55">
         <div class="pull-to-refresh-layer">
             <div class="preloader"></div>
             <div class="pull-to-refresh-arrow"></div>
         </div>
         <div class="content-inner">
-            <div id="my-input" style="border-radius: 10px;border:1px solid #D1D1D1;margin: 10px" ></div>
+            <div id="my-input"></div>
             <div id="content" style="height: 500px;overflow: auto;position:relative" class="infinite-scroll"></div>
         </div>
 
@@ -44,15 +44,57 @@
 </div>
 
 
-<div class="popup popup-about" style="background-image: url(${cxt!}/static/img/bkgrd.jpg);background-size:cover;">
+<div class="popup popup-about">
     <div class="content-block">
-        <div id="swryList"></div>
+        <p class="item-title">指派与会人员</p>
+        <div class="list-block media-list" id="swryList">
+            <ul>
+                <li>
+                    <label class="label-checkbox item-content">
+                        <input name="checkbox" type="checkbox" value="石头">
+                        <div class="item-media"><i class="icon icon-form-checkbox"></i></div>
+                        <div class="item-inner">
+                            <div class="item-title-row">
+                                <div class="item-title">石头</div>
+                            </div>
+                        </div>
+                    </label>
 
+                </li>
+                <li><label class="label-checkbox item-content">
+                    <input name="checkbox" type="checkbox" value="剪刀">
+                    <div class="item-media"><i class="icon icon-form-checkbox"></i></div>
+                    <div class="item-inner">
+                        <div class="item-title-row">
+                            <div class="item-title">剪刀</div>
+                        </div>
+                    </div>
+                </label>
 
+                </li>
+                <li>
+                    <label class="label-checkbox item-content">
+                        <input name="checkbox" type="checkbox" value="布">
+                        <div class="item-media"><i class="icon icon-form-checkbox"></i></div>
+                        <div class="item-inner">
+                            <div class="item-title-row">
+                                <div class="item-title">布</div>
+                            </div>
+                        </div>
+                    </label>
+                </li>
+            </ul>
+        </div>
+        <div class="content-block">
+            <div class="row">
+                <div class="col-50"><a href="#" class="button button-big button-fill button-danger close-popup">取消</a>
+                </div>
+                <div class="col-50"><a href="#" class="button button-big button-fill button-success close-popup">确定</a>
+                </div>
+            </div>
+        </div>
     </div>
 </div>
-
-
 <script type='text/javascript' src='${cxt!}/static/light7/js/jquery-3.3.1.min.js' charset='utf-8'></script>
 <script type='text/javascript' src='${cxt!}/static/light7/js/light7.min.js' charset='utf-8'></script>
 <script type='text/javascript' src='${cxt!}/static/light7/js/light7-swiper.min.js' charset='utf-8'></script>
@@ -61,32 +103,11 @@
 <script type='text/javascript' src='//g.alicdn.com/msui/sm/0.6.2/js/sm.min.js' charset='utf-8'></script>
 <script type='text/javascript' src='//g.alicdn.com/msui/sm/0.6.2/js/sm-extend.min.js' charset='utf-8'></script>-->
 <script>
-
-    function GetQueryString(name) {
-        var reg = new RegExp("(^|&)"+ name +"=([^&]*)(&|$)");
-        var r = window.location.search.substr(1).match(reg);
-
-        if(r!=null){
-            return  unescape(r[2]);
-        }else{
-            return null;
-        }
-    }
-
-    function blockOrNone(){
-        document.getElementById("meetingdesc").style.display="none";
-        document.getElementById("swrysss").style.display="block";
-    }
-
-
-    var swryDataStr = "";
     //打开自动初始化页面的功能
     //建议不要打开自动初始化，而是自己调用 $.init 方法完成初始化
     $.init();
-    var swrydm = "";
-    var rysx = "";
+
     $(function () {
-        swrydm =  document.getElementById("wxzhid").value;
         $("#my-input").calendar({
             onDayClick: function (p, dayContainer, year, month, day) {
                 init(year, month / 1 + 1, day);
@@ -96,33 +117,20 @@
             }
         });
         /* $(".picker-calendar-day").live("click", function () {
-         var day = $(this).attr('data-day');
-         var month = $(this).attr('data-month');
-         var year = $(this).attr('data-year');
-         var date = $(this).attr('data-date');
-         $.alert(date);
+             var day = $(this).attr('data-day');
+             var month = $(this).attr('data-month');
+             var year = $(this).attr('data-year');
+             var date = $(this).attr('data-date');
+             $.alert(date);
          });*/
-        getRysx(swrydm);
+
         init(new Date().getFullYear(), new Date().getMonth() + 1, new Date().getDate());
     });
-
-    function getRysx(swrydm){
-        $.ajax({
-            url: '${cxt!}/wechat/myscheduler/getRysx', method: "POST", data: {drrydm:swrydm},
-            success: function (data) {
-                rysx =  data[0].rysx;
-                console.info(rysx);
-            }
-        });
-    }
-
-
     var meeting_data;
-    //    13101040424
-    //    13101040361
+    var swry_data;
     function getData(y, m, d) {
         $.ajax({
-            url: '${cxt!}/wechat/myscheduler/getSchedules', method: "POST", data: {year: y, month: m, day: d,drrydm:swrydm,rysx:rysx},
+            url: '${cxt!}/wechat/myscheduler/getSchedules', method: "POST", data: {year: y, month: m, day: d},
             success: function (data, textStatus, jqXHR) {
                 console.info(data);
                 setSchedule(y, m, data.data);
@@ -132,55 +140,17 @@
                     $("#content").html(html);
                     var p = y + "-" + m + "-" + d;
                     console.info(p);
-//                    $("#content").scrollTop(0).animate({scrollTop: $(".content-block-title[name='" + p + "']").position().top}, 1000);
+                    console.info($(".content-block-title[name='" + p + "']").position().top);
+                    $("#content").scrollTop(0).animate({scrollTop: $(".content-block-title[name='" + p + "']").position().top}, 1000);
 
                     //$("html,body").animate({scrollTop: $(".content-block-title[name='" + p + "']").offset().top},1000);
                 });
-
-            }
-        });
-    }
-    var swry_data;
-    var meeting_data;
-    function getSwrys(hybh){
-        $.ajax({
-
-            url: '${cxt!}/wechat/myscheduler/getSwrys', method: "POST", data: {drrydm:swrydm,hybh:hybh},
-            success: function (data) {
-
                 swry_data = data.swryList;
-                meeting_data = data.meetingList;
                 tpl.serv('${cxt!}/wechat/myscheduler/getSwryList', swry_data, function (html) {
                     $("#swryList").html(html);
                 });
-
             }
         });
-    }
-    function saveJoinMeetingSwry(bj){
-        document.getElementById("meetingdesc").style.display="block";
-        document.getElementById("swrysss").style.display="none";
-        if(""!=bj && null !=bj && "Y"==bj){
-            var swryStr = "";
-            $("input:checkbox[name='checkbox']:checked").each(function() {
-                swryStr = swryStr + $(this).val() + "#";
-            });
-            swryStr = swryStr.substring(0,swryStr.length-1);
-            if(swryStr!=""){
-                $.ajax({
-
-                    url: '${cxt!}/wechat/myscheduler/bcJoinMeetingSwrys', method: "POST", data: {swryStr:swryStr},
-                    success: function (data) {
-                        $.toast("保存成功");
-                    },error: function(XMLHttpRequest, textStatus, errorThrown) {
-                        $.toast("保存失败");
-                    }
-                });
-            }
-        }
-
-
-
     }
 
     function init(y, m, d) { // 年 ， 月
@@ -238,35 +208,34 @@
         });
     });
     /*$(document).on('click', '.create-actions', function () {
-     var buttons1 = [
-     {
-     text: '请选择',
-     label: true
-     },
-     {
-     text: '我的待办',
-     /!* bold: true,*!/
-     onClick: function () {
-     $.alert("你选择了“我的待办“");
-     }
-     },
-     {
-     text: '下属待办',
-     onClick: function () {
-     $.alert("你选择了“下属待办“");
-     }
-     }
-     ];
-     var buttons2 = [
-     {
-     text: '取消',
-     bg: 'danger'
-     }
-     ];
-     var groups = [buttons1, buttons2];
-     $.actions(groups);
-     });*/
+        var buttons1 = [
+            {
+                text: '请选择',
+                label: true
+            },
+            {
+                text: '我的待办',
+                /!* bold: true,*!/
+                onClick: function () {
+                    $.alert("你选择了“我的待办“");
+                }
+            },
+            {
+                text: '下属待办',
+                onClick: function () {
+                    $.alert("你选择了“下属待办“");
+                }
+            }
+        ];
+        var buttons2 = [
+            {
+                text: '取消',
+                bg: 'danger'
+            }
+        ];
+        var groups = [buttons1, buttons2];
+        $.actions(groups);
+    });*/
 </script>
-
 </body>
 </html>
