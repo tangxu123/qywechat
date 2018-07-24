@@ -33,10 +33,10 @@ public class QyJssdkController extends ApiController {
         String nonce_str = create_nonce_str();
         // 注意 URL 一定要动态获取，不能 hardcode.
         String url = "http://" + getRequest().getServerName() // 服务器地址
-                // + ":"
-                // + getRequest().getServerPort() //端口号
-                + getRequest().getContextPath() // 项目名称
-                + getRequest().getServletPath();// 请求页面或其他地址
+                 + ":"
+                 + getRequest().getServerPort() //端口号
+                 + getRequest().getContextPath() // 项目名称
+                 + getRequest().getServletPath();// 请求页面或其他地址
         String qs = getRequest().getQueryString(); // 参数
         if (qs != null) {
             url = url + "?" + (getRequest().getQueryString());
